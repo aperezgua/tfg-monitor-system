@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controller principal encargado de realizar
+ * Controller principal encargado de realizar la autenticación del ususario con crossorigin (multiples sites).
  */
 @RestController
 @CrossOrigin
