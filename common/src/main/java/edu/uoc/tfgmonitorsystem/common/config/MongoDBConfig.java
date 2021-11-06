@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice.config;
+package edu.uoc.tfgmonitorsystem.common.config;
 
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
@@ -6,12 +6,14 @@ import com.mongodb.ServerAddress;
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Ver https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongo.mongo-db-factory-java
@@ -31,6 +33,9 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     @Value("${spring.data.mongodb.userCredentials.password}")
     private String password;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public String getDatabaseName() {
         return database;
@@ -48,9 +53,8 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
         return strings -> {
-            userRepository.save(new User(1, "Abel", "abelperezgua@uoc.edu", "pw"));
-            userRepository.save(new User(2, "Sam", "sam@uoc.edu", "pw"));
+            userRepository.save(new User(1, "Abel", "aperezgua@uoc.edu", passwordEncoder.encode("pw")));
+            userRepository.save(new User(2, "Sam", "sam@uoc.edu", passwordEncoder.encode("pw")));
         };
     }
-
 }
