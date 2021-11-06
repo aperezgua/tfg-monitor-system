@@ -3,8 +3,8 @@ package edu.uoc.tfgmonitorsystem.usermicroservice.config;
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-import edu.uoc.tfgmonitorsystem.common.document.Users;
-import edu.uoc.tfgmonitorsystem.common.repository.UserRepository;
+import edu.uoc.tfgmonitorsystem.common.model.document.User;
+import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -48,8 +48,8 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
         return strings -> {
-            userRepository.save(new Users(1, "Peter", "Development", 3000L));
-            userRepository.save(new Users(2, "Sam", "Operations", 2000L));
+            userRepository.save(new User(1, "Abel", "abelperezgua@uoc.edu", "pw"));
+            userRepository.save(new User(2, "Sam", "sam@uoc.edu", "pw"));
         };
     }
 
