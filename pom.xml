@@ -36,17 +36,19 @@
 
 		<mongodb-driver.version>3.12.10</mongodb-driver.version>
 
+
+		<plugin.frontend.version>1.12.0</plugin.frontend.version>
+
 	</properties>
 
-		<dependencyManagement>
+	<dependencyManagement>
 		<dependencies>
-	
+
 			<dependency>
 				<groupId>org.mongodb</groupId>
 				<artifactId>mongodb-driver</artifactId>
 				<version>${mongodb-driver.version}</version>
 			</dependency>
-	
 			<dependency>
 				<groupId>org.mongodb</groupId>
 				<artifactId>bson</artifactId>
@@ -57,15 +59,12 @@
 				<artifactId>mongodb-driver-core</artifactId>
 				<version>${mongodb-driver.version}</version>
 			</dependency>
-	
 			<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>1.2.17</version>
 			</dependency>
-	
-	
 		</dependencies>
 	</dependencyManagement>
 
@@ -113,15 +112,19 @@
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>${maven-project-info-reports-plugin.version}</version>
 				</plugin>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>${plugin.frontend.version}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
-
-
 	</build>
 
 	<modules>
 		<module>common</module>
 		<module>user-microservice</module>
+		<module>webapp</module>
 	</modules>
 
 </project>
