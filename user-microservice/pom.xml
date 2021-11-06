@@ -14,24 +14,34 @@
 	<artifactId>user-microservice</artifactId>
 	<name>user-microservice</name>
 
-	<dependencies>	
+	<dependencies>
+	
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver</artifactId>
 		</dependency>
+		
 		<dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-core</artifactId>
         </dependency>
+        
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+				
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>	
+		</dependency>
+		
 		<dependency>
 			<groupId>edu.uoc.tfgmonitorsystem</groupId>
 			<artifactId>common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+				
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
 			</dependency> <dependency> <groupId>io.jsonwebtoken</groupId> <artifactId>jjwt</artifactId> 
 			<version>0.9.1</version> </dependency> -->

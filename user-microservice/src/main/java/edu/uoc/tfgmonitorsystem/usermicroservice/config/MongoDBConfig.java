@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice;
+package edu.uoc.tfgmonitorsystem.usermicroservice.config;
 
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
