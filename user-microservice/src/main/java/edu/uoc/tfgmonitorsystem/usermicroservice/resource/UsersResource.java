@@ -19,6 +19,8 @@ public class UsersResource {
 
     @GetMapping("/all")
     public List<Users> getAll() {
+
         return userRepository.findAll();
+
     }
 }
