@@ -7,9 +7,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@ComponentScan({ "edu.uoc.tfgmonitorsystem" })
 public class UserMicroserviceApp {
 
     private static final Logger LOGGER = Logger.getLogger(UserMicroserviceApp.class);
