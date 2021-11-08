@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import './bootstrap/css/bootstrap.min.css';
+
 import './index.css';
-import App from './App';
+import { App } from './App';
 import reportWebVitals from './reportWebVitals';
+
+import { configureFakeBackend } from '_helpers';
+configureFakeBackend();
 
 ReactDOM.render(
   <React.StrictMode>
