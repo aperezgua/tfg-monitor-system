@@ -1,37 +1,17 @@
 import React from 'react';
-
-import { userService, authenticationService } from '_services';
+import {  Navigate  } from 'react-router-dom';
+import { authenticationService } from '_services';
 
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            currentUser: authenticationService.currentUserValue,
-            users: null
+            currentUser: authenticationService.currentUserValue
         };
     }
-
-    componentDidMount() {
-        userService.getAll().then(users => this.setState({ users }));
-    }
-
     render() {
-        const { currentUser, users } = this.state;
-        return (
-            <div>
-                <h1>Hi {currentUser.firstName}!</h1>
-                <p>You're logged in with React & JWT!!</p>
-                <h3>Users from secure api end point:</h3>
-                {users &&
-                    <ul>
-                        {users.map(user =>
-                            <li key={user.id}>{user.firstName} {user.lastName}</li>
-                        )}
-                    </ul>
-                }
-            </div>
-        );
+        const { currentUser } = this.state;
+        return !currentUser ? <Navigate to="/login" /> : (<div>LOGGED</div>);
     }
 }
 
