@@ -11,7 +11,7 @@ class HomePage extends React.Component {
     }
     render() {
         const { currentUser } = this.state;
-        return !currentUser ? <Navigate to="/login" /> : (<div>LOGGED</div>);
+        return !currentUser ? <Navigate to="/" /> : (<div>LOGGED</div>);
     }
 }
 

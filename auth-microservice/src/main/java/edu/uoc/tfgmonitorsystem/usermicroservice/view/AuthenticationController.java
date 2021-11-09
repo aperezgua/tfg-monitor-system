@@ -3,6 +3,7 @@ package edu.uoc.tfgmonitorsystem.usermicroservice.view;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtConstants;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtTokenUtil;
 import java.util.Objects;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class AuthenticationController {
 
+    private static final Logger LOGGER = Logger.getLogger(AuthenticationController.class);
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -35,6 +38,8 @@ public class AuthenticationController {
 
     @RequestMapping(value = JwtConstants.AUTHORIZATION_URL, method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+
+        LOGGER.debug("Login: " + authenticationRequest.getUsername());
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom'
 
 import { history } from '_helpers';
 import { authenticationService } from '_services';
 import { HomePage } from 'HomePage';
-import { LoginPage } from 'LoginPage';
+import { LoginPage } from 'Public';
 import { NotFound } from 'NotFound';
 
 class App extends React.Component {
@@ -22,7 +22,7 @@ class App extends React.Component {
 
     logout() {
         authenticationService.logout();
-        history.push('/login');
+        return <Navigate to="/" />;
     }
 
     render() {
@@ -33,7 +33,7 @@ class App extends React.Component {
                     {currentUser &&
                         <nav className="navbar navbar-expand navbar-dark bg-dark">
                             <div className="navbar-nav">
-                                <Link to="/" className="nav-item nav-link">Home</Link>
+                                <Link to="/home" className="nav-item nav-link">Home</Link>
                                 <a onClick={this.logout} className="nav-item nav-link">Logout</a>
                             </div>
                         </nav>
@@ -42,9 +42,9 @@ class App extends React.Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-6 offset-md-3">
-                                    <Routes>                                
-	                                    <Route exact path="/" element={<HomePage/>} />
-                                        <Route path="/login" element={<LoginPage/>} />
+                                    <Routes>
+	                                    <Route path="/home" element={<HomePage/>} />
+                                        <Route path="/" element={<LoginPage/>} />
                                         <Route path="*" element={<NotFound/>}/>
                                     </Routes>
                                 </div>

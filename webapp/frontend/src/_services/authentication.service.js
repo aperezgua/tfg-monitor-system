@@ -18,11 +18,15 @@ function login(username, password) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
+    
+    console.log('haciendo login a ' +`${config.apiUrl}/authenticate`);
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+    return fetch(`${config.apiUrl}/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
+             console.log('Token recibido: ' +user);
+            
             localStorage.setItem('currentUser', JSON.stringify(user));
             currentUserSubject.next(user);
 

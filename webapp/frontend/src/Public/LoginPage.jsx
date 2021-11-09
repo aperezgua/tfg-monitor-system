@@ -1,16 +1,22 @@
 import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate, Navigate } from "react-router-dom";
+
 
 import { authenticationService } from '_services';
+import { history } from '_helpers';
 
 class LoginPage extends React.Component {
+    
     constructor(props) {
         super(props);
 
         // redirect to home if already logged in
         if (authenticationService.currentUserValue) { 
-            this.props.history.push('/');
+          
+          //this.props.navigate('/home');
+          console.log("Aqui: redirect");
         }
     }
 
@@ -18,8 +24,8 @@ class LoginPage extends React.Component {
         return (
             <div>
                 <div className="alert alert-info">
-                    Username: test<br />
-                    Password: test
+                    Username: aperezgua@uoc.edu<br />
+                    Password: pw
                 </div>
                 <h2>Login</h2>
                 <Formik
@@ -36,8 +42,11 @@ class LoginPage extends React.Component {
                         authenticationService.login(username, password)
                             .then(
                                 user => {
-                                    const { from } = this.props.location.state || { from: { pathname: "/" } };
-                                    this.props.history.push(from);
+                                    /*const { from } = this.props.location.state || { from: { pathname: "/" } };
+                                    console.log("Aqui: " +from);
+                                    this.props.navigate(from);*/
+                                    // this.props.navigate('/home');
+                                    console.log("Aqui: " +user);
                                 },
                                 error => {
                                     setSubmitting(false);
@@ -74,4 +83,12 @@ class LoginPage extends React.Component {
     }
 }
 
-export { LoginPage }; 
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return <LoginPage {...props} navigate={navigate} />
+}
+
+
+export {LoginPage};
+//export default WithNavigate
+//

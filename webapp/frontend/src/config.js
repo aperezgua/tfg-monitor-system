@@ -1,6 +1,5 @@
-const config = {config: {
-            apiUrl: 'http://localhost:3000'
-        }
+const config = {
+    apiUrl: 'http://localhost:8091'
 };
 
 export default config;

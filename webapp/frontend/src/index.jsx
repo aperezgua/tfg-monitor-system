@@ -7,8 +7,6 @@ import './index.css';
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { configureFakeBackend } from '_helpers';
-configureFakeBackend();
 
 ReactDOM.render(
   <React.StrictMode>
