@@ -10,12 +10,12 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            currentUser: null
+            currentToken: null
         };
     }
 
     componentDidMount() {
-        authenticationService.currentUser.subscribe(x => this.setState({ currentUser: x }));
+        authenticationService.currentToken.subscribe(x => this.setState({ currentToken: x }));
     }
 
     logout() {

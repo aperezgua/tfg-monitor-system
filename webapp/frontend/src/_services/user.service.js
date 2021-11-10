@@ -7,5 +7,5 @@ export const userService = {
 
 function getAll() {
     const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUserUrl}/rest/users/all`, requestOptions).then(handleResponse);
 }

@@ -2,13 +2,13 @@ import { BehaviorSubject } from 'rxjs';
 import config from 'config';
 import { handleResponse } from '_helpers';
 
-const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('jwtToken')));
+const currentTokenSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('jwtToken')));
 
 export const authenticationService = {
     login,
     logout,
-    currentUser: currentUserSubject.asObservable(),
-    get currentUserValue () { return currentUserSubject.value }
+    currentToken: currentTokenSubject.asObservable(),
+    get currentTokenValue () { return currentTokenSubject.value }
 };
 
 /**
@@ -23,11 +23,11 @@ function login(username, password) {
     };
     
     
-    return fetch(`${config.apiUrl}/authenticate`, requestOptions)
+    return fetch(`${config.apiAuthUrl}/authenticate`, requestOptions)
         .then(handleResponse)
         .then(token => {
             localStorage.setItem('jwtToken', JSON.stringify(token));
-            currentUserSubject.next(token);
+            currentTokenSubject.next(token);
             return token;
         });
 }
@@ -36,5 +36,5 @@ function login(username, password) {
  */
 function logout() {    
     localStorage.removeItem('jwtToken');
-    currentUserSubject.next(null);
+    currentTokenSubject.next(null);
 }
