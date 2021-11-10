@@ -1,13 +1,10 @@
 import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate, Navigate } from "react-router-dom";
-
-
+import { useNavigate} from "react-router-dom";
 import { authenticationService } from '_services';
-import { history } from '_helpers';
 
-class LoginPage extends React.Component {
+class LoginPageNoNavigate extends React.Component {
     
     constructor(props) {
         super(props);
@@ -17,6 +14,7 @@ class LoginPage extends React.Component {
           
           //this.props.navigate('/home');
           console.log("Aqui: redirect");
+          this.props.navigate('/home');
         }
     }
 
@@ -41,16 +39,23 @@ class LoginPage extends React.Component {
                         setStatus();
                         authenticationService.login(username, password)
                             .then(
-                                user => {
+                                token => {
                                     /*const { from } = this.props.location.state || { from: { pathname: "/" } };
                                     console.log("Aqui: " +from);
                                     this.props.navigate(from);*/
                                     // this.props.navigate('/home');
-                                    console.log("Aqui: " +user);
+                                    // Si se recibe token, quiere decir que estamos loggeados
+                                    console.log("Aqui: " +token);
+                                    this.props.navigate('/home');
                                 },
                                 error => {
+                                    console.log("Error: " +(typeof error) + " " + error);
                                     setSubmitting(false);
-                                    setStatus(error);
+                                    if(typeof(error) == "object") {
+                                        setStatus(['Cannot connect to server.']);
+                                    } else {
+                                        setStatus(error);
+                                    }
                                 }
                             );
                     }}
@@ -83,12 +88,9 @@ class LoginPage extends React.Component {
     }
 }
 
-function WithNavigate(props) {
+function LoginPage(props) {
     let navigate = useNavigate();
-    return <LoginPage {...props} navigate={navigate} />
+    return <LoginPageNoNavigate {...props} navigate={navigate} />
 }
+export {LoginPage}
 
-
-export {LoginPage};
-//export default WithNavigate
-//

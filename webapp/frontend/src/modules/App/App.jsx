@@ -1,11 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom'
-
-import { history } from '_helpers';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
 import { authenticationService } from '_services';
-import { HomePage } from 'HomePage';
-import { LoginPage } from 'Public';
-import { NotFound } from 'NotFound';
+import { HomePage } from 'modules/Admin';
+import { LoginPage} from 'modules/Public';
+import { NotFound } from 'modules/NotFound';
 
 class App extends React.Component {
     constructor(props) {
@@ -22,19 +20,19 @@ class App extends React.Component {
 
     logout() {
         authenticationService.logout();
-        return <Navigate to="/" />;
+        //this.props.navigate('/');
     }
 
     render() {
         const { currentUser } = this.state;
         return (
-            <Router history={history}>
+            <Router >
                 <div>
                     {currentUser &&
                         <nav className="navbar navbar-expand navbar-dark bg-dark">
                             <div className="navbar-nav">
                                 <Link to="/home" className="nav-item nav-link">Home</Link>
-                                <a onClick={this.logout} className="nav-item nav-link">Logout</a>
+                                <Link to="/" onClick={this.logout} className="nav-item nav-link">Logout</Link>
                             </div>
                         </nav>
                     }
@@ -57,4 +55,8 @@ class App extends React.Component {
     }
 }
 
-export { App }; 
+/*function App(props) {
+    let navigate = useNavigate();
+    return <AppNoNavigate {...props} navigate={navigate} />
+}*/
+export {App}

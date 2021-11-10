@@ -1,9 +1,8 @@
 import { BehaviorSubject } from 'rxjs';
-
 import config from 'config';
 import { handleResponse } from '_helpers';
 
-const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('jwtToken')));
 
 export const authenticationService = {
     login,
@@ -12,6 +11,10 @@ export const authenticationService = {
     get currentUserValue () { return currentUserSubject.value }
 };
 
+/**
+ * Se hace login. En caso de producirse un error el handleResponse lo manejará, si se produce un error de conexión se 
+ * delega en error.
+ */
 function login(username, password) {
     const requestOptions = {
         method: 'POST',
@@ -19,23 +22,19 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
     
-    console.log('haciendo login a ' +`${config.apiUrl}/authenticate`);
-
+    
     return fetch(`${config.apiUrl}/authenticate`, requestOptions)
         .then(handleResponse)
-        .then(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-             console.log('Token recibido: ' +user);
-            
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            currentUserSubject.next(user);
-
-            return user;
+        .then(token => {
+            localStorage.setItem('jwtToken', JSON.stringify(token));
+            currentUserSubject.next(token);
+            return token;
         });
 }
 
-function logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+/**
+ */
+function logout() {    
+    localStorage.removeItem('jwtToken');
     currentUserSubject.next(null);
 }
