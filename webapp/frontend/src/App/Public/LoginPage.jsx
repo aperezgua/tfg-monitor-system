@@ -3,6 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate} from "react-router-dom";
 import { authenticationService } from '_services';
+import './LoginPage.css';
 
 class LoginPageNoNavigate extends React.Component {
     
@@ -20,7 +21,7 @@ class LoginPageNoNavigate extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="form-login">
                 <div className="alert alert-info">
                     Username: aperezgua@uoc.edu<br />
                     Password: pw
@@ -32,8 +33,8 @@ class LoginPageNoNavigate extends React.Component {
                         password: ''
                     }}
                     validationSchema={Yup.object().shape({
-                        username: Yup.string().required('Username is required'),
-                        password: Yup.string().required('Password is required')
+                        username: Yup.string().required('El email es obligatorio.'),
+                        password: Yup.string().required('La clave es obligatoria.')
                     })}
                     onSubmit={({ username, password }, { setStatus, setSubmitting }) => {
                         setStatus();
@@ -62,19 +63,20 @@ class LoginPageNoNavigate extends React.Component {
                     render={({ errors, status, touched, isSubmitting }) => (
                         <Form>
                             <div className="form-group">
-                                <label htmlFor="username">Username</label>
+                                <label htmlFor="username">Email</label>
                                 <Field name="username" type="text" className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} />
-                                <ErrorMessage name="username" component="div" className="invalid-feedback" />
+                                <ErrorMessage name="username" component="div" className="alert alert-error" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password">Password</label>
                                 <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
-                                <ErrorMessage name="password" component="div" className="invalid-feedback" />
+                                <ErrorMessage name="password" component="div" className="alert alert-error" />
                             </div>
                             <div className="form-group">
-                                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>Login</button>
+                                <button type="submit" className="btn btn-lg btn-primary btn-block" disabled={isSubmitting}>Login</button>
                             </div>
-                            {status &&
+                            <br/>
+                            {status &&                                
                                 <div className={'alert alert-danger'}>{status}</div>
                             }
                         </Form>

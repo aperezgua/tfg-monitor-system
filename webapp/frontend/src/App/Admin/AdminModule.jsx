@@ -4,6 +4,7 @@ import { authenticationService } from '_services';
 import { Route, Routes, useNavigate} from 'react-router-dom'
 import { HomePage, UsersPage} from 'App/Admin';
 import { NotFound } from 'App/NotFound';
+import './AdminModule.css';
 
 class AdminModule extends React.Component {
     constructor(props) {
@@ -21,28 +22,41 @@ class AdminModule extends React.Component {
     render() {
         const { currentUser} = this.state;
         return (
-            <div>
-                {currentUser && <nav className="navbar navbar-expand navbar-dark bg-dark">
-                        <div className="navbar-nav">
-                            <Link to="/admin/home" className="nav-item nav-link">Home</Link>
-                            <Link to="/admin/users" className="nav-item nav-link">Users</Link>
-                            <Link to="/" onClick={this.logout} className="nav-item nav-link">Logout</Link>
-                        </div>
-                   </nav>}
-                {currentUser && <h1>Hi {currentUser.sub}!</h1>}
-                 {currentUser && 
-                 <Routes>
-                    <Route path="/home" element={<HomePage/>} />
-                    <Route path="/users" element={<UsersPage/>} />
-                    <Route path="/*" element={NotFound}/>
-                </Routes>
-                }
+            <div className="admin-background">
+                {currentUser && 
+                    <nav className="navbar navbar-default">
+                        <div className="container-fluid">
+                         
+                            <ul className="nav navbar-nav">
+                                <li className="active"><Link to="/admin/home" >Home</Link></li>
+                                <li><Link to="/admin/users" >Users</Link></li>
+                                
+                            </ul>
+                            <ul className="nav navbar-nav navbar-right">
+                                <li><Link to="/" onClick={this.logout} >Logout</Link></li>
+                            </ul>
+                            
+                            <p className="navbar-text navbar-right">Signed in as <a href="#" className="navbar-link">{currentUser.sub}</a></p>
+                            </div>
+                    
+                    </nav>
+                    
+                }   
+                {currentUser &&
+                   <div> 
+                     <Routes>
+                        <Route path="/home" element={<HomePage/>} />
+                        <Route path="/users" element={<UsersPage/>} />
+                        <Route path="/*" element={NotFound}/>
+                    </Routes>
+                   </div>
+                 }
                  {!currentUser
                  && <div className="alert alert-error">
                         No autorizado.
                     </div> 
                  }
-            </div>
+             </div>
         );
     }
 }
