@@ -1,18 +1,13 @@
 import React from 'react';
-import { useNavigate, Link } from "react-router-dom";
-import { authenticationService, userService } from '_services';
+import { userService } from '_services';
 
-class HomePageNoNavigate extends React.Component {
+class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        if (!authenticationService.currentTokenValue) { 
-            this.props.navigate('/');
-        } else {
-            this.state = {
-                currentUser: authenticationService.currentUserValue,
-                users : null
-            };
-        }
+        console.log("Entro en HomePage");
+        this.state = {
+            users : null
+        };
     }
     
     componentDidMount() {
@@ -25,19 +20,9 @@ class HomePageNoNavigate extends React.Component {
     }
     
     render() {
-        const { currentUser , users} = this.state;
-                
+        const {  users} = this.state;
         return (             
-            <div>
-              {currentUser &&
-                <nav className="navbar navbar-expand navbar-dark bg-dark">
-                    <div className="navbar-nav">
-                        <Link to="/home" className="nav-item nav-link">Home</Link>
-                        <Link to="/" onClick={this.logout} className="nav-item nav-link">Logout</Link>
-                    </div>
-                </nav>
-            }
-              <h1>Hi {currentUser.sub}!</h1>
+            <div>              
              <h3>Users from secure api end point:</h3>
                 {users &&
                     <ul>
@@ -49,11 +34,5 @@ class HomePageNoNavigate extends React.Component {
              </div>
         );
     }
-}
-
-
-function HomePage(props) {
-    let navigate = useNavigate();
-    return <HomePageNoNavigate {...props} navigate={navigate} />
 }
 export {HomePage}
