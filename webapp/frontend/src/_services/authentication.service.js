@@ -1,14 +1,18 @@
 import { BehaviorSubject } from 'rxjs';
 import config from 'config';
 import { handleResponse } from '_helpers';
+import jwt from 'jwt-decode';
 
 const currentTokenSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('jwtToken')));
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')));
 
 export const authenticationService = {
     login,
     logout,
     currentToken: currentTokenSubject.asObservable(),
-    get currentTokenValue () { return currentTokenSubject.value }
+    currentUser: currentUserSubject.asObservable(),
+    get currentTokenValue () { return currentTokenSubject.value },
+    get currentUserValue () { return currentUserSubject.value }
 };
 
 /**
@@ -27,7 +31,14 @@ function login(username, password) {
         .then(handleResponse)
         .then(token => {
             localStorage.setItem('jwtToken', JSON.stringify(token));
-            currentTokenSubject.next(token);
+           
+            currentTokenSubject.next(token);            
+            
+            let user = jwt(token.token);
+            currentUserSubject.next(user);            
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            console.log("Datos usuario: " +currentUserSubject.value.sub);
             return token;
         });
 }
@@ -36,5 +47,7 @@ function login(username, password) {
  */
 function logout() {    
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('user');
     currentTokenSubject.next(null);
+    currentUserSubject.next(null);
 }

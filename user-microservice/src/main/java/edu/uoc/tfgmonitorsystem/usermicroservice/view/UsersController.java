@@ -5,7 +5,6 @@ import edu.uoc.tfgmonitorsystem.usermicroservice.model.service.IUserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +20,7 @@ public class UsersController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/all")
+    @RequestMapping(value = "/all", method = { RequestMethod.OPTIONS, RequestMethod.GET })
     public List<User> getAll() {
 
         return userService.findAll();

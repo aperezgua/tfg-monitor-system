@@ -81,12 +81,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         chain.doFilter(request, response);
+
     }
 
     private void printLog(HttpServletRequest request) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("request: ").append(request.getRequestURI());
+        builder.append("request: ").append(request.getRequestURI()).append(", method:").append(request.getMethod());
 
         builder.append("\n## HEADERS:\n");
         Enumeration<String> headerNames = request.getHeaderNames();
