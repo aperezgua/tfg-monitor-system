@@ -20,7 +20,7 @@ class HomePage extends React.Component {
     }
     
     render() {
-        const {  users} = this.state;
+        const { users} = this.state;
         return (             
             <div>              
              <h3>Users from secure api end point:</h3>

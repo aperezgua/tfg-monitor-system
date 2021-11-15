@@ -1,22 +1,57 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
+import java.util.Date;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Clase que representa a un usuario de la aplicación.
+ */
 @Document
 public class User {
 
+    /**
+     * Id del usuario.
+     */
     @Id
     private Integer id;
+    /**
+     * Nombre del usuario.
+     */
     private String name;
+    /**
+     * Email del usuario.
+     */
     private String email;
-    private String password;
+    /**
+     * Password encriptado.
+     */
+    private String encriptedPassword;
+    /**
+     * Fecha de creación del usuario.
+     */
+    private Date createdDate;
+    /**
+     * Si el usuario se encuentra activo.
+     */
+    private Boolean active;
 
-    public User(Integer id, String name, String email, String password) {
+    /**
+     * Rol de este usuario.
+     */
+    private Rol rol;
+
+    public User(Integer id, String name, String email, String encriptedPassword, Date createdDate, Boolean active,
+            Rol rol) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.encriptedPassword = encriptedPassword;
+        this.createdDate = createdDate;
+        this.active = active;
+        this.rol = rol;
     }
 
     public Integer getId() {
@@ -43,12 +78,40 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public String getEncriptedPassword() {
+        return encriptedPassword;
+    }
+
+    public void setEncriptedPassword(String encriptedPassword) {
+        this.encriptedPassword = encriptedPassword;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
 }

@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice.view;
+package edu.uoc.tfgmonitorsystem.usermicroservice.controller;
 
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtConstants;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtTokenUtil;

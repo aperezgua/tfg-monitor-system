@@ -3,9 +3,11 @@ package edu.uoc.tfgmonitorsystem.common.config;
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import java.util.Arrays;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -53,8 +55,11 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
         return strings -> {
-            userRepository.save(new User(1, "Abel", "aperezgua@uoc.edu", passwordEncoder.encode("pw")));
-            userRepository.save(new User(2, "Sam", "sam@uoc.edu", passwordEncoder.encode("pw")));
+
+            userRepository.save(new User(1, "Abel", "aperezgua@uoc.edu", passwordEncoder.encode("pw"), new Date(), true,
+                    Rol.ADMINISTRATOR));
+            userRepository.save(
+                    new User(2, "Sam", "sam@uoc.edu", passwordEncoder.encode("pw"), new Date(), true, Rol.SUPPORT));
         };
     }
 }

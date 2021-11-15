@@ -6,7 +6,7 @@ export function authHeader() {
     
     
     if (currentToken && currentToken.token) {
-        return { Authorization: `${currentToken.token}` };
+        return { Authorization: `${currentToken.token}`,  'Content-Type': 'application/json' };
     } else {
         return {};
     }
