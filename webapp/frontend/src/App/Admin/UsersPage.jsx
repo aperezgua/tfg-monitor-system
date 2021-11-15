@@ -4,13 +4,7 @@ import { Formik, Form as FormFormik,  Field} from 'formik';
 import { Button, Form } from 'react-bootstrap';
 
 class UsersPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            usersList : null, 
-            usersStr : null
-        };
-    }
+   
     render() {
         return (
              <div className="form-search">
@@ -21,27 +15,26 @@ class UsersPage extends React.Component {
                         email: '',
                         activeTypeFilter: 'ALL'
                     }}
-                    onSubmit={({ name, email, activeTypeFilter}, { setStatus, setSubmitting }) => {
+                    onSubmit={({ name, email, activeTypeFilter}, { setStatus, setSubmitting, setValues }) => {
                         setStatus();
                         userService.find({name, email, activeTypeFilter})
                             .then(
                                 usersList => {
                                     console.log("LALALA: " + JSON.stringify(usersList));    
-                                    this.setState({ usersList })
-                                    this.setState({usersStr : "asasa" })
+                                    setStatus( {result : usersList });
                                     setSubmitting(false);
                                 },
                                 error => {
                                     setSubmitting(false);
                                     if(typeof(error) == "object") {
-                                        setStatus(['Cannot connect to server.']);
+                                        setStatus({error : 'Cannot connect to server.'});
                                     } else {
-                                        setStatus(error);
+                                        setStatus({error : error});
                                     }
                                 }
                             );
                     }}
-                    render={({usersList, usersStr, status}) => (
+                    render={({values, status}) => (
                         <FormFormik>
                             <Form.Group>
                                 <Form.Label >Nombre:</Form.Label>
@@ -62,16 +55,15 @@ class UsersPage extends React.Component {
                             <Form.Group>
                                 <Button variant="primary" type="submit">Buscar</Button>
                             </Form.Group>
-                             {usersStr && <div>dd</div>}
-                             {usersList &&
+                            {status && status.result &&                               
                                 <ul>
-                                    {usersList.map(user =>
+                                    {status.result.map(user =>
                                         <li key={user.id}>{user.name} {user.email}</li>
                                     )}
                                 </ul>
-                             }
-                            {status &&
-                                <div className={'alert alert-danger'}>{status}</div>
+                            }
+                            {status && status.error &&
+                                <div className={'alert alert-danger'}>{status.error}</div>
                             }
                         </FormFormik>
                     )}/>
