@@ -11,16 +11,16 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>user-microservice</artifactId>
-	<name>user-microservice</name>
+	<artifactId>auth-microservice</artifactId>
+	<name>auth-microservice</name>
 
 	<dependencies>
 
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>edu.uoc.tfgmonitorsystem</groupId>
 			<artifactId>common</artifactId>
