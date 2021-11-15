@@ -14,8 +14,6 @@ function getAll() {
 
 
 function find(userFilter) {
-    console.log("LALALA");
-    
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),

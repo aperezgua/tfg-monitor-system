@@ -27,8 +27,9 @@ public class UsersController {
     public List<User> find(@RequestBody UserFilter filter) {
 
         LOGGER.debug("findByFilter: " + filter);
-
-        return userService.findByFilter(filter);
+        List<User> users = userService.findByFilter(filter);
+        LOGGER.debug("return : " + users);
+        return users;
 
     }
 

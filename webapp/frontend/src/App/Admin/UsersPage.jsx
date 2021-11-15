@@ -1,9 +1,16 @@
 import React from 'react';
 import { userService } from '_services';
-import { Formik, Form as FormFormik } from 'formik';
-import { Button, Form, Row } from 'react-bootstrap';
+import { Formik, Form as FormFormik,  Field} from 'formik';
+import { Button, Form } from 'react-bootstrap';
+
 class UsersPage extends React.Component {
-    
+    constructor(props) {
+        super(props);
+        this.state = {
+            usersList : null, 
+            usersStr : null
+        };
+    }
     render() {
         return (
              <div className="form-search">
@@ -14,15 +21,18 @@ class UsersPage extends React.Component {
                         email: '',
                         activeTypeFilter: 'ALL'
                     }}
-                    onSubmit={({ name, email, activeTypeFilter}, { setStatus }) => {
+                    onSubmit={({ name, email, activeTypeFilter}, { setStatus, setSubmitting }) => {
                         setStatus();
-                        
-                        console.log("BLABAL + " +name);
-                        
                         userService.find({name, email, activeTypeFilter})
                             .then(
-                                users => this.setState({ users }),
+                                usersList => {
+                                    console.log("LALALA: " + JSON.stringify(usersList));    
+                                    this.setState({ usersList })
+                                    this.setState({usersStr : "asasa" })
+                                    setSubmitting(false);
+                                },
                                 error => {
+                                    setSubmitting(false);
                                     if(typeof(error) == "object") {
                                         setStatus(['Cannot connect to server.']);
                                     } else {
@@ -30,36 +40,41 @@ class UsersPage extends React.Component {
                                     }
                                 }
                             );
-                    }}>
-                    {({values, status, errors,
-                          touched,
-                          handleChange,
-                          handleBlur,
-                          handleSubmit,
-                          isSubmitting }) => (
-                        <Form onSubmit={handleSubmit}>
+                    }}
+                    render={({usersList, usersStr, status}) => (
+                        <FormFormik>
                             <Form.Group>
                                 <Form.Label >Nombre:</Form.Label>
-                                <Form.Control  name="name" defaultValue={values.name} type="text"/> 
+                                <Field name="name" type="text" className="form-control" />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control name="email" type="text"/>
+                                <Field name="email" type="text" className="form-control" />
                             </Form.Group>
                             <Form.Group>
-                                <Form.Check type="radio" name="activeTypeFilter" defaultChecked={'ACTIVE' === values.activeTypeFilter} id="activeTypeFilterACTIVE" label="Activos"/>
-                                <Form.Check type="radio" name="activeTypeFilter" defaultChecked={'INACTIVE' === values.activeTypeFilter} id="activeTypeFilterINACTIVE" label="Inactivos"/>
-                                <Form.Check type="radio" name="activeTypeFilter" defaultChecked={'ALL' === values.activeTypeFilter} id="activeTypeFilterALL" label="Todos"/>
+                                <Field name="activeTypeFilter" id="activeTypeFilterACTIVE" type="radio" className="form-check-input" value="ACTIVE" />
+                                <Form.Label htmlFor="activeTypeFilterACTIVE">Activos</Form.Label>
+                                <Field name="activeTypeFilter" id="activeTypeFilterINACTIVE" type="radio" className="form-check-input" value="INACTIVE" />
+                                <Form.Label htmlFor="activeTypeFilterINACTIVE">Inactivos</Form.Label>
+                                <Field name="activeTypeFilter" id="activeTypeFilterALL" type="radio" className="form-check-input" value="ALL" />
+                                <Form.Label htmlFor="activeTypeFilterALL">Todos</Form.Label>
                             </Form.Group>
                             <Form.Group>
                                 <Button variant="primary" type="submit">Buscar</Button>
                             </Form.Group>
-                            {status &&                                
+                             {usersStr && <div>dd</div>}
+                             {usersList &&
+                                <ul>
+                                    {usersList.map(user =>
+                                        <li key={user.id}>{user.name} {user.email}</li>
+                                    )}
+                                </ul>
+                             }
+                            {status &&
                                 <div className={'alert alert-danger'}>{status}</div>
                             }
-                        </Form>
-                    )}
-                </Formik>
+                        </FormFormik>
+                    )}/>
             </div>
         );
     }

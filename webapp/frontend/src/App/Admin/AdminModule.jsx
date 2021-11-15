@@ -1,6 +1,6 @@
 import React from 'react';
 import { authenticationService } from '_services';
-import { Route, Routes, useLocation} from 'react-router-dom'
+import { Route, Routes} from 'react-router-dom'
 import { HomePage, UsersPage} from 'App/Admin';
 import { NotFound } from 'App/NotFound';
 import { Navbar, Nav } from 'react-bootstrap';
