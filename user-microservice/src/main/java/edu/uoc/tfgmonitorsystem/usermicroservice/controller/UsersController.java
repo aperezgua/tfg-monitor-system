@@ -1,9 +1,10 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice.view;
+package edu.uoc.tfgmonitorsystem.usermicroservice.controller;
 
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.dto.UserFilter;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.service.IUserService;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RequestMapping(value = "/rest/users")
 public class UsersController {
-
+    private static final Logger LOGGER = Logger.getLogger(UsersController.class);
     @Autowired
     private IUserService userService;
 
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
     public List<User> find(@RequestBody UserFilter filter) {
+
+        LOGGER.debug("findByFilter: " + filter);
+
         return userService.findByFilter(filter);
 
     }

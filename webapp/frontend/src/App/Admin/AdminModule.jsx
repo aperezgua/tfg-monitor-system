@@ -1,14 +1,14 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import { authenticationService } from '_services';
-import { Route, Routes, useNavigate} from 'react-router-dom'
+import { Route, Routes, useLocation} from 'react-router-dom'
 import { HomePage, UsersPage} from 'App/Admin';
 import { NotFound } from 'App/NotFound';
+import { Navbar, Nav } from 'react-bootstrap';
 import './AdminModule.css';
 
 class AdminModule extends React.Component {
     constructor(props) {
-        super(props);       
+        super(props);
         this.state = {
             currentUser: authenticationService.currentUserValue,
             users : null
@@ -21,42 +21,41 @@ class AdminModule extends React.Component {
     }    
     render() {
         const { currentUser} = this.state;
+        
         return (
-            <div className="admin-background">
-                {currentUser && 
-                    <nav className="navbar navbar-default">
-                        <div className="container-fluid">
-                         
-                            <ul className="nav navbar-nav">
-                                <li className="active"><Link to="/admin/home" >Home</Link></li>
-                                <li><Link to="/admin/users" >Users</Link></li>
-                                
-                            </ul>
-                            <ul className="nav navbar-nav navbar-right">
-                                <li><Link to="/" onClick={this.logout} >Logout</Link></li>
-                            </ul>
-                            
-                            <p className="navbar-text navbar-right">Signed in as <a href="#" className="navbar-link">{currentUser.sub}</a></p>
-                            </div>
-                    
-                    </nav>
-                    
-                }   
-                {currentUser &&
-                   <div> 
-                     <Routes>
-                        <Route path="/home" element={<HomePage/>} />
-                        <Route path="/users" element={<UsersPage/>} />
-                        <Route path="/*" element={NotFound}/>
-                    </Routes>
-                   </div>
-                 }
-                 {!currentUser
-                 && <div className="alert alert-error">
-                        No autorizado.
-                    </div> 
-                 }
-             </div>
+            <div className="admin-page">
+                <div className="admin-header">
+                    {currentUser && 
+                        <Navbar bg="light" expand="lg">
+                            <Nav className="me-auto">
+                                <Nav.Link href="/admin/home">Home</Nav.Link>
+                                <Nav.Link href="/admin/users">Usuarios</Nav.Link>
+                             </Nav>
+                             <Nav className="justify-content-end">
+                                <Navbar.Text>[{currentUser.sub}] ::</Navbar.Text>
+                                <Nav.Link href="/" onClick={this.logout}>Salir</Nav.Link>
+                             </Nav>
+                        </Navbar>
+                        
+                    }
+                </div>
+                <div className="admin-body"> 
+                    {currentUser &&
+                       <div> 
+                         <Routes>
+                            <Route path="/home" element={<HomePage/>} />
+                            <Route path="/users" element={<UsersPage/>} />
+                            <Route path="/*" element={NotFound}/>
+                        </Routes>
+                       </div>
+                     }
+                     {!currentUser
+                     && <div className="alert alert-error">
+                            No autorizado.
+                        </div> 
+                     }
+                 </div>
+            </div>
         );
     }
 }

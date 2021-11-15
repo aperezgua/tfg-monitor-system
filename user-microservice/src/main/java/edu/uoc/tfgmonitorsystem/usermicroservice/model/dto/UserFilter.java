@@ -2,6 +2,7 @@ package edu.uoc.tfgmonitorsystem.usermicroservice.model.dto;
 
 import edu.uoc.tfgmonitorsystem.common.model.dto.ActiveTypeFilter;
 import java.io.Serializable;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class UserFilter implements Serializable {
 
@@ -35,5 +36,10 @@ public class UserFilter implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

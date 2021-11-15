@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
 import java.util.Date;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -106,5 +107,10 @@ public class User {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
