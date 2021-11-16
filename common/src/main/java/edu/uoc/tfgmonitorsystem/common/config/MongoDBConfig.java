@@ -4,7 +4,6 @@ import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import java.util.Arrays;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,16 +13,9 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFactoryBean;
 
-/**
- * Ver https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongo.mongo-db-factory-java
- */
-
 @EnableMongoRepositories(basePackages = "edu.uoc.tfgmonitorsystem.common.model.repository")
 @Configuration
-//@EnableTransactionManagement
 public class MongoDBConfig extends AbstractMongoClientConfiguration {
-
-    private static final Logger LOGGER = Logger.getLogger(MongoDBConfig.class);
 
     @Value("${spring.data.mongodb.database}")
     private String database;
@@ -35,11 +27,6 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     private String username;
     @Value("${spring.data.mongodb.userCredentials.password}")
     private String password;
-
-//    @Bean
-//    MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
-//        return new MongoTransactionManager(dbFactory);
-//    }
 
     @Override
     public String getDatabaseName() {

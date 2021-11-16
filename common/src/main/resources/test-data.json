@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "id": 10000,
         "name": "Abel",
         "email": "aperezgua@uoc.edu",
         "password": "$2a$10$bonR/nP/MYjlyYaE9bki..J5PiWqoJnZnmrv3KsprwfAyJVJEFgPq",
@@ -10,7 +10,7 @@
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.User"
     },
     {
-        "id": 2,
+        "id": 10001,
         "name": "Sam",
         "email": "sam@uoc.edu",
         "password": "$2a$10$bonR/nP/MYjlyYaE9bki..J5PiWqoJnZnmrv3KsprwfAyJVJEFgPq",
