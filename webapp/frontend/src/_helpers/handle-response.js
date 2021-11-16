@@ -6,7 +6,9 @@ import { authenticationService } from '_services';
 */
 export function handleResponse(response) {
     return response.text().then(text => {
-
+        
+        console.log("response: " +text);
+        
         const data = text && JSON.parse(text);
 
         if (!response.ok) {
@@ -14,7 +16,7 @@ export function handleResponse(response) {
                 authenticationService.logout();
             }
 
-            const error = (data && data.error) || response.statusText;
+            const error = (data && data.error) || (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
 

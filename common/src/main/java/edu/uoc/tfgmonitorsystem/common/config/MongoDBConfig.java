@@ -17,12 +17,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Ver https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongo.mongo-db-factory-java
  */
 @EnableMongoRepositories(basePackageClasses = UserRepository.class)
 @Configuration
+@EnableTransactionManagement
 public class MongoDBConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.database}")

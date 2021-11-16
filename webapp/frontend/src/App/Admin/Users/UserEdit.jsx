@@ -8,30 +8,34 @@ class UserEditNoParams extends React.Component {
    constructor(props) {
         super(props);
         this.state = {
-            user : null
+            user : null,
+            error : null
         };
     }
     componentDidMount() {
-        userService.get(this.props.params.id).then(
-            user => {
-                console.log("LALALA: " + JSON.stringify({user}));
-                this.setState( {user} )
-            },
-            error => {
-                console.log("Error: " +(typeof error) + " " + error);
-            }
-        );
+        if (this.props.params.id) {
+            userService.get(this.props.params.id).then(
+                user => {
+                    this.setState( {user} )
+                },
+                error => {
+                    this.setState({error})
+                }
+            );
+        }
     }
     render() {
-        
+        const { error } = this.state;
         return (
-             <div className="form-search">
+             <div className="form-edit">
                 <h2>Edición de usuario</h2>
+                {!error &&
                 <Formik
                     enableReinitialize
                     initialValues={this.state.user}
-                    onSubmit={({ name, email}, { setStatus, setSubmitting }) => {
+                    onSubmit={({ name, email, values}, { setStatus, setSubmitting }) => {
                         setStatus();
+                        console.log(JSON.stringify(values));
                         userService.put({name, email})
                             .then(
                                 updatedUser => {
@@ -71,6 +75,10 @@ class UserEditNoParams extends React.Component {
                         </FormFormik>
                     )}
                  </Formik>
+                 }
+                 {error && 
+                        <div className={'alert alert-danger'}>{error}</div>
+                 }
              </div>
         );
     }

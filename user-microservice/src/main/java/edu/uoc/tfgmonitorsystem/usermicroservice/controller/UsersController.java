@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.usermicroservice.controller;
 
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
+import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.dto.UserFilter;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.service.IUserService;
 import java.util.List;
@@ -21,37 +22,54 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RequestMapping(value = "/rest/users")
 public class UsersController {
+
     private static final Logger LOGGER = Logger.getLogger(UsersController.class);
+
+    /**
+     * Servicio para gestionar la capa de negocio de usuarios.
+     */
     @Autowired
     private IUserService userService;
 
+    /**
+     * Busca usuarios según un filtro.
+     * 
+     * @param filter UserFilter con los datos de filtrado de usuario.
+     * @return Listado de usuarios que coinciden con el filtro.
+     */
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
-    public List<User> find(@RequestBody UserFilter filter) {
+    public List<User> find(@RequestBody UserFilter filter) throws TfgMonitorSystenException {
 
-        LOGGER.debug("findByFilter: " + filter);
         List<User> users = userService.findByFilter(filter);
-        LOGGER.debug("return : " + users);
+        LOGGER.debug("filter=" + filter + ", return=" + users);
         return users;
 
     }
 
+    /**
+     * Guarda un usuario obtenido a través de la request.
+     * 
+     * @param user usuario que debe ser actualizado en el sistema.
+     * @return usuario actualizado.
+     */
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
-    public User put(@RequestBody User user) {
+    public User put(@RequestBody User user) throws TfgMonitorSystenException {
 
-        LOGGER.debug("put: " + user);
         User updatedUser = userService.createOrUpdate(user);
-        LOGGER.debug("return : " + updatedUser);
+        LOGGER.debug("user=" + user + ", return=" + updatedUser);
         return updatedUser;
 
     }
 
     @GetMapping("/get/{id}")
-    public User get(@PathVariable Integer id) {
-        return userService.findById(id);
+    public User get(@PathVariable Integer id) throws TfgMonitorSystenException {
+        User user = userService.findById(id);
+        LOGGER.debug("id=" + id + ", return=" + user);
+        return user;
     }
 
     @RequestMapping(value = "/all", method = { RequestMethod.GET })
-    public List<User> getAll() {
+    public List<User> getAll() throws TfgMonitorSystenException {
 
         return userService.findAll();
 
