@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -15,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Transient
-    public static final String SEQUENCE_NAME = "users_sequence";
+    public static final String SEQUENCE_NAME = "user_sequence";
 
     /**
      * Id del usuario.
@@ -30,6 +31,7 @@ public class User {
      * Email del usuario.
      */
     @NotBlank(message = "Email is mandatory")
+    @Indexed(unique = true)
     private String email;
 
     /**
@@ -52,6 +54,10 @@ public class User {
      */
     private Rol rol;
 
+    public User() {
+        super();
+    }
+
     public User(Integer id, String name, String email, String password, Date createdDate, Boolean active, Rol rol) {
         this.id = id;
         this.name = name;
@@ -62,60 +68,60 @@ public class User {
         this.rol = rol;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public Boolean getActive() {
+        return active;
     }
 
     public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public String getEmail() {
+        return email;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Integer getId() {
+        return id;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public String getName() {
+        return name;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     @Override

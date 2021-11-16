@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "Abel",
+        "email": "aperezgua@uoc.edu",
+        "password": "$2a$10$bonR/nP/MYjlyYaE9bki..J5PiWqoJnZnmrv3KsprwfAyJVJEFgPq",
+        "createdDate": 1637097647598,
+        "active": true,
+        "rol": "ADMINISTRATOR",
+        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.User"
+    },
+    {
+        "id": 2,
+        "name": "Sam",
+        "email": "sam@uoc.edu",
+        "password": "$2a$10$bonR/nP/MYjlyYaE9bki..J5PiWqoJnZnmrv3KsprwfAyJVJEFgPq",
+        "createdDate": 1637097647598,
+        "active": true,
+        "rol": "SUPPORT",
+        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.User"
+    },
+    {
+        "id": 1,
+        "name": "España",
+        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Country"
+    },
+    {
+        "id": 2,
+        "name": "Portugal",
+        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Country"
+    }    
+]

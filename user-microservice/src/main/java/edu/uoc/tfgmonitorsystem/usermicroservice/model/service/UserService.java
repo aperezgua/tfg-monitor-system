@@ -39,6 +39,7 @@ public class UserService implements IUserService {
         checkDuplicatedUser(user);
 
         if (user.getId() == null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setId(dbSequenceService.generateDbSequence(User.SEQUENCE_NAME));
             return userRepository.save(user);
         }

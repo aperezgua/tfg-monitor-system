@@ -57,15 +57,14 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.37.0</version>
 
 				<configuration>
 
 					<images>
 						<!-- A single's image configuration -->
 						<image>
-							<alias>service</alias>
-							<name>fabric8/docker-demo:${project.version}</name>
+							<alias>${project.name}</alias>
+							<name>${project.name}:${project.version}</name>
 
 							<build>
 								<from>java:8</from>
@@ -74,13 +73,13 @@
 								</assembly>
 								<cmd>java -jar /maven/${project.artifactId}-${project.version}.jar</cmd>
 								<ports>
-									<port>8080</port>
+									<port>8092</port>
 								</ports>
 							</build>
 
 							<run>
 								<ports>
-									<port>8080:8080</port>
+									<port>8092:8092</port>
 								</ports>
 							</run>
 
