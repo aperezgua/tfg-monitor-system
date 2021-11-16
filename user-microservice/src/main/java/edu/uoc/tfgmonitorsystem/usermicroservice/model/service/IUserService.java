@@ -16,4 +16,8 @@ public interface IUserService {
      * @return Listado de usuairos.
      */
     List<User> findByFilter(UserFilter filter);
+
+    User findById(Integer id);
+
+    User createOrUpdate(User user);
 }

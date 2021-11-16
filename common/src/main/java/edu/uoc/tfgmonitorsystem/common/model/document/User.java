@@ -4,6 +4,7 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -11,6 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document
 public class User {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
 
     /**
      * Id del usuario.

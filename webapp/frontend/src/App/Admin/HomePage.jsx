@@ -4,7 +4,6 @@ import { userService } from '_services';
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        console.log("Entro en HomePage");
         this.state = {
             users : null
         };

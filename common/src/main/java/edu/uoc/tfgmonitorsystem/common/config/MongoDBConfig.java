@@ -6,6 +6,7 @@ import com.mongodb.ServerAddress;
 import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
+import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import java.util.Arrays;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,13 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository userRepository) {
+    CommandLineRunner commandLineRunner(UserRepository userRepository, IDbSequenceService sequenceService) {
         return strings -> {
 
-            userRepository.save(new User(1, "Abel", "aperezgua@uoc.edu", passwordEncoder.encode("pw"), new Date(), true,
-                    Rol.ADMINISTRATOR));
-            userRepository.save(
-                    new User(2, "Sam", "sam@uoc.edu", passwordEncoder.encode("pw"), new Date(), true, Rol.SUPPORT));
+            userRepository.save(new User(sequenceService.generateDbSequence(User.SEQUENCE_NAME), "Abel",
+                    "aperezgua@uoc.edu", passwordEncoder.encode("pw"), new Date(), true, Rol.ADMINISTRATOR));
+            userRepository.save(new User(sequenceService.generateDbSequence(User.SEQUENCE_NAME), "Sam", "sam@uoc.edu",
+                    passwordEncoder.encode("pw"), new Date(), true, Rol.SUPPORT));
         };
     }
 }

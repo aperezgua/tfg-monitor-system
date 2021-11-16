@@ -29,7 +29,7 @@ class AdminModule extends React.Component {
                         <Navbar bg="light" expand="lg">
                             <Nav className="me-auto">
                                 <Nav.Link href="/admin/home">Home</Nav.Link>
-                                <Nav.Link href="/admin/users">Usuarios</Nav.Link>
+                                <Nav.Link href="/admin/users/list">Usuarios</Nav.Link>
                              </Nav>
                              <Nav className="justify-content-end">
                                 <Navbar.Text>[{currentUser.sub}] ::</Navbar.Text>
@@ -44,7 +44,7 @@ class AdminModule extends React.Component {
                        <div> 
                          <Routes>
                             <Route path="/home" element={<HomePage/>} />
-                            <Route path="/users" element={<UsersPage/>} />
+                            <Route path="/users/*" element={<UsersPage/>} />
                             <Route path="/*" element={NotFound}/>
                         </Routes>
                        </div>
