@@ -14,7 +14,7 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(value = { TfgMonitorSystenException.class })
     protected ResponseEntity<Error404Dto> exception(TfgMonitorSystenException exception, WebRequest request) {
 
-        return new ResponseEntity<>(new Error404Dto(exception.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new Error404Dto(exception.getKey(), exception.getMessage()), HttpStatus.NOT_FOUND);
 
     }
 }

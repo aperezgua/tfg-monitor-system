@@ -5,6 +5,8 @@ import { Formik, Form as FormFormik,  Field} from 'formik';
 import { Button, Form } from 'react-bootstrap';
 
 class UsersList extends React.Component {
+    
+    
    
     render() {
         return (
@@ -20,17 +22,13 @@ class UsersList extends React.Component {
                         setStatus();
                         userService.find({name, email, activeTypeFilter})
                             .then(
-                                usersList => {                                        
+                                usersList => {                                    
                                     setStatus( {result : usersList });
                                     setSubmitting(false);
                                 },
                                 error => {
                                     setSubmitting(false);
-                                    if(typeof(error) == "object") {
-                                        setStatus({error : 'Cannot connect to server.'});
-                                    } else {
-                                        setStatus({error : error});
-                                    }
+                                    setStatus({error : error});
                                 }
                             );
                     }}>
@@ -55,6 +53,7 @@ class UsersList extends React.Component {
                                 </Form.Group>
                                 <Form.Group>
                                     <Button variant="primary" type="submit">Buscar</Button>
+                                    <Button href="/admin/users/edit/0" variant="secondary" >Nuevo</Button>
                                 </Form.Group>                            
                                 {status && status.error &&
                                     <div className={'alert alert-danger'}>{status.error}</div>
@@ -72,11 +71,11 @@ class UsersList extends React.Component {
                                   </thead>
                                   <tbody>
                                     {status.result.map(user =>
-                                        <tr>
+                                        <tr key={'tr' +user.id}>
                                           <th scope="row">{user.id}</th>
                                           <td>{user.name}</td>
                                           <td>{user.email}</td>
-                                          <td>{user.active}</td>
+                                          <td>{user.active? 'Si' : 'No'}</td>
                                           <td><Link to={'/admin/users/edit/' +user.id} >Ver</Link></td>
                                         </tr>
                                     )}

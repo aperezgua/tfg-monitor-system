@@ -5,6 +5,7 @@ import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.dto.UserFilter;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.service.IUserService;
 import java.util.List;
+import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,27 +34,38 @@ public class UsersController {
 
     /**
      * Busca usuarios según un filtro.
-     * 
+     *
      * @param filter UserFilter con los datos de filtrado de usuario.
      * @return Listado de usuarios que coinciden con el filtro.
      */
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
     public List<User> find(@RequestBody UserFilter filter) throws TfgMonitorSystenException {
-
         List<User> users = userService.findByFilter(filter);
         LOGGER.debug("filter=" + filter + ", return=" + users);
         return users;
+    }
+
+    @GetMapping("/get/{id}")
+    public User get(@PathVariable Integer id) throws TfgMonitorSystenException {
+        User user = userService.findByIdNoPassword(id);
+        LOGGER.debug("id=" + id + ", return=" + user);
+        return user;
+    }
+
+    @RequestMapping(value = "/all", method = { RequestMethod.GET })
+    public List<User> getAll() throws TfgMonitorSystenException {
+        return userService.findAll();
 
     }
 
     /**
      * Guarda un usuario obtenido a través de la request.
-     * 
+     *
      * @param user usuario que debe ser actualizado en el sistema.
      * @return usuario actualizado.
      */
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
-    public User put(@RequestBody User user) throws TfgMonitorSystenException {
+    public User put(@Valid @RequestBody User user) throws TfgMonitorSystenException {
 
         User updatedUser = userService.createOrUpdate(user);
         LOGGER.debug("user=" + user + ", return=" + updatedUser);
@@ -61,17 +73,4 @@ public class UsersController {
 
     }
 
-    @GetMapping("/get/{id}")
-    public User get(@PathVariable Integer id) throws TfgMonitorSystenException {
-        User user = userService.findById(id);
-        LOGGER.debug("id=" + id + ", return=" + user);
-        return user;
-    }
-
-    @RequestMapping(value = "/all", method = { RequestMethod.GET })
-    public List<User> getAll() throws TfgMonitorSystenException {
-
-        return userService.findAll();
-
-    }
 }

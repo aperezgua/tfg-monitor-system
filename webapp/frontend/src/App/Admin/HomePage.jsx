@@ -11,7 +11,10 @@ class HomePage extends React.Component {
     
     componentDidMount() {
         userService.getAll().then(
-            users => this.setState({ users }),
+            users =>  {
+                console.log("Aki");
+                this.setState({ users });
+            },
             error => {
                 console.log("Error: " +(typeof error) + " " + error);
             }

@@ -7,8 +7,15 @@ public class TfgMonitorSystenException extends Exception {
 
     private static final long serialVersionUID = -6976045271634074629L;
 
-    public TfgMonitorSystenException(String message) {
+    private final String key;
+
+    public TfgMonitorSystenException(String key, String message) {
         super(message);
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 
 }

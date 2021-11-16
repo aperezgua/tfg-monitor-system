@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '_helpers';
+import { requestUrl } from '_helpers';
 
 export const userService = {
     getAll,
@@ -8,36 +8,18 @@ export const userService = {
     put
 };
 
-function getAll() {
-    const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUserUrl}/rest/users/all`, requestOptions).then(handleResponse);
+function getAll() {    
+    return requestUrl(`${config.apiUserUrl}/rest/users/all`, 'GET');
 }
 
-
-
 function find(userFilter) {
-    const requestOptions = {
-        method: 'POST',
-        headers: authHeader(),
-        body: JSON.stringify(userFilter)
-    };
-    return fetch(`${config.apiUserUrl}/rest/users/find`, requestOptions).then(handleResponse);
+    return requestUrl(`${config.apiUserUrl}/rest/users/find`, 'POST',  JSON.stringify(userFilter));
 }
 
 function put(user) {
-    console.log("User: " +JSON.stringify(user));
-    const requestOptions = {
-        method: 'POST',
-        headers: authHeader(),
-        body: JSON.stringify(user)
-    };
-    return fetch(`${config.apiUserUrl}/rest/users/put`, requestOptions).then(handleResponse);
+    return requestUrl(`${config.apiUserUrl}/rest/users/put`, 'POST', JSON.stringify(user));
 }
 
 function get(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-    return fetch(`${config.apiUserUrl}/rest/users/get/${id}`, requestOptions).then(handleResponse);
+    return requestUrl(`${config.apiUserUrl}/rest/users/get/${id}`, 'GET');
 }
