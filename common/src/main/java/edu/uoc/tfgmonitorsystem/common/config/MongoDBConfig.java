@@ -3,25 +3,19 @@ package edu.uoc.tfgmonitorsystem.common.config;
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
-import edu.uoc.tfgmonitorsystem.common.model.document.User;
-import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import java.util.Arrays;
-import java.util.Date;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Ver https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongo.mongo-db-factory-java
  */
-@EnableMongoRepositories(basePackageClasses = UserRepository.class)
+
+@EnableMongoRepositories(basePackages = "edu.uoc.tfgmonitorsystem.common.model.repository")
 @Configuration
+//@EnableTransactionManagement
 public class MongoDBConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.database}")
@@ -35,8 +29,10 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     @Value("${spring.data.mongodb.userCredentials.password}")
     private String password;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+//    @Bean
+//    MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
+//        return new MongoTransactionManager(dbFactory);
+//    }
 
     @Override
     public String getDatabaseName() {
@@ -50,16 +46,5 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
                 .applyToClusterSettings(settings -> {
                     settings.hosts(Arrays.asList(new ServerAddress(host, port)));
                 });
-    }
-
-    @Bean
-    CommandLineRunner commandLineRunner(UserRepository userRepository) {
-        return strings -> {
-
-            userRepository.save(new User(1, "Abel", "aperezgua@uoc.edu", passwordEncoder.encode("pw"), new Date(), true,
-                    Rol.ADMINISTRATOR));
-            userRepository.save(
-                    new User(2, "Sam", "sam@uoc.edu", passwordEncoder.encode("pw"), new Date(), true, Rol.SUPPORT));
-        };
     }
 }

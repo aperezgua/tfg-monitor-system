@@ -4,7 +4,6 @@ import { userService } from '_services';
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        console.log("Entro en HomePage");
         this.state = {
             users : null
         };
@@ -12,7 +11,10 @@ class HomePage extends React.Component {
     
     componentDidMount() {
         userService.getAll().then(
-            users => this.setState({ users }),
+            users =>  {
+                console.log("Aki");
+                this.setState({ users });
+            },
             error => {
                 console.log("Error: " +(typeof error) + " " + error);
             }

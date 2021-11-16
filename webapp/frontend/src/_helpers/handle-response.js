@@ -1,12 +1,18 @@
 import { authenticationService } from '_services';
-
+import { authHeader } from '_helpers';
 /** 
  * Se maneja la respuesta del servidor. El microservicio devuelve 401 si no está autenticado con un mensaje de error 
  * encapsulado en error. 
 */
 export function handleResponse(response) {
+    
+    if(!response) {
+        return Promise.reject("Cannot retrieve data from server.");
+    }
+    
     return response.text().then(text => {
-
+        console.log("response: " +text);
+        
         const data = text && JSON.parse(text);
 
         if (!response.ok) {
@@ -14,10 +20,28 @@ export function handleResponse(response) {
                 authenticationService.logout();
             }
 
-            const error = (data && data.error) || response.statusText;
+            const error = (data && data.error) || (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
 
         return data;
     });
+}
+
+
+export function requestUrl(url, methodDescription, bodyData) {
+    let requestOptions = null;
+    
+    if(bodyData) {
+      requestOptions = { method: methodDescription, headers: authHeader(), body : bodyData };
+    } else {
+      requestOptions = { method: methodDescription, headers: authHeader() };
+    }
+    
+    return fetch(url, requestOptions)
+        .catch((error) => {
+            console.log(error);
+            
+        }).then(handleResponse);
+    
 }
