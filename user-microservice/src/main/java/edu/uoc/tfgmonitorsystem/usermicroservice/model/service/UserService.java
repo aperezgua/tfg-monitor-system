@@ -59,15 +59,14 @@ public class UserService implements IUserService {
 
         if (user.getId() == null) {
             user.setId(dbSequenceService.generateDbSequence(User.SEQUENCE_NAME));
-            return userRepository.insert(user);
+            return userRepository.save(user);
         } else {
             User userToUpdate = userRepository.findById(user.getId()).get();
             userToUpdate.setEmail(user.getEmail());
             userToUpdate.setName(user.getName());
-            userRepository.save(userToUpdate);
+            return userRepository.save(userToUpdate);
         }
 
-        return user;
     }
 
 }
