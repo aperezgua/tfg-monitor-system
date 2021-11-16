@@ -10,7 +10,7 @@ class UsersList extends React.Component {
         return (
              <div className="form-search">
                 <h2>Filtro de usuarios</h2>
-                <Formik
+                <Formik key="searchUsers"
                     initialValues={{
                         name: '',
                         email: '',
@@ -20,8 +20,7 @@ class UsersList extends React.Component {
                         setStatus();
                         userService.find({name, email, activeTypeFilter})
                             .then(
-                                usersList => {
-                                    console.log("LALALA: " + JSON.stringify(usersList));    
+                                usersList => {                                        
                                     setStatus( {result : usersList });
                                     setSubmitting(false);
                                 },
@@ -36,26 +35,31 @@ class UsersList extends React.Component {
                             );
                     }}>
                     {({ status }) => (
-                        <FormFormik>
-                            <Form.Group>
-                                <Form.Label >Nombre:</Form.Label>
-                                <Field name="name" type="text" className="form-control" />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Email</Form.Label>
-                                <Field name="email" type="text" className="form-control" />
-                            </Form.Group>
-                            <Form.Group>
-                                <Field name="activeTypeFilter" id="activeTypeFilterACTIVE" type="radio" className="form-check-input" value="ACTIVE" />
-                                <Form.Label htmlFor="activeTypeFilterACTIVE">Activos</Form.Label>
-                                <Field name="activeTypeFilter" id="activeTypeFilterINACTIVE" type="radio" className="form-check-input" value="INACTIVE" />
-                                <Form.Label htmlFor="activeTypeFilterINACTIVE">Inactivos</Form.Label>
-                                <Field name="activeTypeFilter" id="activeTypeFilterALL" type="radio" className="form-check-input" value="ALL" />
-                                <Form.Label htmlFor="activeTypeFilterALL">Todos</Form.Label>
-                            </Form.Group>
-                            <Form.Group>
-                                <Button variant="primary" type="submit">Buscar</Button>
-                            </Form.Group>
+                        <div>
+                            <FormFormik >
+                                <Form.Group>
+                                    <Form.Label >Nombre:</Form.Label>
+                                    <Field name="name" type="text" className="form-control" />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Email</Form.Label>
+                                    <Field name="email" type="text" className="form-control" />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Field name="activeTypeFilter" id="activeTypeFilterACTIVE" type="radio" className="form-check-input" value="ACTIVE" />
+                                    <Form.Label htmlFor="activeTypeFilterACTIVE">Activos</Form.Label>
+                                    <Field name="activeTypeFilter" id="activeTypeFilterINACTIVE" type="radio" className="form-check-input" value="INACTIVE" />
+                                    <Form.Label htmlFor="activeTypeFilterINACTIVE">Inactivos</Form.Label>
+                                    <Field name="activeTypeFilter" id="activeTypeFilterALL" type="radio" className="form-check-input" value="ALL" />
+                                    <Form.Label htmlFor="activeTypeFilterALL">Todos</Form.Label>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Button variant="primary" type="submit">Buscar</Button>
+                                </Form.Group>                            
+                                {status && status.error &&
+                                    <div className={'alert alert-danger'}>{status.error}</div>
+                                }
+                            </FormFormik>                            
                             {status && status.result &&
                                <table className="table table-striped table-hover">
                                   <thead>
@@ -77,12 +81,9 @@ class UsersList extends React.Component {
                                         </tr>
                                     )}
                                   </tbody>
-                                </table>
+                               </table>
                             }
-                            {status && status.error &&
-                                <div className={'alert alert-danger'}>{status.error}</div>
-                            }
-                        </FormFormik>
+                        </div>
                     )}
                  </Formik>
             </div>

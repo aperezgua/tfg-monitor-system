@@ -25,6 +25,7 @@ function find(userFilter) {
 }
 
 function put(user) {
+    console.log("User: " +JSON.stringify(user));
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),

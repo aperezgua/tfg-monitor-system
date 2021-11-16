@@ -17,14 +17,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Ver https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#mongo.mongo-db-factory-java
  */
-@EnableMongoRepositories(basePackageClasses = UserRepository.class)
+
+@EnableMongoRepositories(basePackages = "edu.uoc.tfgmonitorsystem.common.model.repository")
 @Configuration
-@EnableTransactionManagement
+//@EnableTransactionManagement
 public class MongoDBConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.database}")
@@ -40,6 +40,11 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+//    @Bean
+//    MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
+//        return new MongoTransactionManager(dbFactory);
+//    }
 
     @Override
     public String getDatabaseName() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { userService } from '_services';
 import { Formik, Form as FormFormik,  Field} from 'formik';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 
 class UserEditNoParams extends React.Component {
@@ -30,7 +30,7 @@ class UserEditNoParams extends React.Component {
              <div className="form-edit">
                 <h2>Edición de usuario</h2>
                 {!error &&
-                <Formik
+                <Formik key="editUserFormik"
                     enableReinitialize
                     initialValues={this.state.user}
                     onSubmit={({ name, email, values}, { setStatus, setSubmitting }) => {
@@ -54,7 +54,7 @@ class UserEditNoParams extends React.Component {
                             );
                     }}>
                     {({ status}) => (
-                        <FormFormik>
+                        <FormFormik key="editUserForm">
                             <Form.Group>
                                 <Form.Label >Nombre:</Form.Label>
                                 <Field name="name" type="text" className="form-control" />
@@ -63,12 +63,8 @@ class UserEditNoParams extends React.Component {
                                 <Form.Label>Email</Form.Label>
                                 <Field name="email" type="text" className="form-control" />
                             </Form.Group>
-                            {status && status.error &&
-                                <div className={'alert alert-danger'}>{status.error}</div>
-                            }
-                            {status && status.result &&
-                                <div className={'alert'}>{status.result}</div>
-                            }
+                            {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
+                            {status && status.result && <Alert key="alertOk" variant="success" >{status.result}</Alert> }
                             <Form.Group>
                                 <Button variant="primary" type="submit">Guardar</Button>
                             </Form.Group>
@@ -76,9 +72,7 @@ class UserEditNoParams extends React.Component {
                     )}
                  </Formik>
                  }
-                 {error && 
-                        <div className={'alert alert-danger'}>{error}</div>
-                 }
+                 {error && <Alert key="alertError2" variant="danger" >{error}</Alert>}
              </div>
         );
     }

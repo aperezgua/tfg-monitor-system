@@ -4,7 +4,6 @@ import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.dto.UserFilter;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Servicio que gestiona la lógica de negocio de los usuarios.
@@ -36,6 +35,5 @@ public interface IUserService {
      * @param user User con los datos a insertar o crear nuevos.
      * @return User con los datos actualizados.
      */
-    @Transactional
     User createOrUpdate(User user) throws TfgMonitorSystenException;
 }
