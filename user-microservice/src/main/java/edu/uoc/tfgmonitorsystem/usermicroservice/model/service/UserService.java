@@ -1,7 +1,6 @@
 package edu.uoc.tfgmonitorsystem.usermicroservice.model.service;
 
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
-import edu.uoc.tfgmonitorsystem.common.model.dto.ActiveTypeFilter;
 import edu.uoc.tfgmonitorsystem.common.model.exception.NoSuchElementInDbException;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
@@ -39,6 +38,7 @@ public class UserService implements IUserService {
         checkDuplicatedUser(user);
 
         if (user.getId() == null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setId(dbSequenceService.generateDbSequence(User.SEQUENCE_NAME));
             return userRepository.save(user);
         }
@@ -71,8 +71,19 @@ public class UserService implements IUserService {
             query.addCriteria(Criteria.where("name").regex(".*" + filter.getName() + ".*", "i"));
         }
 
-        if (filter.getActiveTypeFilter() != null && !filter.getActiveTypeFilter().equals(ActiveTypeFilter.ALL)) {
-            query.addCriteria(Criteria.where("activeTypeFilter").is(filter.getActiveTypeFilter()));
+        if (filter.getActiveTypeFilter() != null) {
+            switch (filter.getActiveTypeFilter()) {
+            case ACTIVE:
+                query.addCriteria(Criteria.where("active").is(true));
+                break;
+            case INACTIVE:
+                query.addCriteria(Criteria.where("active").is(false));
+                break;
+            case ALL:
+            default:
+                break;
+            }
+
         }
 
         List<User> users = mongoTemplate.find(query, User.class);
