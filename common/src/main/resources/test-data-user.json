@@ -1,6 +1,6 @@
 [
     {
-        "id": 10000,
+        "id": 10001,
         "name": "Abel",
         "email": "aperezgua@uoc.edu",
         "password": "$2a$10$bonR/nP/MYjlyYaE9bki..J5PiWqoJnZnmrv3KsprwfAyJVJEFgPq",
@@ -10,7 +10,7 @@
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.User"
     },
     {
-        "id": 10001,
+        "id": 10002,
         "name": "Sam",
         "email": "sam@uoc.edu",
         "password": "$2a$10$bonR/nP/MYjlyYaE9bki..J5PiWqoJnZnmrv3KsprwfAyJVJEFgPq",
@@ -18,15 +18,5 @@
         "active": true,
         "rol": "SUPPORT",
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.User"
-    },
-    {
-        "id": 1,
-        "name": "España",
-        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Country"
-    },
-    {
-        "id": 2,
-        "name": "Portugal",
-        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Country"
-    }    
+    }
 ]

@@ -2,8 +2,6 @@ package edu.uoc.tfgmonitorsystem.common.model.document;
 
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -13,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Clase que representa a un usuario de la aplicación.
  */
 @Document
-public class User {
+public class User extends BaseDocument {
 
     @Transient
     public static final String SEQUENCE_NAME = "user_sequence";
@@ -124,8 +122,4 @@ public class User {
         this.rol = rol;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }

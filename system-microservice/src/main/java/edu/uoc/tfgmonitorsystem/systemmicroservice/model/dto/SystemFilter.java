@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice.model.dto;
+package edu.uoc.tfgmonitorsystem.systemmicroservice.model.dto;
 
 import edu.uoc.tfgmonitorsystem.common.model.dto.ActiveTypeFilter;
 import java.io.Serializable;
@@ -11,10 +11,16 @@ public class SystemFilter implements Serializable {
 
     private String name;
 
+    private Integer countryId;
+
     private ActiveTypeFilter activeTypeFilter;
 
     public ActiveTypeFilter getActiveTypeFilter() {
         return activeTypeFilter;
+    }
+
+    public Integer getCountryId() {
+        return countryId;
     }
 
     public String getName() {
@@ -23,6 +29,10 @@ public class SystemFilter implements Serializable {
 
     public void setActiveTypeFilter(ActiveTypeFilter activeTypeFilter) {
         this.activeTypeFilter = activeTypeFilter;
+    }
+
+    public void setCountryId(Integer countryId) {
+        this.countryId = countryId;
     }
 
     public void setName(String name) {
