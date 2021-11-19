@@ -28,14 +28,14 @@ public class User extends BaseDocument {
     /**
      * Email del usuario.
      */
-    @NotBlank(message = "Email is mandatory")
+    @NotBlank(message = "user.email.mandatory")
     @Indexed(unique = true)
     private String email;
 
     /**
      * Password encriptado.
      */
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank(message = "user.password.mandatory")
     private String password;
 
     /**
@@ -54,16 +54,6 @@ public class User extends BaseDocument {
 
     public User() {
         super();
-    }
-
-    public User(Integer id, String name, String email, String password, Date createdDate, Boolean active, Rol rol) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.createdDate = createdDate;
-        this.active = active;
-        this.rol = rol;
     }
 
     public Boolean getActive() {

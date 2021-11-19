@@ -60,7 +60,7 @@ class SystemsList extends React.Component {
                                     <Form.Label>País</Form.Label>
                                     <Field name="countryId" as="select"  className="form-select" >
                                        <option value=""></option>
-                                       {countriesList && countriesList.map(country => <option value={country.id}>{country.name}</option>)}
+                                       {countriesList && countriesList.map(country => <option key={country.id} value={country.id}>{country.name}</option>)}
                                      </Field>
                                 </Form.Group>
                                 <Form.Group>

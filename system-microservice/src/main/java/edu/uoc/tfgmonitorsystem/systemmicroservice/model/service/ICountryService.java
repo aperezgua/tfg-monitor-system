@@ -5,7 +5,7 @@ import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException
 import java.util.List;
 
 /**
- * Servicio que gestiona la lógica de negocio de los usuarios.
+ * Servicio que gestiona la lógica de negocio de los países.
  */
 public interface ICountryService {
 
