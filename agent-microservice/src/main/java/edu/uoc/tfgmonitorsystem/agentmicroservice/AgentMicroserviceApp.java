@@ -9,13 +9,13 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan({ "edu.uoc.tfgmonitorsystem" })
-public class SystemMicroserviceApp {
+public class AgentMicroserviceApp {
 
-    private static final Logger LOGGER = Logger.getLogger(SystemMicroserviceApp.class);
+    private static final Logger LOGGER = Logger.getLogger(AgentMicroserviceApp.class);
 
     public static void main(String[] args) {
         LOGGER.debug(".........Start APP.........");
-        SpringApplication.run(SystemMicroserviceApp.class, args);
+        SpringApplication.run(AgentMicroserviceApp.class, args);
     }
 
 }

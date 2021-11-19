@@ -28,8 +28,14 @@ public class Agent extends BaseDocument {
      */
     private Date createdDate;
 
+    private Boolean active;
+
     public Agent() {
         super();
+    }
+
+    public Boolean getActive() {
+        return active;
     }
 
     public Date getCreatedDate() {
@@ -46,6 +52,10 @@ public class Agent extends BaseDocument {
 
     public String getToken() {
         return token;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public void setCreatedDate(Date createdDate) {

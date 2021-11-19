@@ -75,7 +75,7 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
             LOGGER.debug("Country: " + countryRepository.findById(1).get());
             LOGGER.debug("User: " + userRepository.findById(10001).get());
             LOGGER.debug("Systems: " + systemRepository.findById(10001).get());
-            LOGGER.debug("Agent: " + agentRepository.findById(10001).get());
+            LOGGER.debug("Agent: " + agentRepository.findById("0bac5204-4951-11ec-81d3-0242ac130003").get());
         };
     }
 

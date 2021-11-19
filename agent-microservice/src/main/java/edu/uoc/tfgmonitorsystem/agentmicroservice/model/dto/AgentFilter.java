@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class AgentFilter {
     private String name;
 
-    private String systemName;
+    private Integer systemId;
 
     private ActiveTypeFilter activeTypeFilter;
 
@@ -19,8 +19,8 @@ public class AgentFilter {
         return name;
     }
 
-    public String getSystemName() {
-        return systemName;
+    public Integer getSystemId() {
+        return systemId;
     }
 
     public void setActiveTypeFilter(ActiveTypeFilter activeTypeFilter) {
@@ -31,8 +31,8 @@ public class AgentFilter {
         this.name = name;
     }
 
-    public void setSystemName(String systemName) {
-        this.systemName = systemName;
+    public void setSystemId(Integer systemId) {
+        this.systemId = systemId;
     }
 
     @Override
