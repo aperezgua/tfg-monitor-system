@@ -16,11 +16,10 @@ class AgentEditNoParams extends React.Component {
                 token : '',
                 name : '',
                 systems : {},
-                active : false
+                active : true
             },
             error : null,
-            systemsList : null,
-            disabledToken : false
+            systemsList : null
         };
         this.onChangeTokenHandler = this.onChangeTokenHandler.bind(this);
     }
@@ -65,6 +64,7 @@ class AgentEditNoParams extends React.Component {
 					enableReinitialize
                     initialValues={agent}
                     validationSchema={Yup.object().shape({
+                        token: Yup.string().required('El token es obligatorio.'),
                         name: Yup.string().required('El nombre es obligatorio.')
                     })}
                     onSubmit={( values, { setStatus, setSubmitting }) => {
@@ -83,7 +83,10 @@ class AgentEditNoParams extends React.Component {
                     }}>
                     {({errors, status, touched}) => (
                         <FormFormik key="editAgentForm">
-                            <AgentToken name="token" value={agent && agent.token} onChangeTokenHandler={this.onChangeTokenHandler}/>
+                            <Form.Group>
+                                <AgentToken name="token" value={agent && agent.token} onChangeTokenHandler={this.onChangeTokenHandler}/>
+                                 <ErrorMessage name="token" component="div" className="alert alert-error" />
+                            </Form.Group>
                             <Form.Group>
                                 <Form.Label >Nombre:</Form.Label>
                                 <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />

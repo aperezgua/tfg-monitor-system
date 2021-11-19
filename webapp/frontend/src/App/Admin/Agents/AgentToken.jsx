@@ -12,6 +12,7 @@ class AgentToken extends React.Component {
             fieldValue: props.value,
             fieldOriginalValue : props.value
         };
+        
         this.generateToken = this.generateToken.bind(this);
         
     }
@@ -19,7 +20,8 @@ class AgentToken extends React.Component {
     componentWillReceiveProps(nextProps) {
       this.state = {
             fieldName : nextProps.name,
-            fieldValue: nextProps.value
+            fieldValue: nextProps.value,
+            fieldOriginalValue : nextProps.value
         };
     }
     
@@ -40,13 +42,13 @@ class AgentToken extends React.Component {
     }
     
     render() {
-        const {fieldName, fieldValue} = this.state;
+        const {fieldName, fieldValue, fieldOriginalValue} = this.state;
         return (            
             <Form.Group>
                 <Form.Label >Token:</Form.Label> 
                 <InputGroup className="mb-3">
                     <FormControl name={fieldName} value={fieldValue}  /> 
-                    <Button variant="outline-secondary" id="button-addon2"  onClick={this.generateToken}>Generar</Button>
+                    <Button variant="outline-secondary" id="button-addon2" disabled={fieldOriginalValue} onClick={this.generateToken}>Generar</Button>
                 </InputGroup>
              </Form.Group>
         );
