@@ -1,10 +1,12 @@
 package edu.uoc.tfgmonitorsystem.agentmicroservice.controller;
 
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.AgentFilter;
+import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.TokenDto;
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.service.IAgentService;
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,18 @@ public class AgentsController {
     }
 
     /**
+     * Genera un token aleatorio.
+     *
+     * @return String con el token aleatorio.
+     */
+    @GetMapping("/generateToken")
+    public TokenDto generateToken() {
+        String token = UUID.randomUUID().toString();
+        LOGGER.debug("token=" + token);
+        return new TokenDto(token);
+    }
+
+    /**
      * Obtiene un agente por su token
      *
      * @param token Con el token del agente.
@@ -71,7 +85,6 @@ public class AgentsController {
         Agent updatedAgent = agentService.createOrUpdate(agent);
         LOGGER.debug("agent=" + agent + ", return=" + updatedAgent);
         return updatedAgent;
-
     }
 
 }

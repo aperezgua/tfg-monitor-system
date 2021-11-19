@@ -4,7 +4,8 @@ import { requestUrl } from '_helpers';
 export const agentService = {
     find,
     get,
-    put
+    put,
+    generateToken
 };
 
 
@@ -18,4 +19,8 @@ function put(agent) {
 
 function get(token) {
     return requestUrl(`${config.apiAgentUrl}/rest/agents/get/${token}`, 'GET');
+}
+
+function generateToken() {
+    return requestUrl(`${config.apiAgentUrl}/rest/agents/generateToken`, 'GET');
 }

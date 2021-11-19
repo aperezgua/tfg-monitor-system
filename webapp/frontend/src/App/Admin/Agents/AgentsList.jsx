@@ -76,7 +76,7 @@ class AgentsList extends React.Component {
                                 </Form.Group>
                                 <Form.Group>
                                     <Button variant="primary" type="submit">Buscar</Button>
-                                    <Button to="/admin/agent/edit/0" variant="secondary" >Nuevo</Button>
+                                    <Button href="/admin/agents/edit/0" variant="secondary" >Nuevo</Button>
                                 </Form.Group>                            
                                 {status && status.error &&
                                     <div className={'alert alert-danger'}>{status.error}</div>
@@ -97,8 +97,8 @@ class AgentsList extends React.Component {
                                         <tr key={'tr' +agent.token}>
                                           <th scope="row">{agent.token}</th>
                                           <td>{agent.name}</td>
-                                          <td>{agent.systems.name}</td>
-                                          <td>{agent.active? 'Si' : 'No'}</td>
+                                          <td>{agent.systems && agent.systems.name}</td>
+                                          <td>{agent.active && agent.active? 'Si' : 'No'}</td>
                                           <td><Link to={'/admin/agents/edit/' +agent.token} >Ver</Link></td>
                                         </tr>
                                     )}

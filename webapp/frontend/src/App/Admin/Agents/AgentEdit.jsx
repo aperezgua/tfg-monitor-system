@@ -4,16 +4,25 @@ import { systemsService } from '_services';
 import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
 import { Button, Form, Alert } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
+import { AgentToken} from 'App/Admin/Agents';
 import * as Yup from 'yup';
+
 
 class AgentEditNoParams extends React.Component {
    constructor(props) {
         super(props);
         this.state = {
-            agent : null,
+            agent : {
+                token : '',
+                name : '',
+                systems : {},
+                active : false
+            },
             error : null,
-            systemsList : null
+            systemsList : null,
+            disabledToken : false
         };
+        this.onChangeTokenHandler = this.onChangeTokenHandler.bind(this);
     }
     componentDidMount() {
          
@@ -29,24 +38,25 @@ class AgentEditNoParams extends React.Component {
         if (this.props.params.token && this.props.params.token != '0') {
             agentService.get(this.props.params.token).then(
                 agent => {
-                    this.setState( { agent } );
+                    this.setState( { agent , disabledToken : true} );
+                    
                 },
                 error => {
                     this.setState({error});
                 }
             );
-        } else {
-            this.setState( { 
-                system : {
-                    name : '',
-                    system : '',
-                    active : true
-                } 
-             });
-        }
+        } 
     }
+    
+    onChangeTokenHandler(newToken) {
+        this.setState({
+          agent: {token : newToken}
+        })
+    }
+    
     render() {
         const { error, agent, systemsList } = this.state;
+        
         return (
              <div className="form-edit">
                 <h2>Edición de agent</h2>
@@ -54,7 +64,7 @@ class AgentEditNoParams extends React.Component {
                 <Formik key="editUserFormik"
 					enableReinitialize
                     initialValues={agent}
-                     validationSchema={Yup.object().shape({
+                    validationSchema={Yup.object().shape({
                         name: Yup.string().required('El nombre es obligatorio.')
                     })}
                     onSubmit={( values, { setStatus, setSubmitting }) => {
@@ -72,7 +82,8 @@ class AgentEditNoParams extends React.Component {
                             );
                     }}>
                     {({errors, status, touched}) => (
-                        <FormFormik key="editUserForm">
+                        <FormFormik key="editAgentForm">
+                            <AgentToken name="token" value={agent && agent.token} onChangeTokenHandler={this.onChangeTokenHandler}/>
                             <Form.Group>
                                 <Form.Label >Nombre:</Form.Label>
                                 <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
@@ -82,7 +93,7 @@ class AgentEditNoParams extends React.Component {
                                 <Form.Label>Sistema</Form.Label>
                                 <Field name="systems.id" as="select"  className="form-select" >
                                    <option value=""></option>
-                                   {systemsList && systemsList.map(system => <option value={system.id}>{system.name}</option>)}
+                                   {systemsList && systemsList.map(system => <option key={system.id} value={system.id}>{system.name}</option>)}
                                  </Field>
                             </Form.Group>
                             <Form.Group>
