@@ -6,7 +6,6 @@
         "active": true,
         "createdDate": 1637097647598,
         "rules" :[ {
-            "order" : 1,
             "active": true,
             "name" : "Regla 1",
             "regularExpression" : ".*",

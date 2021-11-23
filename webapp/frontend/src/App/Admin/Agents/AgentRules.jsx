@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
+import { Rule } from 'App/Admin/Agents';
 
 class AgentRules extends React.Component {
     constructor(props) {
@@ -9,10 +9,16 @@ class AgentRules extends React.Component {
             rules: props.value
         };
         this.removeRule = this.removeRule.bind(this);
+        this.onChangeRuleHandler = this.onChangeRuleHandler.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ rules: nextProps.value })
+    }
+    
+    
+    onChangeRuleHandler(index, rule) {
+        console("AgentRules change: " + index);
     }
 
     removeRule(index) {
@@ -24,7 +30,7 @@ class AgentRules extends React.Component {
     render() {
         const { rules } = this.state;
         return (
-            <div>Hello
+            <div>
                 {rules && rules.length > 0 &&
                     <table className="table table-striped table-hover">
                         <thead>
@@ -39,12 +45,14 @@ class AgentRules extends React.Component {
                         </thead>
                         <tbody>
                             {rules.map((rule, index) =>
-                                <tr key={'tr' + rule.order}>
-                                    <th scope="row">{rule.order}</th>
+                                <tr key={'tr' + index}>
+                                    <th scope="row">{index}</th>
                                     <td>{rule.name}</td>
                                     <td>{rule.regularExpression}</td>
                                     <td>{rule.severity}</td>
-                                    <td>Ver</td>
+                                    <td>
+                                        <Rule value={rule} index={index} buttonValue="Ver" onChangeRuleHandler={this.onChangeRuleHandler} />
+                                    </td>
                                     <td><Button onClick={() => this.removeRule(index)} >Eliminar</Button></td>
                                 </tr>
                             )}
