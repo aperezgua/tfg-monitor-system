@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
 import java.util.Date;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -9,11 +10,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Agent extends BaseDocument {
 
+    private Boolean active;
     /**
-     * Id del sistema.
+     * Fecha de creación del usuario.
      */
-    @Id
-    private String token;
+    private Date createdDate;
+
     /**
      * Nombre del sistema.
      */
@@ -24,11 +26,12 @@ public class Agent extends BaseDocument {
     private Systems systems;
 
     /**
-     * Fecha de creación del usuario.
+     * Id del sistema.
      */
-    private Date createdDate;
+    @Id
+    private String token;
 
-    private Boolean active;
+    private List<Rule> rules;
 
     public Agent() {
         super();
@@ -44,6 +47,10 @@ public class Agent extends BaseDocument {
 
     public String getName() {
         return name;
+    }
+
+    public List<Rule> getRules() {
+        return rules;
     }
 
     public Systems getSystems() {
@@ -64,6 +71,10 @@ public class Agent extends BaseDocument {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setRules(List<Rule> rules) {
+        this.rules = rules;
     }
 
     public void setSystems(Systems systems) {

@@ -16,23 +16,23 @@ public class Systems extends BaseDocument {
     @Transient
     public static final String SEQUENCE_NAME = "systems_sequence";
 
+    private Boolean active;
+    @DBRef()
+    private Country country;
+
+    private Date createdDate;
+
     /**
      * Id del sistema.
      */
     @Id
     private Integer id;
+
     /**
      * Nombre del sistema.
      */
     @NotBlank(message = "systems.name.mandatory")
     private String name;
-
-    @DBRef()
-    private Country country;
-
-    private Boolean active;
-
-    private Date createdDate;
 
     public Systems() {
         super();

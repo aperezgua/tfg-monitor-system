@@ -5,6 +5,14 @@
         "systems": {"id":10001},
         "active": true,
         "createdDate": 1637097647598,
+        "rules" :[ {
+            "active": true,
+            "name" : "Regla 1",
+            "regularExpression" : ".*",
+            "severity" : "MAJOR",
+            "matchType" : "ANY",
+            "calculationType" : "DIRECT_VALUE"
+        } ],
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"
     },
     {

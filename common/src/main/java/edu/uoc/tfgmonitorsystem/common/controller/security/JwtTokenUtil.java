@@ -3,6 +3,7 @@ package edu.uoc.tfgmonitorsystem.common.controller.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,34 +27,8 @@ public class JwtTokenUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
-    }
-
-    public Date getIssuedAtDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getIssuedAt);
-    }
-
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
-
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-
-    private Boolean ignoreTokenExpiration(String token) {
-        return false;
+    public Boolean canTokenBeRefreshed(String token) {
+        return !isTokenExpired(token) || ignoreTokenExpiration(token);
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -61,9 +36,31 @@ public class JwtTokenUtil {
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+    public Date getIssuedAtDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getIssuedAt);
+    }
+
+    public String getUsernameFromToken(String token) {
+        return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
     /**
      * Genera un token con los diferentes datos con claims y un asunto.
-     * 
+     *
      * @param claims  Objectos a ser agregados al token.
      * @param subject Asunto del token.
      * @return String con el token generado.
@@ -73,19 +70,34 @@ public class JwtTokenUtil {
         Date createDate = new Date(System.currentTimeMillis());
         Date expirationDate = new Date(System.currentTimeMillis() + JwtConstants.TOKEN_VALID_TIME_MILLIS);
 
+        String token = Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(createDate)
+                .setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, getSecreEncode()).compact();
+
         LOGGER.debug("doGenerateToken [ claims=" + claims + ", subject=" + subject + ", createDate=" + createDate
-                + ", expirationDate=" + expirationDate + "]");
+                + ", expirationDate=" + expirationDate + "]" + " secret=" + secret + ", token=" + token);
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(createDate)
-                .setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secret).compact();
+        return token;
     }
 
-    public Boolean canTokenBeRefreshed(String token) {
-        return (!isTokenExpired(token) || ignoreTokenExpiration(token));
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parser().setSigningKey(getSecreEncode()).parseClaimsJws(token).getBody();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    /**
+     * Obtiene los bytes en UTF8 de la clave.
+     *
+     * @return
+     */
+    private byte[] getSecreEncode() {
+        return secret.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private Boolean ignoreTokenExpiration(String token) {
+        return false;
+    }
+
+    private Boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
     }
 }

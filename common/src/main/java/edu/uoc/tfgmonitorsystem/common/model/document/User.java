@@ -19,14 +19,13 @@ public class User extends BaseDocument {
     public static final String SEQUENCE_NAME = "user_sequence";
 
     /**
-     * Id del usuario.
+     * Si el usuario se encuentra activo.
      */
-    @Id
-    private Integer id;
+    private Boolean active;
     /**
-     * Nombre del usuario.
+     * Fecha de creación del usuario.
      */
-    private String name;
+    private Date createdDate;
     /**
      * Email del usuario.
      */
@@ -35,20 +34,21 @@ public class User extends BaseDocument {
     private String email;
 
     /**
+     * Id del usuario.
+     */
+    @Id
+    private Integer id;
+
+    /**
+     * Nombre del usuario.
+     */
+    private String name;
+    /**
      * Password encriptado.
      */
     @NotBlank(message = "user.password.mandatory")
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
-
-    /**
-     * Fecha de creación del usuario.
-     */
-    private Date createdDate;
-    /**
-     * Si el usuario se encuentra activo.
-     */
-    private Boolean active;
 
     /**
      * Rol de este usuario.
