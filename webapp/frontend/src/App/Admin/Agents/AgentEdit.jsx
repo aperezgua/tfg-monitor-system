@@ -113,8 +113,7 @@ class AgentEditNoParams extends React.Component {
                                    <option value="true">Activo</option>
                                    <option value="false">Inactivo</option>
                                  </Field>
-                            </Form.Group>
-                            <AgentRules value={agent && agent.rules} onChangeRulesHandler={this.onChangeRulesHandler}/>
+                            </Form.Group>                            
                             {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
                             {status && status.result && <Alert key="alertOk" variant="success" >{status.result}</Alert> }
                             <Form.Group>
@@ -124,6 +123,7 @@ class AgentEditNoParams extends React.Component {
                     )}
                  </Formik>
                  }
+                 {!error && <AgentRules value={agent && agent.rules} onChangeRulesHandler={this.onChangeRulesHandler}/>}
                  {error && <Alert key="alertError2" variant="danger" >{error}</Alert>}
              </div>
         );

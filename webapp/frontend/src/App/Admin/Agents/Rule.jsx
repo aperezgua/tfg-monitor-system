@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { FormControl, Form } from 'react-bootstrap';
-
+import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
 
 class Rule extends React.Component {
     constructor(props) {
@@ -12,7 +13,6 @@ class Rule extends React.Component {
             show : false
         };
         
-        this.handleSave = this.handleSave.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleFormValueChage = this.handleFormValueChage.bind(this);
@@ -22,13 +22,8 @@ class Rule extends React.Component {
         this.setState({ rule: nextProps.value })
     }
 
-    handleClose() {
-     
+    handleClose() {     
         this.setState({show : false});   
-    }
-    
-    handleSave() {
-        this.setState({show : false});
     }
     
     handleShow() {
@@ -48,16 +43,35 @@ class Rule extends React.Component {
                   <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">Edición de regla</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body>
-                    <Form.Group>
-                       <Form.Label>Nombre:</Form.Label>
-                       <FormControl name="name" defaultValue={rule.name} readOnly={false} onChange={this.handleFormValueChage}/>
-                    </Form.Group> 
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>Cerrar</Button>
-                    <Button variant="primary" onClick={this.handleSave}>Guardar</Button>
-                  </Modal.Footer>
+                 
+                    <Formik key="editRuleFormik"
+                            enableReinitialize
+                            initialValues={rule}
+                            validationSchema={Yup.object().shape({
+                                name: Yup.string().required('El nombre es obligatorio.')
+                            })}
+                            onSubmit={( values, { setStatus, setSubmitting }) => {
+                                console.log("GUARDAR!!");
+                                this.handleClose();
+                            }}>
+                            {({errors, status, touched}) => (
+                                <div>
+                                <Modal.Body>
+                                    <FormFormik key="editRuleForm">
+                                        <Form.Group>
+                                           <Form.Label>Nombre:</Form.Label>
+                                           <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
+                                           <ErrorMessage name="name" component="div" className="alert alert-error" />
+                                        </Form.Group> 
+                                    </FormFormik>
+                                 </Modal.Body>
+                                  <Modal.Footer>
+                                    <Button variant="secondary" onClick={this.handleClose}>Cerrar</Button>
+                                    <Button variant="primary" type="submit">Guardar</Button>
+                                  </Modal.Footer>
+                              </div>
+                            )}
+                    </Formik>
                 </Modal>
             </div>
         );
