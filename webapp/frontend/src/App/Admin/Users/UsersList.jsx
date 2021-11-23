@@ -67,6 +67,7 @@ class UsersList extends React.Component {
                                       <th scope="col">Nombre</th>
                                       <th scope="col">Email</th>
                                       <th scope="col">Activo</th>
+                                      <th scope="col"></th>
                                     </tr>
                                   </thead>
                                   <tbody>

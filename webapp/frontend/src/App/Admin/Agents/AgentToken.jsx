@@ -18,11 +18,11 @@ class AgentToken extends React.Component {
     }
     
     componentWillReceiveProps(nextProps) {
-      this.state = {
+        this.setState({
             fieldName : nextProps.name,
             fieldValue: nextProps.value,
             fieldOriginalValue : nextProps.value
-        };
+        });
     }
     
     generateToken() {
@@ -41,13 +41,17 @@ class AgentToken extends React.Component {
         return false;
     }
     
+    onChangeFormControl() {
+        
+    }
+    
     render() {
         const {fieldName, fieldValue, fieldOriginalValue} = this.state;
         return (            
             <Form.Group>
                 <Form.Label >Token:</Form.Label> 
                 <InputGroup className="mb-3">
-                    <FormControl name={fieldName} value={fieldValue}  /> 
+                    <FormControl name={fieldName} value={fieldValue} onChange={this.onChangeFormControl}  /> 
                     <Button variant="outline-secondary" id="button-addon2" disabled={fieldOriginalValue} onClick={this.generateToken}>Generar</Button>
                 </InputGroup>
              </Form.Group>

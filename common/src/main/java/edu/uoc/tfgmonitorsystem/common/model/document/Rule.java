@@ -18,6 +18,8 @@ public class Rule extends BaseDocument {
 
     private List<Condition> conditions;
 
+    private Integer order;
+
     public Rule() {
         super();
     }
@@ -40,6 +42,10 @@ public class Rule extends BaseDocument {
 
     public String getName() {
         return name;
+    }
+
+    public Integer getOrder() {
+        return order;
     }
 
     public String getRegularExpression() {
@@ -70,6 +76,10 @@ public class Rule extends BaseDocument {
         this.name = name;
     }
 
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     public void setRegularExpression(String regularExpression) {
         this.regularExpression = regularExpression;
     }
@@ -77,5 +87,4 @@ public class Rule extends BaseDocument {
     public void setSeverity(Severity severity) {
         this.severity = severity;
     }
-
 }

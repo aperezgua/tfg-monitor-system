@@ -87,6 +87,7 @@ class SystemsList extends React.Component {
                                       <th scope="col">Nombre</th>
                                       <th scope="col">País</th>
                                       <th scope="col">Activo</th>
+                                      <th scope="col"></th>                                      
                                     </tr>
                                   </thead>
                                   <tbody>

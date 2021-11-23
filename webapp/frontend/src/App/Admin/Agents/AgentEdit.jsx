@@ -4,7 +4,7 @@ import { systemsService } from '_services';
 import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
 import { Button, Form, Alert } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
-import { AgentToken} from 'App/Admin/Agents';
+import { AgentToken, AgentRules } from 'App/Admin/Agents';
 import * as Yup from 'yup';
 
 
@@ -16,12 +16,14 @@ class AgentEditNoParams extends React.Component {
                 token : '',
                 name : '',
                 systems : {},
-                active : true
+                active : true,
+                rules : {}
             },
             error : null,
             systemsList : null
         };
-        this.onChangeTokenHandler = this.onChangeTokenHandler.bind(this);
+        this.onChangeTokenHandler = this.onChangeTokenHandler.bind(this);        
+        this.onChangeRulesHandler = this.onChangeRulesHandler.bind(this);
     }
     componentDidMount() {
          
@@ -37,8 +39,7 @@ class AgentEditNoParams extends React.Component {
         if (this.props.params.token && this.props.params.token != '0') {
             agentService.get(this.props.params.token).then(
                 agent => {
-                    this.setState( { agent , disabledToken : true} );
-                    
+                    this.setState( {agent} );
                 },
                 error => {
                     this.setState({error});
@@ -53,12 +54,18 @@ class AgentEditNoParams extends React.Component {
         })
     }
     
+    onChangeRulesHandler(newRules) {
+        this.setState({
+          agent: {rules : newRules}
+        })
+    }
+    
     render() {
         const { error, agent, systemsList } = this.state;
         
         return (
              <div className="form-edit">
-                <h2>Edición de agent</h2>
+                <h2>Edición de agente</h2>
                 {!error &&
                 <Formik key="editUserFormik"
 					enableReinitialize
@@ -85,7 +92,7 @@ class AgentEditNoParams extends React.Component {
                         <FormFormik key="editAgentForm">
                             <Form.Group>
                                 <AgentToken name="token" value={agent && agent.token} onChangeTokenHandler={this.onChangeTokenHandler}/>
-                                 <ErrorMessage name="token" component="div" className="alert alert-error" />
+                                <ErrorMessage name="token" component="div" className="alert alert-error" />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label >Nombre:</Form.Label>
@@ -107,6 +114,7 @@ class AgentEditNoParams extends React.Component {
                                    <option value="false">Inactivo</option>
                                  </Field>
                             </Form.Group>
+                            <AgentRules value={agent && agent.rules} onChangeRulesHandler={this.onChangeRulesHandler}/>
                             {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
                             {status && status.result && <Alert key="alertOk" variant="success" >{status.result}</Alert> }
                             <Form.Group>

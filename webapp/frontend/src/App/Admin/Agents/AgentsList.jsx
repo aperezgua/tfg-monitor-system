@@ -90,6 +90,7 @@ class AgentsList extends React.Component {
                                       <th scope="col">Nombre</th>
                                       <th scope="col">Sistema</th>
                                       <th scope="col">Activo</th>
+                                      <th scope="col"></th>
                                     </tr>
                                   </thead>
                                   <tbody>
