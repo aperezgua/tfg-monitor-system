@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import { FormControl, Form } from 'react-bootstrap';
+import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 
@@ -8,18 +7,14 @@ class Rule extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rule: props.value,
-            buttonValue: props.buttonValue,
+            indexValue : props.indexValue,
+            rule : props.value,
+            buttonValue : props.buttonValue,
             show : false
         };
-        
         this.handleClose = this.handleClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleFormValueChage = this.handleFormValueChage.bind(this);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({ rule: nextProps.value })
     }
 
     handleClose() {     
@@ -30,8 +25,10 @@ class Rule extends React.Component {
        this.setState({show : true});
     }
     
-    handleFormValueChage() {
-        console.log("alal");
+    handleFormValueChage(values) {
+        this.setState({rule : values});
+        //console.log("alal" +this.state.indexValue +" - " +JSON.stringify(this.state.rule));
+        this.props.onChangeRuleHandler(this.state.indexValue, this.state.rule);
     }
 
     render() {
@@ -48,26 +45,85 @@ class Rule extends React.Component {
                             enableReinitialize
                             initialValues={rule}
                             validationSchema={Yup.object().shape({
-                                name: Yup.string().required('El nombre es obligatorio.')
+                                name: Yup.string().required('El nombre es obligatorio.'),
+                                regularExpression: Yup.string().required('La expresión regular es obligatoria.'),
+                                active: Yup.string().required('Es necesario especificar un valor.'),
+                                calculationType: Yup.string().required('Es necesario especificar un valor.'),
+                                matchType: Yup.string().required('Es necesario especificar un valor.'),
+                                severity: Yup.string().required('Es necesario especificar un valor.')
                             })}
-                            onSubmit={( values, { setStatus, setSubmitting }) => {
-                                console.log("GUARDAR!!");
+                            onSubmit={( values, { setStatus, setSubmitting }) => {                                
+                                this.handleFormValueChage(values);
                                 this.handleClose();
                             }}>
-                            {({errors, status, touched}) => (
+                            {({errors, touched, submitForm}) => (
                                 <div>
                                 <Modal.Body>
                                     <FormFormik key="editRuleForm">
-                                        <Form.Group>
-                                           <Form.Label>Nombre:</Form.Label>
-                                           <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
-                                           <ErrorMessage name="name" component="div" className="alert alert-error" />
+                                        <Row>
+                                            <Col>
+                                                <Form.Group>
+                                                   <Form.Label>Nombre:</Form.Label>
+                                                   <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
+                                                   <ErrorMessage name="name" component="div" className="alert alert-error" />
+                                                </Form.Group>
+                                             </Col>
+                                            <Col>
+                                                <Form.Group>
+                                                    <Form.Label>Activo:</Form.Label>
+                                                    <Field name="active" as="select" className={'form-select' + (errors.active && touched.active ? ' is-invalid' : '')} >
+                                                       <option value=""></option>
+                                                       <option value="true">Activo</option>
+                                                       <option value="false">Inactivo</option>
+                                                     </Field>
+                                                     <ErrorMessage name="active" component="div" className="alert alert-error" />
+                                                </Form.Group>
+                                            </Col>
+                                         </Row>
+                                         <Form.Group>
+                                           <Form.Label>Expresión regular:</Form.Label>
+                                           <Field name="regularExpression" type="text" className={'form-control' + (errors.regularExpression && touched.regularExpression ? ' is-invalid' : '')} />
+                                           <ErrorMessage name="regularExpression" component="div" className="alert alert-error" />
                                         </Form.Group> 
+                                        <Row>
+                                            <Col>
+                                                <Form.Group>
+                                                    <Form.Label>Tipo de cálculo:</Form.Label>
+                                                    <Field name="calculationType" as="select"  className={'form-select' + (errors.calculationType && touched.calculationType ? ' is-invalid' : '')}>
+                                                       <option value=""></option>
+                                                       <option value="COUNT_EVENT">Contar</option>
+                                                       <option value="DIRECT_VALUE">Valor directo</option>
+                                                     </Field>
+                                                     <ErrorMessage name="calculationType" component="div" className="alert alert-error" />
+                                                </Form.Group>
+                                            </Col>
+                                            <Col>
+                                                <Form.Group>
+                                                    <Form.Label>Tipo de coincidencia:</Form.Label>
+                                                    <Field name="matchType" as="select"  className={'form-select' + (errors.matchType && touched.matchType ? ' is-invalid' : '')}>
+                                                       <option value=""></option>
+                                                       <option value="ALL">Todas</option>
+                                                       <option value="ANY">Alguna</option>
+                                                     </Field>
+                                                     <ErrorMessage name="matchType" component="div" className="alert alert-error" />
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                        <Form.Group>
+                                            <Form.Label>Nivel:</Form.Label>
+                                            <Field name="severity" as="select"  className={'form-select' + (errors.severity && touched.severity ? ' is-invalid' : '')}>
+                                               <option value=""></option>
+                                               <option value="MINOR">Baja</option>
+                                               <option value="MAJOR">Alta</option>
+                                               <option value="CRITICAL">Crítica</option>
+                                             </Field>
+                                             <ErrorMessage name="severity" component="div" className="alert alert-error" />
+                                        </Form.Group>
                                     </FormFormik>
                                  </Modal.Body>
                                   <Modal.Footer>
                                     <Button variant="secondary" onClick={this.handleClose}>Cerrar</Button>
-                                    <Button variant="primary" type="submit">Guardar</Button>
+                                    <Button variant="primary" onClick={submitForm}>Guardar</Button>
                                   </Modal.Footer>
                               </div>
                             )}

@@ -6,9 +6,11 @@ class AgentRules extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            name: props.name,
             rules: props.value
         };
         this.removeRule = this.removeRule.bind(this);
+        this.addRule = this.addRule.bind(this);
         this.onChangeRuleHandler = this.onChangeRuleHandler.bind(this);
     }
 
@@ -17,32 +19,52 @@ class AgentRules extends React.Component {
     }
     
     
-    onChangeRuleHandler(index, rule) {
-        console("AgentRules change: " + index);
+    onChangeRuleHandler(index, rule) {        
+       let {rules} = this.state;
+       rules[index] = rule;
+       
+       // Se notifica y volvemos a recibir a través de componentWillReceiveProps
+       this.props.setFieldValue(this.state.name, rules);
     }
 
     removeRule(index) {
-        console.log("remove" + index);
-
+        let rules = this.state.rules;
+       
+        rules.splice(index, 1);
+        
+        console.log("remove: " +this.state.name + " " +index + " - " + JSON.stringify(rules));
+       
+        // Se notifica y volvemos a recibir a través de componentWillReceiveProps
+        //
+        this.props.setFieldValue(this.state.name, rules);
+        
+        
         return false;
+    }
+    
+    addRule() {
+         let rules = this.state.rules;
+         rules.push({});
+         
+         this.props.setFieldValue(this.state.name, rules); 
     }
 
     render() {
         const { rules } = this.state;
         return (
             <div>
-                {rules && rules.length > 0 &&
-                    <table className="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Expresión regular</th>
-                                <th scope="col">Nivel</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
+                <table className="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Expresión regular</th>
+                            <th scope="col">Nivel</th>
+                            <th scope="col"></th>
+                            <th scope="col"><Button onClick={this.addRule} >Agregar</Button></th>
+                        </tr>
+                    </thead>
+                    {rules && rules.length > 0 &&
                         <tbody>
                             {rules.map((rule, index) =>
                                 <tr key={'tr' + index}>
@@ -51,14 +73,14 @@ class AgentRules extends React.Component {
                                     <td>{rule.regularExpression}</td>
                                     <td>{rule.severity}</td>
                                     <td>
-                                        <Rule value={rule} index={index} buttonValue="Ver" onChangeRuleHandler={this.onChangeRuleHandler} />
+                                        <Rule value={rule} indexValue={index} buttonValue="Ver" onChangeRuleHandler={this.onChangeRuleHandler} />
                                     </td>
                                     <td><Button onClick={() => this.removeRule(index)} >Eliminar</Button></td>
                                 </tr>
                             )}
                         </tbody>
-                    </table>
-                }
+                    }
+                 </table>
             </div>
         );
     }

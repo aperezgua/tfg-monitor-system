@@ -22,8 +22,7 @@ class AgentEditNoParams extends React.Component {
             error : null,
             systemsList : null
         };
-        this.onChangeTokenHandler = this.onChangeTokenHandler.bind(this);        
-        this.onChangeRulesHandler = this.onChangeRulesHandler.bind(this);
+        this.onChangeTokenHandler = this.onChangeTokenHandler.bind(this);
     }
     componentDidMount() {
          
@@ -53,13 +52,7 @@ class AgentEditNoParams extends React.Component {
           agent: {token : newToken}
         })
     }
-    
-    onChangeRulesHandler(newRules) {
-        this.setState({
-          agent: {rules : newRules}
-        })
-    }
-    
+        
     render() {
         const { error, agent, systemsList } = this.state;
         
@@ -88,7 +81,7 @@ class AgentEditNoParams extends React.Component {
                                 }
                             );
                     }}>
-                    {({errors, status, touched}) => (
+                    {({errors, status, touched, setFieldValue, setValues}) => (
                         <FormFormik key="editAgentForm">
                             <Form.Group>
                                 <AgentToken name="token" value={agent && agent.token} onChangeTokenHandler={this.onChangeTokenHandler}/>
@@ -113,7 +106,8 @@ class AgentEditNoParams extends React.Component {
                                    <option value="true">Activo</option>
                                    <option value="false">Inactivo</option>
                                  </Field>
-                            </Form.Group>                            
+                            </Form.Group>
+                            <AgentRules value={agent && agent.rules} name="rules" setFieldValue={setFieldValue} setValues={setValues} />
                             {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
                             {status && status.result && <Alert key="alertOk" variant="success" >{status.result}</Alert> }
                             <Form.Group>
@@ -123,7 +117,7 @@ class AgentEditNoParams extends React.Component {
                     )}
                  </Formik>
                  }
-                 {!error && <AgentRules value={agent && agent.rules} onChangeRulesHandler={this.onChangeRulesHandler}/>}
+                 
                  {error && <Alert key="alertError2" variant="danger" >{error}</Alert>}
              </div>
         );

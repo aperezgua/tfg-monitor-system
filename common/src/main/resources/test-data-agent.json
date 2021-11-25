@@ -5,14 +5,24 @@
         "systems": {"id":10001},
         "active": true,
         "createdDate": 1637097647598,
-        "rules" :[ {
-            "active": true,
-            "name" : "Regla 1",
-            "regularExpression" : ".*",
-            "severity" : "MAJOR",
-            "matchType" : "ANY",
-            "calculationType" : "DIRECT_VALUE"
-        } ],
+        "rules" :[ 
+            {
+                "active": true,
+                "name" : "Regla 1",
+                "regularExpression" : ".*",
+                "severity" : "MAJOR",
+                "matchType" : "ANY",
+                "calculationType" : "DIRECT_VALUE"
+            }, 
+            {
+                "active": true,
+                "name" : "Regla 2",
+                "regularExpression" : "[A-Z]{4}",
+                "severity" : "MINOR",
+                "matchType" : "ANY",
+                "calculationType" : "DIRECT_VALUE"
+            }
+        ],
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"
     },
     {
