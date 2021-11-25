@@ -19,19 +19,20 @@ class AgentToken extends React.Component {
     
     componentWillReceiveProps(nextProps) {
         this.setState({
-            fieldName : nextProps.name,
             fieldValue: nextProps.value,
             fieldOriginalValue : nextProps.value
         });
     }
     
     generateToken() {
-        console.log("lala");
+        const {fieldName, fieldValue, fieldOriginalValue} = this.state;
         
         agentService.generateToken().then(
             token => {
-                this.setState({fieldValue : token.token});
-                this.props.onChangeTokenHandler(token.token);
+                console.log("lala: " +fieldName + " = " +token.token);
+                //this.setState({fieldValue : token.token });
+                this.props.setFieldValue(fieldName, token.token);
+                
             },
             error => {
               console.log("error" + error);  

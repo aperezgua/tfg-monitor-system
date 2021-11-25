@@ -17,12 +17,11 @@ class AgentEditNoParams extends React.Component {
                 name : '',
                 systems : {},
                 active : true,
-                rules : {}
+                rules : []
             },
             error : null,
             systemsList : null
         };
-        this.onChangeTokenHandler = this.onChangeTokenHandler.bind(this);
     }
     componentDidMount() {
          
@@ -38,6 +37,11 @@ class AgentEditNoParams extends React.Component {
         if (this.props.params.token && this.props.params.token != '0') {
             agentService.get(this.props.params.token).then(
                 agent => {
+                    
+                    if(!agent.rules) {
+                        agent.rules = [];
+                    }
+                    
                     this.setState( {agent} );
                 },
                 error => {
@@ -47,11 +51,6 @@ class AgentEditNoParams extends React.Component {
         } 
     }
     
-    onChangeTokenHandler(newToken) {
-        this.setState({
-          agent: {token : newToken}
-        })
-    }
         
     render() {
         const { error, agent, systemsList } = this.state;
@@ -81,10 +80,11 @@ class AgentEditNoParams extends React.Component {
                                 }
                             );
                     }}>
-                    {({errors, status, touched, setFieldValue, setValues}) => (
+                    {({values, errors, status, touched, setFieldValue}) => (
                         <FormFormik key="editAgentForm">
                             <Form.Group>
-                                <AgentToken name="token" value={agent && agent.token} onChangeTokenHandler={this.onChangeTokenHandler}/>
+                               
+                                <AgentToken name="token" value={values && values.token} setFieldValue={setFieldValue}/>
                                 <ErrorMessage name="token" component="div" className="alert alert-error" />
                             </Form.Group>
                             <Form.Group>
@@ -107,7 +107,7 @@ class AgentEditNoParams extends React.Component {
                                    <option value="false">Inactivo</option>
                                  </Field>
                             </Form.Group>
-                            <AgentRules value={agent && agent.rules} name="rules" setFieldValue={setFieldValue} setValues={setValues} />
+                            <AgentRules value={values && values.rules} name="rules" setFieldValue={setFieldValue} />
                             {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
                             {status && status.result && <Alert key="alertOk" variant="success" >{status.result}</Alert> }
                             <Form.Group>
