@@ -1,4 +1,4 @@
-package org.log4j.appender;
+package edu.uoc.tfgmonitorsystem.log4jappender;
 
 import java.io.BufferedReader;
 import java.io.IOException;
