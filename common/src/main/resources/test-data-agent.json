@@ -12,7 +12,13 @@
                 "regularExpression" : ".*",
                 "severity" : "MAJOR",
                 "matchType" : "ANY",
-                "calculationType" : "DIRECT_VALUE"
+                "calculationType" : "DIRECT_VALUE",
+                "conditions" : [ {
+                    "value" : 540,
+                    "comparationType" : "CONTAINS",
+                    "time" : ""
+                }
+                ]
             }, 
             {
                 "active": true,
@@ -20,7 +26,8 @@
                 "regularExpression" : "[A-Z]{4}",
                 "severity" : "MINOR",
                 "matchType" : "ANY",
-                "calculationType" : "DIRECT_VALUE"
+                "calculationType" : "DIRECT_VALUE",
+                "conditions" : []
             }
         ],
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"

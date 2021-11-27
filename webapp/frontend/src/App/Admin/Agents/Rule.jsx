@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
+import { RuleConditions } from 'App/Admin/Agents';
 import * as Yup from 'yup';
 
 class Rule extends React.Component {
@@ -52,11 +53,11 @@ class Rule extends React.Component {
                                 matchType: Yup.string().required('Es necesario especificar un valor.'),
                                 severity: Yup.string().required('Es necesario especificar un valor.')
                             })}
-                            onSubmit={( values, { setStatus, setSubmitting }) => {                                
+                            onSubmit={( values) => {                                
                                 this.handleFormValueChage(values);
                                 this.handleClose();
                             }}>
-                            {({errors, touched, submitForm}) => (
+                            {({values, errors, touched, submitForm, setFieldValue}) => (
                                 <div>
                                 <Modal.Body>
                                     <FormFormik key="editRuleForm">
@@ -119,6 +120,7 @@ class Rule extends React.Component {
                                              </Field>
                                              <ErrorMessage name="severity" component="div" className="alert alert-error" />
                                         </Form.Group>
+                                        <RuleConditions value={values && values.conditions} name="conditions" setFieldValue={setFieldValue} />
                                     </FormFormik>
                                  </Modal.Body>
                                   <Modal.Footer>

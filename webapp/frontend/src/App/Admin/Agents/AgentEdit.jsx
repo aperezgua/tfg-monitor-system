@@ -7,8 +7,10 @@ import { useParams } from "react-router-dom";
 import { AgentToken, AgentRules } from 'App/Admin/Agents';
 import * as Yup from 'yup';
 
-
+/** Componente para editar un agente */
 class AgentEditNoParams extends React.Component {
+    
+   /** Constructor dónde son inicializados los datos del state */
    constructor(props) {
         super(props);
         this.state = {
@@ -23,6 +25,9 @@ class AgentEditNoParams extends React.Component {
             systemsList : null
         };
     }
+    
+    /** Cuando es creado el componente se llama al servicio para cargar los sistemas y si se especifica token, los datos
+        del agente */
     componentDidMount() {
          
          systemsService.find({activeTypeFilter : "ACTIVE"}).then(
