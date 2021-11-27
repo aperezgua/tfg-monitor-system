@@ -1,6 +1,6 @@
 package edu.uoc.tfgmonitorsystem.common.controller.security;
 
-import edu.uoc.tfgmonitorsystem.common.model.document.User;
+import edu.uoc.tfgmonitorsystem.common.model.document.Credential;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,13 +56,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private void setUserInContext(HttpServletRequest request, final String requestTokenHeader) {
         try {
-            User user = jwtTokenUtil.getUserFromToken(requestTokenHeader);
+            Credential credential = jwtTokenUtil.getCredentialFromToken(requestTokenHeader);
 
             // Si el username es válido, quiere decir que el token es válido y se permite el paso.
-            if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (credential != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        user, null, new ArrayList<>());
+                        credential, null, new ArrayList<>());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

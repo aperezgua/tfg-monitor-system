@@ -7,13 +7,12 @@ package org.log4j.appender;
 public class App {
     public static void main(String[] args) {
 
-        String authUrl = "http://localhost:8091/";
+        HttpClient client = new HttpClient("http://localhost:8091/authenticate", "http://localhost:8095/rest/log/put",
+                "0bac5204-4951-11ec-81d3-0242ac130003");
 
-//        URL url = new URL(authUrl);
-//        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//        con.setRequestMethod("GET");
+        System.out.println("Auth::::" + client.authenticate() + "::::");
 
-        System.out.println("Hello World!");
+        System.out.println("log!" + client.putLogAndRetry("fadsfasdfadsfads"));
 
     }
 }

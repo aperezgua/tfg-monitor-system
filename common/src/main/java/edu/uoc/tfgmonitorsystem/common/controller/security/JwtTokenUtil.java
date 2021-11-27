@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.common.controller.security;
 
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
+import edu.uoc.tfgmonitorsystem.common.model.document.Credential;
 import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import io.jsonwebtoken.Claims;
@@ -45,6 +46,8 @@ public class JwtTokenUtil {
     public String generateToken(Agent agent) {
         Map<String, Object> claims = new HashMap<>();
 
+        claims.put(ROL_CLAIM, Rol.AGENT);
+
         return doGenerateToken(claims, agent.getToken());
     }
 
@@ -68,24 +71,41 @@ public class JwtTokenUtil {
         return claimsResolver.apply(claims);
     }
 
+    /**
+     * Dado un token obtiene una credencial para setear en el contexto de tal forma que pueda ser recuperada en nuestros
+     * Controller.
+     *
+     * @param token
+     * @return
+     */
+    public Credential getCredentialFromToken(String token) {
+        final Claims claims = getAllClaimsFromToken(token);
+
+        Rol rol = Rol.valueOf(claims.get(ROL_CLAIM, String.class));
+
+        if (rol != null && rol.isUser()) {
+
+            User user = new User();
+            user.setEmail(claims.getSubject());
+            user.setName(claims.get(NAME_CLAIM, String.class));
+            user.setRol(rol);
+
+            return user;
+        }
+        if (rol != null && rol.isAgent()) {
+            Agent agent = new Agent();
+            agent.setToken(claims.getSubject());
+            return agent;
+        }
+        return null;
+    }
+
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
 
     public Date getIssuedAtDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getIssuedAt);
-    }
-
-    public User getUserFromToken(String token) {
-        final Claims claims = getAllClaimsFromToken(token);
-
-        User user = new User();
-        user.setEmail(claims.getSubject());
-        user.setName(claims.get(NAME_CLAIM, String.class));
-
-        user.setRol(Rol.valueOf(claims.get(ROL_CLAIM, String.class)));
-
-        return user;
     }
 
     public Boolean validateToken(String token) {

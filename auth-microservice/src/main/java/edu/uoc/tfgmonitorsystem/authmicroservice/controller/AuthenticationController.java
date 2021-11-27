@@ -34,13 +34,14 @@ public class AuthenticationController {
         if (authenticationRequest.getAgentToken() != null) {
             LOGGER.debug("getAgentToken: " + authenticationRequest.getAgentToken());
             token = jwtTokenUtil.generateToken(authService.agentAuthenticate(authenticationRequest.getAgentToken()));
-        } else {
-            LOGGER.debug("Login: " + authenticationRequest.getUsername());
-            token = jwtTokenUtil.generateToken(authService.userAuthenticate(authenticationRequest.getUsername(),
-                    authenticationRequest.getPassword()));
+            return ResponseEntity.ok(token);
         }
 
+        LOGGER.debug("Login: " + authenticationRequest.getUsername());
+        token = jwtTokenUtil.generateToken(
+                authService.userAuthenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
         return ResponseEntity.ok(new JwtResponse(token));
+
     }
 
 }

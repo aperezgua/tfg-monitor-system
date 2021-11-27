@@ -5,5 +5,13 @@ package edu.uoc.tfgmonitorsystem.common.model.document;
  *
  */
 public enum Rol {
-    ADMINISTRATOR, SUPPORT;
+    ADMINISTRATOR, SUPPORT, AGENT;
+
+    public boolean isAgent() {
+        return this.equals(AGENT);
+    }
+
+    public boolean isUser() {
+        return this.equals(ADMINISTRATOR) || this.equals(SUPPORT);
+    }
 }
