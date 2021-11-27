@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.agentmicroservice.model.service;
 
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.AgentFilter;
+import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.AgentWithLastNotificationData;
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import java.util.List;
@@ -35,5 +36,7 @@ public interface IAgentService {
      * @throws TfgMonitorSystenException en caso de producirse un error.
      */
     Agent findByToken(String token) throws TfgMonitorSystenException;
+
+    List<AgentWithLastNotificationData> findLastNotificationData() throws TfgMonitorSystenException;
 
 }

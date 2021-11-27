@@ -37,6 +37,14 @@ public class Agent extends BaseDocument implements Credential {
         super();
     }
 
+    public Agent(Agent agent) {
+        this.active = agent.active;
+        this.token = agent.token;
+        this.systems = agent.systems;
+        this.name = agent.name;
+        this.createdDate = agent.createdDate;
+    }
+
     public Boolean getActive() {
         return active;
     }

@@ -52,12 +52,6 @@ public class UsersController {
         return user;
     }
 
-    @RequestMapping(value = "/all", method = { RequestMethod.GET })
-    public List<User> getAll() throws TfgMonitorSystenException {
-        return userService.findAll();
-
-    }
-
     /**
      * Guarda un usuario obtenido a través de la request.
      *

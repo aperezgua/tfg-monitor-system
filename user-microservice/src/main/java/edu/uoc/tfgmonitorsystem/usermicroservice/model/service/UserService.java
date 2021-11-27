@@ -56,11 +56,6 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> findAll() throws TfgMonitorSystenException {
-        return userRepository.findAll();
-    }
-
-    @Override
     public List<User> findByFilter(UserFilter filter) throws TfgMonitorSystenException {
 
         Query query = new Query();
