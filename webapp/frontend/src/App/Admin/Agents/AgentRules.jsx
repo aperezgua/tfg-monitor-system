@@ -44,7 +44,15 @@ class AgentRules extends React.Component {
     
     addRule() {
          let rules = this.state.rules;
-         rules.push({active : true, name : '', calculationType : 'DIRECT_VALUE', severity : 'MINOR', matchType : 'ALL', regularExpression : ''});
+         rules.push({
+                active : true, 
+                name : '', 
+                calculationType : 'DIRECT_VALUE', 
+                severity : 'MINOR', 
+                matchType : 'ALL', 
+                regularExpression : '',
+                conditions : []
+                });
          this.props.setFieldValue(this.state.name, rules); 
     }
 
