@@ -35,8 +35,8 @@ public class SystemsController {
     /**
      * Busca sistemas según un filtro.
      *
-     * @param filter UserFilter con los datos de filtrado de usuario.
-     * @return Listado de usuarios que coinciden con el filtro.
+     * @param filter SystemFilter con los datos de filtrado de los sistemas.
+     * @return Listado de sistemas que coinciden con el filtro.
      */
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
     public List<Systems> find(@RequestBody SystemFilter filter) throws TfgMonitorSystenException {
@@ -45,6 +45,13 @@ public class SystemsController {
         return systems;
     }
 
+    /**
+     * Obtiene un sistema por su id.
+     *
+     * @param id Integer con el id del sistema
+     * @return sistema que coincide con el ID.
+     * @throws TfgMonitorSystenException en caso de producirse un error
+     */
     @GetMapping("/get/{id}")
     public Systems get(@PathVariable Integer id) throws TfgMonitorSystenException {
         Systems systems = systemsService.findById(id);
@@ -62,7 +69,7 @@ public class SystemsController {
     public Systems put(@Valid @RequestBody Systems systems) throws TfgMonitorSystenException {
 
         Systems updatedSystems = systemsService.createOrUpdate(systems);
-        LOGGER.debug("user=" + systems + ", return=" + updatedSystems);
+        LOGGER.debug("systems=" + systems + ", return=" + updatedSystems);
         return updatedSystems;
 
     }

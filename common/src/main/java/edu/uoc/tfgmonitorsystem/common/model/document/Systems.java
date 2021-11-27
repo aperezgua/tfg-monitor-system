@@ -1,5 +1,6 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
+import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -15,32 +16,26 @@ public class Systems extends BaseDocument {
     @Transient
     public static final String SEQUENCE_NAME = "systems_sequence";
 
+    private Boolean active;
+    @DBRef()
+    private Country country;
+
+    private Date createdDate;
+
     /**
      * Id del sistema.
      */
     @Id
     private Integer id;
+
     /**
      * Nombre del sistema.
      */
-    @NotBlank(message = "Email is mandatory")
+    @NotBlank(message = "systems.name.mandatory")
     private String name;
-
-    @DBRef()
-    private Country country;
-
-    private Boolean active;
 
     public Systems() {
         super();
-    }
-
-    public Systems(Integer id, String name, Country country, Boolean active) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.country = country;
-        this.active = active;
     }
 
     public Boolean getActive() {
@@ -49,6 +44,10 @@ public class Systems extends BaseDocument {
 
     public Country getCountry() {
         return country;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
     public Integer getId() {
@@ -65,6 +64,10 @@ public class Systems extends BaseDocument {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public void setId(Integer id) {

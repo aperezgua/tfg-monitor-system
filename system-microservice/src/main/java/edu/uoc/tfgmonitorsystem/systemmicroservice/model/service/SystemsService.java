@@ -6,6 +6,7 @@ import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException
 import edu.uoc.tfgmonitorsystem.common.model.repository.SystemsRepository;
 import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import edu.uoc.tfgmonitorsystem.systemmicroservice.model.dto.SystemFilter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,9 @@ public class SystemsService implements ISystemsService {
     public Systems createOrUpdate(Systems systems) throws TfgMonitorSystenException {
         if (systems.getId() == null) {
             systems.setId(dbSequenceService.generateDbSequence(Systems.SEQUENCE_NAME));
+            systems.setCreatedDate(new Date());
         }
+
         return systemsRepository.save(systems);
     }
 

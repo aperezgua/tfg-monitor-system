@@ -1,5 +1,7 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
@@ -17,35 +19,36 @@ public class User extends BaseDocument {
     public static final String SEQUENCE_NAME = "user_sequence";
 
     /**
-     * Id del usuario.
+     * Si el usuario se encuentra activo.
      */
-    @Id
-    private Integer id;
-    /**
-     * Nombre del usuario.
-     */
-    private String name;
-    /**
-     * Email del usuario.
-     */
-    @NotBlank(message = "Email is mandatory")
-    @Indexed(unique = true)
-    private String email;
-
-    /**
-     * Password encriptado.
-     */
-    @NotBlank(message = "Password is mandatory")
-    private String password;
-
+    private Boolean active;
     /**
      * Fecha de creación del usuario.
      */
     private Date createdDate;
     /**
-     * Si el usuario se encuentra activo.
+     * Email del usuario.
      */
-    private Boolean active;
+    @NotBlank(message = "user.email.mandatory")
+    @Indexed(unique = true)
+    private String email;
+
+    /**
+     * Id del usuario.
+     */
+    @Id
+    private Integer id;
+
+    /**
+     * Nombre del usuario.
+     */
+    private String name;
+    /**
+     * Password encriptado.
+     */
+    @NotBlank(message = "user.password.mandatory")
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private String password;
 
     /**
      * Rol de este usuario.
@@ -54,16 +57,6 @@ public class User extends BaseDocument {
 
     public User() {
         super();
-    }
-
-    public User(Integer id, String name, String email, String password, Date createdDate, Boolean active, Rol rol) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.createdDate = createdDate;
-        this.active = active;
-        this.rol = rol;
     }
 
     public Boolean getActive() {

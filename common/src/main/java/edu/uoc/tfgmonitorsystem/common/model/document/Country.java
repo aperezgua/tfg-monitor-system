@@ -20,12 +20,6 @@ public class Country extends BaseDocument {
         super();
     }
 
-    public Country(Integer id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
-
     public Integer getId() {
         return id;
     }

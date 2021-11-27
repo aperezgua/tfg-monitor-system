@@ -12,6 +12,7 @@ public class Error404Dto implements Serializable {
 
     public Error404Dto(String key, String message) {
         this.message = message;
+        this.key = key;
     }
 
     public String getKey() {

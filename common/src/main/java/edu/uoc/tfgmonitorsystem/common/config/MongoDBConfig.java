@@ -3,8 +3,10 @@ package edu.uoc.tfgmonitorsystem.common.config;
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import edu.uoc.tfgmonitorsystem.common.model.repository.AgentRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.CountryRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.SystemsRepository;
+import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import java.util.Arrays;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +45,7 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     public Jackson2RepositoryPopulatorFactoryBean getRepositoryPopulator() {
         Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
         factory.setResources(new Resource[] { new ClassPathResource("test-data-user.json"),
-                new ClassPathResource("test-data-system.json") });
+                new ClassPathResource("test-data-system.json"), new ClassPathResource("test-data-agent.json") });
         return factory;
     }
 
@@ -64,12 +66,16 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
      * @return
      */
     @Bean
-    CommandLineRunner commandLineRunner(SystemsRepository systemRepository, CountryRepository countryRepository) {
+    CommandLineRunner commandLineRunner(SystemsRepository systemRepository, CountryRepository countryRepository,
+            UserRepository userRepository, AgentRepository agentRepository) {
         return strings -> {
             // systemRepository.save(new MonitorizableSystem(1, "Sistema 1", countryRepository.findById(1).get(),
             // true));
 
-            LOGGER.debug("AKI: " + systemRepository.findById(10001).get());
+            LOGGER.debug("Country: " + countryRepository.findById(1).get());
+            LOGGER.debug("User: " + userRepository.findById(10001).get());
+            LOGGER.debug("Systems: " + systemRepository.findById(10001).get());
+            LOGGER.debug("Agent: " + agentRepository.findById("0bac5204-4951-11ec-81d3-0242ac130003").get());
         };
     }
 

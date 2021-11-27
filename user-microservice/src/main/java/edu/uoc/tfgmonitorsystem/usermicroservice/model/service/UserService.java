@@ -7,6 +7,7 @@ import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.dto.UserFilter;
 import edu.uoc.tfgmonitorsystem.usermicroservice.model.exception.EmailAlreadyExistsException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class UserService implements IUserService {
         if (user.getId() == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setId(dbSequenceService.generateDbSequence(User.SEQUENCE_NAME));
+            user.setCreatedDate(new Date());
             return userRepository.save(user);
         }
         User userToUpdate = findById(user.getId());

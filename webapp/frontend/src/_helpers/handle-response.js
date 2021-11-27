@@ -11,7 +11,7 @@ export function handleResponse(response) {
     }
     
     return response.text().then(text => {
-        console.log("response: " +text);
+        //console.log("response: " +text);
         
         const data = text && JSON.parse(text);
 
@@ -29,7 +29,7 @@ export function handleResponse(response) {
 }
 
 
-export function requestUrl(url, methodDescription, bodyData) {
+export async function requestUrl(url, methodDescription, bodyData) {
     let requestOptions = null;
     
     if(bodyData) {
@@ -37,11 +37,14 @@ export function requestUrl(url, methodDescription, bodyData) {
     } else {
       requestOptions = { method: methodDescription, headers: authHeader() };
     }
-    
-    return fetch(url, requestOptions)
-        .catch((error) => {
-            console.log(error);
-            
-        }).then(handleResponse);
+    console.log("requestUrl "+url);
+    let response;
+    try {
+        response = await fetch(url, requestOptions);
+    } catch (error) {
+        console.log(error);
+        const response = undefined;
+    }
+    return handleResponse(response);
     
 }

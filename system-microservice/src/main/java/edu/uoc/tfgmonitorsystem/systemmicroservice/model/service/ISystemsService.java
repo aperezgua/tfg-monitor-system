@@ -6,7 +6,7 @@ import edu.uoc.tfgmonitorsystem.systemmicroservice.model.dto.SystemFilter;
 import java.util.List;
 
 /**
- * Servicio que gestiona la lógica de negocio de los usuarios.
+ * Servicio que gestiona la lógica de negocio de los sistemas.
  */
 public interface ISystemsService {
 
