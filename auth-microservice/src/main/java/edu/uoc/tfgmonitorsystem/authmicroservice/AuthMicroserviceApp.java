@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice;
+package edu.uoc.tfgmonitorsystem.authmicroservice;
 
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;

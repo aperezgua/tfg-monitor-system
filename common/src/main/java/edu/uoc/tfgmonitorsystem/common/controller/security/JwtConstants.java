@@ -5,10 +5,6 @@ package edu.uoc.tfgmonitorsystem.common.controller.security;
  */
 public class JwtConstants {
 
-    private JwtConstants() {
-        super();
-    }
-
     /**
      * Cabecera usada para el token de autenticación.
      */
@@ -20,8 +16,12 @@ public class JwtConstants {
     public static final long TOKEN_VALID_TIME_MILLIS = 5 * 60 * 60 * 1000;
 
     /**
-     * URL usada para la autenticación en el sistema.
+     * URL usada para la autenticación en el sistema
      */
     public static final String AUTHORIZATION_URL = "/authenticate";
+
+    private JwtConstants() {
+        super();
+    }
 
 }
