@@ -1,5 +1,6 @@
 package edu.uoc.tfgmonitorsystem.common.controller.security;
 
+import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
 import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import io.jsonwebtoken.Claims;
@@ -36,10 +37,22 @@ public class JwtTokenUtil {
     }
 
     /**
+     * Genera un token para un agente.
+     *
+     * @param agent Agent con el objeto agente.
+     * @return String con el token JWT.
+     */
+    public String generateToken(Agent agent) {
+        Map<String, Object> claims = new HashMap<>();
+
+        return doGenerateToken(claims, agent.getToken());
+    }
+
+    /**
      * Genera un token para el usuario.
      *
-     * @param user
-     * @return
+     * @param user User con el usuario a generar el token.
+     * @return String con el token generado.
      */
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();

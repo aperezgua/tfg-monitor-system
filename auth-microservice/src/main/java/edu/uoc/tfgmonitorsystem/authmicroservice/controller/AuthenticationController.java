@@ -3,7 +3,6 @@ package edu.uoc.tfgmonitorsystem.authmicroservice.controller;
 import edu.uoc.tfgmonitorsystem.authmicroservice.model.service.IAuthService;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtConstants;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtTokenUtil;
-import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,14 +30,14 @@ public class AuthenticationController {
     @RequestMapping(value = JwtConstants.AUTHORIZATION_URL, method = RequestMethod.POST)
     public ResponseEntity<?> authenticate(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
-        LOGGER.debug("Login: " + authenticationRequest.getUsername());
         final String token;
         if (authenticationRequest.getAgentToken() != null) {
-            token = authenticationRequest.getAgentToken();
+            LOGGER.debug("getAgentToken: " + authenticationRequest.getAgentToken());
+            token = jwtTokenUtil.generateToken(authService.agentAuthenticate(authenticationRequest.getAgentToken()));
         } else {
-            User user = authService.userAuthenticate(authenticationRequest.getUsername(),
-                    authenticationRequest.getPassword());
-            token = jwtTokenUtil.generateToken(user);
+            LOGGER.debug("Login: " + authenticationRequest.getUsername());
+            token = jwtTokenUtil.generateToken(authService.userAuthenticate(authenticationRequest.getUsername(),
+                    authenticationRequest.getPassword()));
         }
 
         return ResponseEntity.ok(new JwtResponse(token));
