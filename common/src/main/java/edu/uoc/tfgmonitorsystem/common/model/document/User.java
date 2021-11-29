@@ -1,117 +1,123 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.Date;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Clase que representa a un usuario de la aplicación.
  */
 @Document
-public class User {
+public class User extends BaseDocument implements Credential {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "user_sequence";
+
+    /**
+     * Si el usuario se encuentra activo.
+     */
+    private Boolean active;
+    /**
+     * Fecha de creación del usuario.
+     */
+    private Date createdDate;
+    /**
+     * Email del usuario.
+     */
+    @NotBlank(message = "user.email.mandatory")
+    @Indexed(unique = true)
+    private String email;
 
     /**
      * Id del usuario.
      */
     @Id
     private Integer id;
+
     /**
      * Nombre del usuario.
      */
     private String name;
     /**
-     * Email del usuario.
-     */
-    private String email;
-    /**
      * Password encriptado.
      */
-    private String encriptedPassword;
-    /**
-     * Fecha de creación del usuario.
-     */
-    private Date createdDate;
-    /**
-     * Si el usuario se encuentra activo.
-     */
-    private Boolean active;
+    @NotBlank(message = "user.password.mandatory")
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private String password;
 
     /**
      * Rol de este usuario.
      */
     private Rol rol;
 
-    public User(Integer id, String name, String email, String encriptedPassword, Date createdDate, Boolean active,
-            Rol rol) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.encriptedPassword = encriptedPassword;
-        this.createdDate = createdDate;
-        this.active = active;
-        this.rol = rol;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+    public User() {
+        super();
     }
 
     public Boolean getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public String getEncriptedPassword() {
-        return encriptedPassword;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEncriptedPassword(String encriptedPassword) {
-        this.encriptedPassword = encriptedPassword;
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public Rol getRol() {
         return rol;
     }
 
+    @Override
+    public String getSubject() {
+        return email;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setRol(Rol rol) {
         this.rol = rol;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }

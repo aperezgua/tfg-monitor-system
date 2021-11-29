@@ -1,7 +1,7 @@
 import React from 'react';
 import { authenticationService } from '_services';
 import { Route, Routes} from 'react-router-dom'
-import { HomePage, UsersPage} from 'App/Admin';
+import { HomePage, UsersPage, SystemsPage, AgentsPage} from 'App/Admin';
 import { NotFound } from 'App/NotFound';
 import { Navbar, Nav } from 'react-bootstrap';
 import './AdminModule.css';
@@ -29,7 +29,9 @@ class AdminModule extends React.Component {
                         <Navbar bg="light" expand="lg">
                             <Nav className="me-auto">
                                 <Nav.Link href="/admin/home">Home</Nav.Link>
-                                <Nav.Link href="/admin/users">Usuarios</Nav.Link>
+                                <Nav.Link href="/admin/users/list">Usuarios</Nav.Link>
+                                <Nav.Link href="/admin/systems/list">Sistemas</Nav.Link>
+                                <Nav.Link href="/admin/agents/list">Agentes</Nav.Link>
                              </Nav>
                              <Nav className="justify-content-end">
                                 <Navbar.Text>[{currentUser.sub}] ::</Navbar.Text>
@@ -44,7 +46,9 @@ class AdminModule extends React.Component {
                        <div> 
                          <Routes>
                             <Route path="/home" element={<HomePage/>} />
-                            <Route path="/users" element={<UsersPage/>} />
+                            <Route path="/users/*" element={<UsersPage/>} />
+                            <Route path="/systems/*" element={<SystemsPage/>} />
+                            <Route path="/agents/*" element={<AgentsPage/>} />
                             <Route path="/*" element={NotFound}/>
                         </Routes>
                        </div>

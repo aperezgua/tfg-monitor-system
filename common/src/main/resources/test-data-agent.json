@@ -1,0 +1,44 @@
+[    
+    {
+        "token" : "0bac5204-4951-11ec-81d3-0242ac130003",
+        "name": "Agente 1",
+        "systems": {"id":10001},
+        "active": true,
+        "createdDate": 1637097647598,
+        "rules" :[ 
+            {
+                "active": true,
+                "name" : "Regla 1",
+                "regularExpression" : ".*",
+                "severity" : "MAJOR",
+                "matchType" : "ANY",
+                "calculationType" : "DIRECT_VALUE",
+                "conditions" : [ {
+                    "value" : 540,
+                    "comparationType" : "CONTAINS",
+                    "time" : ""
+                }
+                ]
+            }, 
+            {
+                "active": true,
+                "name" : "Regla 2",
+                "regularExpression" : "[A-Z]{4}",
+                "severity" : "MINOR",
+                "matchType" : "ANY",
+                "calculationType" : "DIRECT_VALUE",
+                "conditions" : []
+            }
+        ],
+        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"
+    },
+    {
+        "token" : "ac714c1a-4953-11ec-81d3-0242ac130003",
+        "name": "Agente 2",        
+        "systems": {"id":10001},
+        "active": true,
+        "createdDate": 1637099647598,
+        "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"
+    }
+    
+]

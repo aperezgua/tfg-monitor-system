@@ -1,23 +1,21 @@
 import config from 'config';
-import { authHeader, handleResponse } from '_helpers';
+import { requestUrl } from '_helpers';
 
 export const userService = {
-    getAll,
-    find
+    find,
+    get,
+    put
 };
-
-function getAll() {
-    const requestOptions = { method: 'GET', headers: authHeader() };
-    return fetch(`${config.apiUserUrl}/rest/users/all`, requestOptions).then(handleResponse);
-}
-
 
 
 function find(userFilter) {
-    const requestOptions = {
-        method: 'POST',
-        headers: authHeader(),
-        body: JSON.stringify(userFilter)
-    };
-    return fetch(`${config.apiUserUrl}/rest/users/find`, requestOptions).then(handleResponse);
+    return requestUrl(`${config.apiUserUrl}/rest/users/find`, 'POST',  JSON.stringify(userFilter));
+}
+
+function put(user) {
+    return requestUrl(`${config.apiUserUrl}/rest/users/put`, 'POST', JSON.stringify(user));
+}
+
+function get(id) {
+    return requestUrl(`${config.apiUserUrl}/rest/users/get/${id}`, 'GET');
 }

@@ -1,18 +1,19 @@
 import React from 'react';
-import { userService } from '_services';
+import { agentService } from '_services';
 
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        console.log("Entro en HomePage");
         this.state = {
             users : null
         };
     }
     
     componentDidMount() {
-        userService.getAll().then(
-            users => this.setState({ users }),
+        agentService.findLastNotificationData().then(
+            agents =>  {
+                this.setState({ agents });
+            },
             error => {
                 console.log("Error: " +(typeof error) + " " + error);
             }
@@ -20,16 +21,33 @@ class HomePage extends React.Component {
     }
     
     render() {
-        const { users} = this.state;
+        const { agents} = this.state;
         return (             
             <div>              
-             <h3>Users from secure api end point:</h3>
-                {users &&
-                    <ul>
-                        {users.map(user =>
-                            <li key={user.id}>{user.name} {user.email}</li>
+             <h3>Ultimos agentes notificados:</h3>
+               {agents && agents.length > 0 &&
+                   <table className="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Sistema</th>
+                          <th scope="col">Fecha última notificación</th>
+                          <th scope="col">Tamaño</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {agents.map(agent =>
+                            <tr key={'tr' +agent.token}>
+                              <th scope="row">{agent.token}</th>
+                              <td>{agent.name}</td>
+                              <td>{agent.systems && agent.systems.name}</td>
+                              <td>{agent.lastNotification}</td>
+                              <td>{agent.size}</td>
+                            </tr>
                         )}
-                    </ul>
+                      </tbody>
+                   </table>
                 }
              </div>
         );
