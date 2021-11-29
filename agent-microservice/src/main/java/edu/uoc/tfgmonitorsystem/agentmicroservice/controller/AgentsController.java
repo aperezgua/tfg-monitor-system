@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.agentmicroservice.controller;
 
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.AgentFilter;
+import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.AgentWithLastNotificationData;
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.TokenDto;
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.service.IAgentService;
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
@@ -35,15 +36,27 @@ public class AgentsController {
     private IAgentService agentService;
 
     /**
-     * Busca sistemas según un filtro.
+     * Busca agentes según un filtro.
      *
-     * @param filter UserFilter con los datos de filtrado de usuario.
-     * @return Listado de usuarios que coinciden con el filtro.
+     * @param filter AgentFilter con los datos de filtrado de agent.
+     * @return Listado de agentes que coinciden con el filtro.
      */
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
     public List<Agent> find(@RequestBody AgentFilter filter) throws TfgMonitorSystenException {
         List<Agent> agents = agentService.findByFilter(filter);
         LOGGER.debug("filter=" + filter + ", return=" + agents);
+        return agents;
+    }
+
+    /**
+     * Obtiene los agentes con notificaciones de log.
+     *
+     * @param filter UserFilter con los datos de filtrado de usuario.
+     * @return Listado de usuarios que coinciden con el filtro.
+     */
+    @RequestMapping(value = "/findLastNotificationData", method = { RequestMethod.GET })
+    public List<AgentWithLastNotificationData> findLastNotificationData() throws TfgMonitorSystenException {
+        List<AgentWithLastNotificationData> agents = agentService.findLastNotificationData();
         return agents;
     }
 

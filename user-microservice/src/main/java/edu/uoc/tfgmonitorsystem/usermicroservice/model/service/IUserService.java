@@ -18,9 +18,6 @@ public interface IUserService {
      */
     User createOrUpdate(User user) throws TfgMonitorSystenException;
 
-    @Deprecated
-    List<User> findAll() throws TfgMonitorSystenException;
-
     /**
      * Busca usuarios según un filtro aplicado.
      *

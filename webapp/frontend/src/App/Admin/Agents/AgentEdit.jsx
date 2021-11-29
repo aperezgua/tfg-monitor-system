@@ -88,7 +88,6 @@ class AgentEditNoParams extends React.Component {
                     {({values, errors, status, touched, setFieldValue}) => (
                         <FormFormik key="editAgentForm">
                             <Form.Group>
-                               
                                 <AgentToken name="token" value={values && values.token} setFieldValue={setFieldValue}/>
                                 <ErrorMessage name="token" component="div" className="alert alert-error" />
                             </Form.Group>
@@ -112,7 +111,7 @@ class AgentEditNoParams extends React.Component {
                                    <option value="false">Inactivo</option>
                                  </Field>
                             </Form.Group>
-                            <AgentRules value={values && values.rules} name="rules" setFieldValue={setFieldValue} />
+                            <AgentRules value={values && values.rules} agentTokenId={values && values.token}  name="rules" setFieldValue={setFieldValue} />
                             {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
                             {status && status.result && <Alert key="alertOk" variant="success" >{status.result}</Alert> }
                             <Form.Group>

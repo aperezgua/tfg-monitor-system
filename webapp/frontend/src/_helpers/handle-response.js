@@ -33,6 +33,7 @@ export async function requestUrl(url, methodDescription, bodyData) {
     let requestOptions = null;
     
     if(bodyData) {
+        console.log("POST DATA: " +JSON.stringify(bodyData));
       requestOptions = { method: methodDescription, headers: authHeader(), body : bodyData };
     } else {
       requestOptions = { method: methodDescription, headers: authHeader() };

@@ -40,7 +40,7 @@ public class UserService implements IUserService {
 
         if (user.getId() == null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setId(dbSequenceService.generateDbSequence(User.SEQUENCE_NAME));
+            user.setId((int) dbSequenceService.generateDbSequence(User.SEQUENCE_NAME));
             user.setCreatedDate(new Date());
             return userRepository.save(user);
         }
@@ -53,11 +53,6 @@ public class UserService implements IUserService {
 
         return userRepository.save(userToUpdate);
 
-    }
-
-    @Override
-    public List<User> findAll() throws TfgMonitorSystenException {
-        return userRepository.findAll();
     }
 
     @Override

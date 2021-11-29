@@ -30,7 +30,7 @@ public class SystemsService implements ISystemsService {
     @Override
     public Systems createOrUpdate(Systems systems) throws TfgMonitorSystenException {
         if (systems.getId() == null) {
-            systems.setId(dbSequenceService.generateDbSequence(Systems.SEQUENCE_NAME));
+            systems.setId((int) dbSequenceService.generateDbSequence(Systems.SEQUENCE_NAME));
             systems.setCreatedDate(new Date());
         }
 

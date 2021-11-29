@@ -16,7 +16,8 @@ public class DbSequenceService implements IDbSequenceService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public int generateDbSequence(final String seqName) {
+    @Override
+    public long generateDbSequence(final String seqName) {
         DbSequence counter = mongoTemplate.findAndModify(Query.query(Criteria.where("_id").is(seqName)),
                 new Update().inc("sequence", 1), FindAndModifyOptions.options().returnNew(true).upsert(true),
                 DbSequence.class);

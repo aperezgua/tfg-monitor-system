@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice;
+package edu.uoc.tfgmonitorsystem.logmicroservice;
 
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
@@ -9,13 +9,13 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan({ "edu.uoc.tfgmonitorsystem" })
-public class AuthMicroserviceApp {
+public class LogMicroserviceApp {
 
-    private static final Logger LOGGER = Logger.getLogger(AuthMicroserviceApp.class);
+    private static final Logger LOGGER = Logger.getLogger(LogMicroserviceApp.class);
 
     public static void main(String[] args) {
         LOGGER.debug(".........Start APP.........");
-        SpringApplication.run(AuthMicroserviceApp.class, args);
+        SpringApplication.run(LogMicroserviceApp.class, args);
     }
 
 }

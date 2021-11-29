@@ -25,7 +25,7 @@ class AgentToken extends React.Component {
     }
     
     generateToken() {
-        const {fieldName, fieldValue, fieldOriginalValue} = this.state;
+        const {fieldName} = this.state;
         
         agentService.generateToken().then(
             token => {

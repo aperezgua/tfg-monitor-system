@@ -161,6 +161,8 @@
 		<module>webapp</module>
     <module>system-microservice</module>
     <module>agent-microservice</module>
+    <module>log4j-appender</module>
+    <module>log-microservice</module>
   </modules>
 
 </project>

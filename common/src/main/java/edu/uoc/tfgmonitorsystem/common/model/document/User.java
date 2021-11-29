@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Clase que representa a un usuario de la aplicación.
  */
 @Document
-public class User extends BaseDocument {
+public class User extends BaseDocument implements Credential {
 
     @Transient
     public static final String SEQUENCE_NAME = "user_sequence";
@@ -85,6 +85,11 @@ public class User extends BaseDocument {
 
     public Rol getRol() {
         return rol;
+    }
+
+    @Override
+    public String getSubject() {
+        return email;
     }
 
     public void setActive(Boolean active) {

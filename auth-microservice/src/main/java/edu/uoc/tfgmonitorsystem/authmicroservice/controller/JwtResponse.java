@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.usermicroservice.controller;
+package edu.uoc.tfgmonitorsystem.authmicroservice.controller;
 
 import java.io.Serializable;
 

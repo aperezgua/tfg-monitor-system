@@ -5,7 +5,8 @@ export const agentService = {
     find,
     get,
     put,
-    generateToken
+    generateToken,
+    findLastNotificationData
 };
 
 
@@ -20,6 +21,11 @@ function put(agent) {
 function get(token) {
     return requestUrl(`${config.apiAgentUrl}/rest/agents/get/${token}`, 'GET');
 }
+
+function findLastNotificationData() {
+    return requestUrl(`${config.apiAgentUrl}/rest/agents/findLastNotificationData`, 'GET');
+}
+
 
 function generateToken() {
     return requestUrl(`${config.apiAgentUrl}/rest/agents/generateToken`, 'GET');

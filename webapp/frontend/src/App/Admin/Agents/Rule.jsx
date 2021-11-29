@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
-import { RuleConditions } from 'App/Admin/Agents';
+import { RuleConditions, RuleRegexp } from 'App/Admin/Agents';
 import * as Yup from 'yup';
 
 class Rule extends React.Component {
@@ -11,11 +11,19 @@ class Rule extends React.Component {
             indexValue : props.indexValue,
             rule : props.value,
             buttonValue : props.buttonValue,
-            show : false
+            show : false,
+            agentTokenId : props.agentTokenId
         };
         this.handleClose = this.handleClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleFormValueChage = this.handleFormValueChage.bind(this);
+    }
+
+    /** Si las propiedades del parent cambian las notifico */
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            agentTokenId: nextProps.agentTokenId
+        });
     }
 
     handleClose() {     
@@ -33,7 +41,7 @@ class Rule extends React.Component {
     }
 
     render() {
-        const { rule, buttonValue, show } = this.state;
+        const { rule, agentTokenId, buttonValue, show } = this.state;
         return (
             <div>
                 <Button onClick={this.handleShow}>{buttonValue}</Button>
@@ -82,8 +90,7 @@ class Rule extends React.Component {
                                             </Col>
                                          </Row>
                                          <Form.Group>
-                                           <Form.Label>Expresión regular:</Form.Label>
-                                           <Field name="regularExpression" type="text" className={'form-control' + (errors.regularExpression && touched.regularExpression ? ' is-invalid' : '')} />
+                                           <RuleRegexp name="regularExpression" agentTokenId={agentTokenId} value={values && values.regularExpression} setFieldValue={setFieldValue}/>                                        
                                            <ErrorMessage name="regularExpression" component="div" className="alert alert-error" />
                                         </Form.Group> 
                                         <Row>

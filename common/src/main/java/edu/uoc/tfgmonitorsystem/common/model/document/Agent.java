@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Agent extends BaseDocument {
+public class Agent extends BaseDocument implements Credential {
 
     private Boolean active;
     /**
@@ -37,6 +37,14 @@ public class Agent extends BaseDocument {
         super();
     }
 
+    public Agent(Agent agent) {
+        this.active = agent.active;
+        this.token = agent.token;
+        this.systems = agent.systems;
+        this.name = agent.name;
+        this.createdDate = agent.createdDate;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -51,6 +59,11 @@ public class Agent extends BaseDocument {
 
     public List<Rule> getRules() {
         return rules;
+    }
+
+    @Override
+    public String getSubject() {
+        return token;
     }
 
     public Systems getSystems() {

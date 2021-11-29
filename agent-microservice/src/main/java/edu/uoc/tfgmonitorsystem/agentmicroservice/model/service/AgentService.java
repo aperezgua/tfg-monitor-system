@@ -1,15 +1,20 @@
 package edu.uoc.tfgmonitorsystem.agentmicroservice.model.service;
 
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.AgentFilter;
+import edu.uoc.tfgmonitorsystem.agentmicroservice.model.dto.AgentWithLastNotificationData;
 import edu.uoc.tfgmonitorsystem.agentmicroservice.model.exception.TokenCanNotBeNullException;
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
+import edu.uoc.tfgmonitorsystem.common.model.document.Log;
 import edu.uoc.tfgmonitorsystem.common.model.exception.NoSuchElementInDbException;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import edu.uoc.tfgmonitorsystem.common.model.repository.AgentRepository;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -77,6 +82,33 @@ public class AgentService implements IAgentService {
             throw new NoSuchElementInDbException("agent.notfound", "Agent not found");
         }
         return agentOptional.get();
+    }
+
+    @Override
+    public List<AgentWithLastNotificationData> findLastNotificationData() throws TfgMonitorSystenException {
+        List<Agent> allAgents = agentRepository.findAll();
+
+        List<AgentWithLastNotificationData> finalAgents = new ArrayList<>();
+        for (Agent agent : allAgents) {
+            Query query = new Query(Criteria.where("agent").is(agent));
+
+            AgentWithLastNotificationData finalAgent = new AgentWithLastNotificationData(agent);
+
+            finalAgent.setSize(mongoTemplate.count(query, Log.class));
+
+            query.limit(1);
+            query.with(Sort.by(Sort.Direction.DESC, "date"));
+
+            Log lastLog = mongoTemplate.findOne(query, Log.class);
+
+            finalAgent.setLastNotification(lastLog != null ? lastLog.getDate() : null);
+
+            finalAgents.add(finalAgent);
+        }
+
+        Collections.sort(finalAgents);
+
+        return finalAgents;
     }
 
 }
