@@ -26,15 +26,14 @@ public class HttpClient {
      * @return
      */
     public String authenticate() {
-        try {
-            HttpURLConnection connection = createPostConnection(authenticateUrl, "application/json; utf-8");
+        HttpURLConnection connection = createPostConnection(authenticateUrl, "application/json; utf-8");
+        if (connection != null) {
             jwtToken = sendPostData(connection, "{ \"agentToken\" : \"" + agentTokenId + "\" }\n");
-
             connection.disconnect();
-        } catch (IOException io) {
+        } else {
             jwtToken = null;
-            io.printStackTrace();
         }
+
         return jwtToken;
     }
 
@@ -53,28 +52,31 @@ public class HttpClient {
      * @return
      * @throws IOException
      */
-    private HttpURLConnection createPostConnection(String urlString, String contentType) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", contentType);
-        if (jwtToken != null) {
-            connection.setRequestProperty("Authorization", jwtToken);
+    private HttpURLConnection createPostConnection(String urlString, String contentType) {
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", contentType);
+            if (jwtToken != null) {
+                connection.setRequestProperty("Authorization", jwtToken);
+            }
+            connection.setDoOutput(true);
+            return connection;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        connection.setDoOutput(true);
-
-        return connection;
+        return null;
     }
 
     private String putLog(String log) {
-        try {
-            HttpURLConnection connection = createPostConnection(putUrl, "text/plain; utf-8");
+        HttpURLConnection connection = createPostConnection(putUrl, "text/plain; utf-8");
+
+        if (connection != null) {
             String result = sendPostData(connection, log);
             connection.disconnect();
             return result;
 
-        } catch (IOException io) {
-            io.printStackTrace();
         }
         return null;
     }
@@ -87,10 +89,16 @@ public class HttpClient {
      * @return
      * @throws IOException
      */
-    private String sendPostData(HttpURLConnection connection, String json) throws IOException {
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = json.getBytes("utf-8");
-            os.write(input, 0, input.length);
+    private String sendPostData(HttpURLConnection connection, String json) {
+        try {
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = json.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+        } catch (IOException e) {
+//            System.out.println("Cannot send " + json);
+//            e.printStackTrace();
+
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
@@ -100,7 +108,11 @@ public class HttpClient {
             }
 
             return response.toString();
+        } catch (IOException e) {
+//            System.out.println("Cannot send receive response " + json);
+//            e.printStackTrace();
         }
+        return null;
     }
 
 }

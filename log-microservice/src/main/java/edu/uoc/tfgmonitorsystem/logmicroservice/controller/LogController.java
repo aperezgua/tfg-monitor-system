@@ -3,7 +3,10 @@ package edu.uoc.tfgmonitorsystem.logmicroservice.controller;
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
 import edu.uoc.tfgmonitorsystem.common.model.document.Log;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.RegexpFilter;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.service.ILogService;
+import java.util.List;
+import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,6 +29,16 @@ public class LogController {
     @Autowired
     private ILogService logService;
 
+    @RequestMapping(value = "/findByRegexp", method = { RequestMethod.POST })
+    public List<Log> findByRegexp(@Valid @RequestBody RegexpFilter regexpFilter) throws TfgMonitorSystenException {
+
+        List<Log> logs = logService.findByRegexp(regexpFilter);
+
+        LOGGER.debug("findByRegexp=" + regexpFilter + " -> " + logs);
+        return logs;
+
+    }
+
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
     public String put(Authentication authentication, @RequestBody String lineLog) throws TfgMonitorSystenException {
 
@@ -41,5 +54,4 @@ public class LogController {
         return "OK";
 
     }
-
 }

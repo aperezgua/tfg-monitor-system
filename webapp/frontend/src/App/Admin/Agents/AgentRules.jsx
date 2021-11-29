@@ -7,15 +7,20 @@ class AgentRules extends React.Component {
         super(props);
         this.state = {
             name: props.name,
-            rules: props.value
+            rules: props.value, 
+            agentTokenId : props.agentTokenId
         };
         this.removeRule = this.removeRule.bind(this);
         this.addRule = this.addRule.bind(this);
         this.onChangeRuleHandler = this.onChangeRuleHandler.bind(this);
     }
 
+    /** Se actualizan las propiedades recibidas */
     componentWillReceiveProps(nextProps) {
-        this.setState({ rules: nextProps.value })
+        this.setState({ 
+            rules: nextProps.value ,
+            agentTokenId : nextProps.agentTokenId
+        });
     }
     
     
@@ -57,7 +62,7 @@ class AgentRules extends React.Component {
     }
 
     render() {
-        const { rules } = this.state;
+        const { rules, agentTokenId } = this.state;
         return (
             <div>
                 <table className="table table-striped table-hover">
@@ -80,7 +85,7 @@ class AgentRules extends React.Component {
                                     <td>{rule.regularExpression}</td>
                                     <td>{rule.severity}</td>
                                     <td>
-                                        <Rule value={rule} indexValue={index} buttonValue="Ver" onChangeRuleHandler={this.onChangeRuleHandler} />
+                                        <Rule value={rule} agentTokenId={agentTokenId} indexValue={index} buttonValue="Ver" onChangeRuleHandler={this.onChangeRuleHandler} />
                                     </td>
                                     <td><Button onClick={() => this.removeRule(index)} >Eliminar</Button></td>
                                 </tr>
