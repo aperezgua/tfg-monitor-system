@@ -3,15 +3,24 @@ package edu.uoc.tfgmonitorsystem.common.model.document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Clase que gestiona la colección de secuencias de la base de datos.
+ */
 @Document()
 public class DbSequence {
 
-    private int sequence;
+    /**
+     * Contado de secuencia para el documento de MongoDB.
+     */
+    private long sequence;
 
+    /**
+     * Nombre de la colección.
+     */
     @Id
     private String sequenceName;
 
-    public int getSequence() {
+    public long getSequence() {
         return sequence;
     }
 
@@ -19,7 +28,7 @@ public class DbSequence {
         return sequenceName;
     }
 
-    public void setSequence(int sequence) {
+    public void setSequence(long sequence) {
         this.sequence = sequence;
     }
 

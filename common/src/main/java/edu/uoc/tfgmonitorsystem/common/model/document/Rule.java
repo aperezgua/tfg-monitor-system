@@ -1,25 +1,55 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
 import java.util.List;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Regla usada por el documento Agent.
+ */
+@Document
 public class Rule extends BaseDocument {
 
+    /**
+     * Si la regla está activa o no.
+     */
     private Boolean active;
 
+    /**
+     * Tipo de cálculo usado.
+     */
     private CalculationType calculationType;
 
+    /**
+     * Tipo de coincidencia para la regla.
+     */
     private MatchType matchType;
 
+    /**
+     * Nombre de la regla.
+     */
     private String name;
 
+    /**
+     * Expresión regular.
+     */
     private String regularExpression;
 
+    /**
+     * Nivel de la regla.
+     */
     private Severity severity;
 
+    /**
+     * Conjunto de condiciones que forman la regla.
+     */
     private List<Condition> conditions;
 
     public Rule() {
         super();
+    }
+
+    public Condition findConditionByIndex(int index) {
+        return conditions.get(index);
     }
 
     public Boolean getActive() {

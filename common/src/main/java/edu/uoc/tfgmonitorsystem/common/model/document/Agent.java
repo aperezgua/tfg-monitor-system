@@ -7,10 +7,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Documento que representa a un agente de datos.
+ */
 @Document
 public class Agent extends BaseDocument implements Credential {
 
+    /**
+     * Si el agente está activo o no.
+     */
     private Boolean active;
+
     /**
      * Fecha de creación del usuario.
      */
@@ -22,15 +29,21 @@ public class Agent extends BaseDocument implements Credential {
     @NotBlank(message = "agent.name.mandatory")
     private String name;
 
+    /**
+     * Referencia al sistema al que pertenece este agente.
+     */
     @DBRef()
     private Systems systems;
 
     /**
-     * Id del sistema.
+     * token identificativo del agente.
      */
     @Id
     private String token;
 
+    /**
+     * Reglas definidas para el agente.
+     */
     private List<Rule> rules;
 
     public Agent() {

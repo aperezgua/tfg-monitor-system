@@ -3,7 +3,7 @@ package edu.uoc.tfgmonitorsystem.logmicroservice.controller;
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
 import edu.uoc.tfgmonitorsystem.common.model.document.Log;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
-import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.RegexpFilter;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.service.ILogService;
 import java.util.List;
 import javax.validation.Valid;
@@ -30,9 +30,9 @@ public class LogController {
     private ILogService logService;
 
     @RequestMapping(value = "/findByRegexp", method = { RequestMethod.POST })
-    public List<Log> findByRegexp(@Valid @RequestBody RegexpFilter regexpFilter) throws TfgMonitorSystenException {
+    public List<Log> findByRegexp(@Valid @RequestBody AgentLogFilter regexpFilter) throws TfgMonitorSystenException {
 
-        List<Log> logs = logService.findByRegexp(regexpFilter);
+        List<Log> logs = logService.findByAgent(regexpFilter);
 
         LOGGER.debug("findByRegexp=" + regexpFilter + " -> " + logs);
         return logs;
