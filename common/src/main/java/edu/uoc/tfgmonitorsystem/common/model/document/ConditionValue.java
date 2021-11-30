@@ -18,6 +18,14 @@ public class ConditionValue extends BaseDocument {
         }
     }
 
+    public void addCountValue() {
+        if (accumulatedValue == null) {
+            accumulatedValue = 1.0D;
+        } else {
+            accumulatedValue++;
+        }
+    }
+
     public Double getAccumulatedValue() {
         return accumulatedValue;
     }

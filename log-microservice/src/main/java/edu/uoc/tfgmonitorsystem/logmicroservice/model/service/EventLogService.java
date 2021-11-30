@@ -97,18 +97,35 @@ public class EventLogService implements IEventLogService {
         for (int i = 0; i < eventLog.conditionsValuesSize(); i++) {
             Condition condition = eventLog.findConditionByIndex(i);
             ConditionValue value = eventLog.findConditionValueByIndex(i);
-
-            if (eventLog.isDirectValue()) {
-                checkDirectValue(eventLog, log, condition, value);
+            if (!value.isFullFilled()) {
+                if (eventLog.isDirectValue()) {
+                    checkDirectValue(eventLog, log, condition, value);
+                } else {
+                    checkCountValue(eventLog, log, condition, value);
+                }
             }
         }
 
         return false;
     }
 
+    private void checkCountValue(EventLog eventLog, Log log, Condition condition, ConditionValue value) {
+        if (condition.needDoubleValueComparation()) {
+            if (value.getAccumulatedValue() == null || shouldByCalculateValue(eventLog, condition, log)) {
+                value.addCountValue();
+            } else if (condition.matchValue(value.getAccumulatedValue())) {
+                value.setFullFilled(Boolean.TRUE);
+            } else {
+                value.setFullFilled(Boolean.FALSE);
+            }
+        }
+    }
+
     /**
-     * Comprueba una línea de log contra una condición si esta no se encuentra completa. Si el valor es de calculo de
-     * media nos apollamos en el valor de la condición acumulado
+     * Comprueba una línea de log contra una condición si esta no se encuentra completa usando el sistema de valor
+     * directo. Primeramente se verifica si es un tipo de valor medio, en ese caso se apoya en ConditionValue para hayar
+     * la media si fuese necesario. Si los valores medios/directos calculados son correctos, la condición se da por
+     * correcta.
      *
      * @param eventLog
      * @param log
@@ -116,26 +133,29 @@ public class EventLogService implements IEventLogService {
      * @param value
      */
     private void checkDirectValue(EventLog eventLog, Log log, Condition condition, ConditionValue value) {
-        if (!value.isFullFilled()) {
-            if (condition.needAccumulatedAvgValue()) {
-                Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
-                if (doubleValue != null) {
-                    if (value.getAccumulatedValue() == null || shouldByCalculateValue(eventLog, condition, log)) {
-                        value.addAvgValue(doubleValue);
-                    } else if (condition.matchValue(value.getAccumulatedValue())) {
-                        value.setFullFilled(Boolean.TRUE);
-                    } else {
-                        value.setFullFilled(Boolean.FALSE);
-                    }
+
+        if (condition.needAccumulatedAvgValue()) {
+            Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
+            if (doubleValue != null) {
+                if (value.getAccumulatedValue() == null || shouldByCalculateValue(eventLog, condition, log)) {
+                    value.addAvgValue(doubleValue);
+                } else if (condition.matchValue(value.getAccumulatedValue())) {
+                    value.setFullFilled(Boolean.TRUE);
                 } else {
                     value.setFullFilled(Boolean.FALSE);
                 }
-            } else if (condition.needDoubleValueComparation()) {
-                Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
+            } else {
+                value.setFullFilled(Boolean.FALSE);
+            }
+        } else if (condition.needDoubleValueComparation()) {
+            Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
+            if (doubleValue != null) {
                 value.setFullFilled(condition.matchValue(doubleValue));
             } else {
-                value.setFullFilled(condition.matchValue(log.getLogLine()));
+                value.setFullFilled(Boolean.FALSE);
             }
+        } else {
+            value.setFullFilled(condition.matchValue(log.getLogLine()));
         }
     }
 
@@ -152,11 +172,6 @@ public class EventLogService implements IEventLogService {
         if (!CollectionUtils.isEmpty(events)) {
             eventLogRepository.deleteAll(events);
         }
-    }
-
-    private boolean matchRule(Rule rule, String valueToMatch) {
-
-        return false;
     }
 
     /**
