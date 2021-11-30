@@ -12,6 +12,7 @@ class UserEditNoParams extends React.Component {
             user : null,
             error : null
         };
+        
     }
     componentDidMount() {
         if (this.props.params.id && this.props.params.id > 0) {
