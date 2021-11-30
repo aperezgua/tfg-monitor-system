@@ -77,7 +77,7 @@ class SystemsList extends React.Component {
                                             <Field name="activeTypeFilter" id="activeTypeFilterALL" type="radio" className="form-check-input" value="ALL" />
                                             <Form.Label htmlFor="activeTypeFilterALL">Todos</Form.Label>
                                         </Form.Group>
-                                    </Col>                                    
+                                    </Col>
                                     <Col lg="5">
                                         <Form.Group>
                                             <Form.Label >Nombre:</Form.Label>
@@ -130,7 +130,7 @@ class SystemsList extends React.Component {
                       </tbody>
                    </table>
                 }
-                 {error && <Alert key="alertError" variant="danger" >{error}</Alert> }
+                {error && <Alert key="alertError" variant="danger" >{error}</Alert> }
             </div>
         );
     }
