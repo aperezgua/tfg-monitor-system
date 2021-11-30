@@ -9,25 +9,30 @@
             {
                 "active": true,
                 "name" : "Regla 1",
-                "regularExpression" : ".*",
+                "regularExpression" : "([.]*)([0-9]+s)",
                 "severity" : "MAJOR",
                 "matchType" : "ANY",
                 "calculationType" : "DIRECT_VALUE",
                 "conditions" : [ {
-                    "value" : 540,
-                    "comparationType" : "CONTAINS",
-                    "time" : ""
+                    "value" : 10,
+                    "comparationType" : "AVG_GREATER_THAN",
+                    "time" : "300"
                 }
                 ]
             }, 
             {
                 "active": true,
                 "name" : "Regla 2",
-                "regularExpression" : "[A-Z]{4}",
+                "regularExpression" : "(NoSuchElementException){1}",
                 "severity" : "MINOR",
                 "matchType" : "ANY",
-                "calculationType" : "DIRECT_VALUE",
-                "conditions" : []
+                "calculationType" : "COUNT_EVENT",
+                "conditions" : [ {
+                    "value" : 4,
+                    "comparationType" : "GREATER_THAN",
+                    "time" : "100"
+                }
+                ]
             }
         ],
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"

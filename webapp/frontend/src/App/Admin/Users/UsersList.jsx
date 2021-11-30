@@ -2,13 +2,43 @@ import React from 'react';
 import { userService } from '_services';
 import { Link } from "react-router-dom";
 import { Formik, Form as FormFormik,  Field} from 'formik';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Row, Col, Alert } from 'react-bootstrap';
 
+
+/** Componente para listar usuarios. */
 class UsersList extends React.Component {
     
+    /** Constructor en donde se establecen las propiedades del componente. */
+    constructor(props) {
+        super(props);
+        this.state = {
+            usersList : null,
+            error : null
+        };
+        
+        this.findUsers = this.findUsers.bind(this);
+    }
     
+    /** Método encargado de llamar al servicio y setear la lista. */
+    findUsers(name, email, activeTypeFilter) {
+        userService.find({name, email, activeTypeFilter})
+                .then(
+                    usersList => {
+                        this.setState( {usersList : usersList });
+                    },
+                    error => {
+                        this.setState({error : error});
+                    }
+                );
+    }
+    
+    /** Cuando se monta el componente se cargan los usuarios. */
+    componentDidMount() {
+        this.findUsers('', '', 'ALL');
+    }
    
     render() {
+        let {usersList, error} = this.state;
         return (
              <div className="form-search">
                 <h2>Filtro de usuarios</h2>
@@ -19,73 +49,77 @@ class UsersList extends React.Component {
                         activeTypeFilter: 'ALL'
                     }}
                     onSubmit={({ name, email, activeTypeFilter}, { setStatus, setSubmitting }) => {
-                        setStatus();
-                        userService.find({name, email, activeTypeFilter})
-                            .then(
-                                usersList => {                                    
-                                    setStatus( {result : usersList });
-                                    setSubmitting(false);
-                                },
-                                error => {
-                                    setSubmitting(false);
-                                    setStatus({error : error});
-                                }
-                            );
+                       this.findUsers(name, email, activeTypeFilter);
                     }}>
-                    {({ status }) => (
+                    {() => (
                         <div>
                             <FormFormik >
-                                <Form.Group>
-                                    <Form.Label >Nombre:</Form.Label>
-                                    <Field name="name" type="text" className="form-control" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>Email</Form.Label>
-                                    <Field name="email" type="text" className="form-control" />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Field name="activeTypeFilter" id="activeTypeFilterACTIVE" type="radio" className="form-check-input" value="ACTIVE" />
-                                    <Form.Label htmlFor="activeTypeFilterACTIVE">Activos</Form.Label>
-                                    <Field name="activeTypeFilter" id="activeTypeFilterINACTIVE" type="radio" className="form-check-input" value="INACTIVE" />
-                                    <Form.Label htmlFor="activeTypeFilterINACTIVE">Inactivos</Form.Label>
-                                    <Field name="activeTypeFilter" id="activeTypeFilterALL" type="radio" className="form-check-input" value="ALL" />
-                                    <Form.Label htmlFor="activeTypeFilterALL">Todos</Form.Label>
-                                </Form.Group>
-                                <Form.Group>
-                                    <Button variant="primary" type="submit">Buscar</Button>
-                                    <Button href="/admin/users/edit/0" variant="secondary" >Nuevo</Button>
-                                </Form.Group>                            
-                                {status && status.error &&
-                                    <div className={'alert alert-danger'}>{status.error}</div>
-                                }
-                            </FormFormik>                            
-                            {status && status.result &&
-                               <table className="table table-striped table-hover">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col">#</th>
-                                      <th scope="col">Nombre</th>
-                                      <th scope="col">Email</th>
-                                      <th scope="col">Activo</th>
-                                      <th scope="col"></th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {status.result.map(user =>
-                                        <tr key={'tr' +user.id}>
-                                          <th scope="row">{user.id}</th>
-                                          <td>{user.name}</td>
-                                          <td>{user.email}</td>
-                                          <td>{user.active? 'Si' : 'No'}</td>
-                                          <td><Link to={'/admin/users/edit/' +user.id} >Ver</Link></td>
-                                        </tr>
-                                    )}
-                                  </tbody>
-                               </table>
-                            }
+                                <Row>
+                                    <Col lg="2">
+                                        <Form.Label htmlFor="activeTypeFilterACTIVE">Estado</Form.Label>
+                                        <Form.Group>
+                                            <Field name="activeTypeFilter" id="activeTypeFilterACTIVE" type="radio" className="form-check-input" value="ACTIVE" />
+                                            <Form.Label htmlFor="activeTypeFilterACTIVE">Activos</Form.Label>
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Field name="activeTypeFilter" id="activeTypeFilterINACTIVE" type="radio" className="form-check-input" value="INACTIVE" />
+                                            <Form.Label htmlFor="activeTypeFilterINACTIVE">Inactivos</Form.Label>
+                                         </Form.Group>
+                                         <Form.Group>
+                                            <Field name="activeTypeFilter" id="activeTypeFilterALL" type="radio" className="form-check-input" value="ALL" />
+                                            <Form.Label htmlFor="activeTypeFilterALL">Todos</Form.Label>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col lg="5">
+                                        <Form.Group>
+                                            <Form.Label >Nombre:</Form.Label>
+                                            <Field name="name" type="text" className="form-control" />
+                                        </Form.Group>
+                                     </Col>
+                                     <Col lg="5">
+                                        <Form.Group>
+                                            <Form.Label>Email</Form.Label>
+                                            <Field name="email" type="text" className="form-control" />
+                                        </Form.Group>
+                                     </Col>
+                                </Row>
+                                <Row>
+                                    <Col lg="12" className="text-center">
+                                         <Form.Group>
+                                            <Button variant="primary" type="submit">Buscar</Button> &nbsp;
+                                            <Button href="/admin/users/edit/0" variant="secondary" >Nuevo</Button>
+                                        </Form.Group>    
+                                    </Col>
+                                </Row>
+                            </FormFormik>
                         </div>
                     )}
                  </Formik>
+                  {usersList && 
+                   <table className="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Activo</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {usersList.map(user =>
+                            <tr key={'tr' +user.id}>
+                              <th scope="row">{user.id}</th>
+                              <td>{user.name}</td>
+                              <td>{user.email}</td>
+                              <td>{user.active? 'Si' : 'No'}</td>
+                              <td><Link to={'/admin/users/edit/' +user.id} >Ver</Link></td>
+                            </tr>
+                        )}
+                      </tbody>
+                   </table>
+                }
+                {error && <Alert key="alertError" variant="danger" >{error}</Alert> }
             </div>
         );
     }
