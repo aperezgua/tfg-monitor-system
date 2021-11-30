@@ -47,7 +47,13 @@ class LoginPageNoNavigate extends React.Component {
                                     // this.props.navigate('/home');
                                     // Si se recibe token, quiere decir que estamos loggeados
                                     console.log("Redirect  post auth.");
-                                    this.props.navigate('/admin/home');
+                                    if(authenticationService.currentUserValue.rol == 'ADMINISTRATOR') {
+                                        this.props.navigate('/admin/home');
+                                    } else if(authenticationService.currentUserValue.rol == 'SUPPORT') {
+                                        this.props.navigate('/support/home');
+                                    } else {
+                                        this.props.navigate('/notFound');
+                                    }
                                 },
                                 error => {
                                     console.log("Error: " +(typeof error) + " " + error);

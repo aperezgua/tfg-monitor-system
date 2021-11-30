@@ -80,6 +80,14 @@ class UserEditNoParams extends React.Component {
                                 <ErrorMessage name="password" component="div" className="alert alert-error" />
                             </Form.Group>
                             <Form.Group>
+                                <Form.Label>Rol:</Form.Label>
+                                <Field name="rol" as="select"  className="form-select" >
+                                   <option value=""></option>
+                                   <option value="ADMINISTRATOR">Administrador</option>
+                                   <option value="SUPPORT">Soporte</option>
+                                 </Field>
+                            </Form.Group>
+                            <Form.Group>
                                 <Form.Label>Activo:</Form.Label>
                                 <Field name="active" as="select"  className="form-select" >
                                    <option value=""></option>

@@ -102,6 +102,7 @@ class UsersList extends React.Component {
                           <th scope="col">#</th>
                           <th scope="col">Nombre</th>
                           <th scope="col">Email</th>
+                          <th scope="col">Rol</th>
                           <th scope="col">Activo</th>
                           <th scope="col"></th>
                         </tr>
@@ -112,6 +113,7 @@ class UsersList extends React.Component {
                               <th scope="row">{user.id}</th>
                               <td>{user.name}</td>
                               <td>{user.email}</td>
+                              <td>{user.rol}</td>
                               <td>{user.active? 'Si' : 'No'}</td>
                               <td><Link to={'/admin/users/edit/' +user.id} >Ver</Link></td>
                             </tr>

@@ -35,7 +35,7 @@ function login(username, password) {
             currentTokenSubject.next(token);            
             
             let user = jwt(token.token);
-            currentUserSubject.next(user);            
+            currentUserSubject.next(user);
             localStorage.setItem('user', JSON.stringify(user));
             
             console.log("Datos usuario: " +currentUserSubject.value.sub);
