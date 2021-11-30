@@ -26,7 +26,7 @@
                 "regularExpression" : "(NoSuchElementException){1}",
                 "severity" : "MINOR",
                 "matchType" : "ANY",
-                "calculationType" : "COUNT",
+                "calculationType" : "COUNT_EVENT",
                 "conditions" : [ {
                     "value" : 4,
                     "comparationType" : "GREATER_THAN",
