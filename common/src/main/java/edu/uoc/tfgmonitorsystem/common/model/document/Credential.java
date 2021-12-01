@@ -12,4 +12,11 @@ public interface Credential {
      */
     String getSubject();
 
+    /**
+     * Identificación del rol.
+     * 
+     * @return
+     */
+    Rol getRol();
+
 }

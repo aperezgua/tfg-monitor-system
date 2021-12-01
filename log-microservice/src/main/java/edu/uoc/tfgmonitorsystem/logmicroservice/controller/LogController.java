@@ -1,9 +1,12 @@
 package edu.uoc.tfgmonitorsystem.logmicroservice.controller;
 
 import edu.uoc.tfgmonitorsystem.common.model.document.Agent;
+import edu.uoc.tfgmonitorsystem.common.model.document.Credential;
 import edu.uoc.tfgmonitorsystem.common.model.document.Log;
+import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.service.IEventLogService;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.service.ILogService;
 import java.util.List;
 import javax.validation.Valid;
@@ -29,6 +32,9 @@ public class LogController {
     @Autowired
     private ILogService logService;
 
+    @Autowired
+    private IEventLogService eventLogService;
+
     @RequestMapping(value = "/findByRegexp", method = { RequestMethod.POST })
     public List<Log> findByRegexp(@Valid @RequestBody AgentLogFilter regexpFilter) throws TfgMonitorSystenException {
 
@@ -42,16 +48,29 @@ public class LogController {
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
     public String put(Authentication authentication, @RequestBody String lineLog) throws TfgMonitorSystenException {
 
-        Agent credential = (Agent) authentication.getPrincipal();
+        Credential credential = (Credential) authentication.getPrincipal();
 
-        Log log = new Log();
-        log.setAgent(credential);
-        log.setLogLine(lineLog);
+        if (Rol.AGENT.equals(credential.getRol())) {
 
-        LOGGER.debug("lineLog=" + lineLog);
-        logService.createLog(log);
+            Log log = new Log();
+            log.setAgent((Agent) credential);
+            log.setLogLine(lineLog);
+
+            LOGGER.debug("lineLog=" + lineLog);
+            logService.createLog(log);
+
+            return "OK";
+        }
+        return "ERR";
+
+    }
+
+    @RequestMapping(value = "/updateAgentEvents", method = { RequestMethod.GET })
+    public String updateAgentEvents(@Valid @RequestBody AgentLogFilter agentLogFilter)
+            throws TfgMonitorSystenException {
+
+        eventLogService.processExistentLog(agentLogFilter.getAgentTokenId());
 
         return "OK";
-
     }
 }

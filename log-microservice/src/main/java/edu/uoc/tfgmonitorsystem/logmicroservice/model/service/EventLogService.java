@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -53,7 +54,7 @@ public class EventLogService implements IEventLogService {
     public void processExistentLog(String agentTokenId) throws TfgMonitorSystenException {
 
         Optional<Agent> agent = agentRepository.findById(agentTokenId);
-        List<EventLog> events = new ArrayList<>();
+        List<EventLog> fullFilledEvents = new ArrayList<>();
 
         Map<Rule, EventLog> currentEvent = new HashMap<>();
 
@@ -67,13 +68,27 @@ public class EventLogService implements IEventLogService {
                     EventLog eventLog;
                     if (!currentEvent.containsKey(rule)) {
                         eventLog = new EventLog(agent.get(), rule);
-                        events.add(eventLog);
                         currentEvent.put(rule, eventLog);
                     } else {
                         eventLog = currentEvent.get(rule);
                     }
+                    processLog(eventLog, log);
 
+                    if (eventLog.isFullFilled()) {
+                        fullFilledEvents.add(eventLog);
+                        currentEvent.remove(rule);
+                    }
                 }
+            }
+
+            for (EventLog event : fullFilledEvents) {
+                event.setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
+                eventLogRepository.save(event);
+            }
+
+            for (Entry<Rule, EventLog> entry : currentEvent.entrySet()) {
+                entry.getValue().setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
+                eventLogRepository.save(entry.getValue());
             }
 
             // logService.findByRegexp(null)
@@ -109,11 +124,18 @@ public class EventLogService implements IEventLogService {
         return false;
     }
 
+    /**
+     * Verifica si se cumple una condición de conteo para un evento y un log en concreto.
+     *
+     * @param eventLog  Evento que está siendo procesado.
+     * @param log       Log que se quiere procesar.
+     * @param condition Condición de la regla del evento
+     * @param value     Valor de la condición acumulado.
+     */
     private void checkCountValue(EventLog eventLog, Log log, Condition condition, ConditionValue value) {
         if (condition.needDoubleValueComparation()) {
-            if (value.getAccumulatedValue() == null || shouldByCalculateValue(eventLog, condition, log)) {
-                value.addCountValue();
-            } else if (condition.matchValue(value.getAccumulatedValue())) {
+            value.updateCountValue(log.getDate(), condition.getTime());
+            if (condition.matchValue(value.getTotalValue())) {
                 value.setFullFilled(Boolean.TRUE);
             } else {
                 value.setFullFilled(Boolean.FALSE);
@@ -127,19 +149,18 @@ public class EventLogService implements IEventLogService {
      * la media si fuese necesario. Si los valores medios/directos calculados son correctos, la condición se da por
      * correcta.
      *
-     * @param eventLog
-     * @param log
-     * @param condition
-     * @param value
+     * @param eventLog  Evento que está siendo procesado.
+     * @param log       Log que se quiere procesar.
+     * @param condition Condición de la regla del evento
+     * @param value     Valor de la condición acumulado.
      */
     private void checkDirectValue(EventLog eventLog, Log log, Condition condition, ConditionValue value) {
 
         if (condition.needAccumulatedAvgValue()) {
             Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
             if (doubleValue != null) {
-                if (value.getAccumulatedValue() == null || shouldByCalculateValue(eventLog, condition, log)) {
-                    value.addAvgValue(doubleValue);
-                } else if (condition.matchValue(value.getAccumulatedValue())) {
+                value.updateValue(log.getDate(), condition.getTime(), doubleValue);
+                if (condition.matchValue(value.getAvgValue())) {
                     value.setFullFilled(Boolean.TRUE);
                 } else {
                     value.setFullFilled(Boolean.FALSE);
@@ -172,19 +193,6 @@ public class EventLogService implements IEventLogService {
         if (!CollectionUtils.isEmpty(events)) {
             eventLogRepository.deleteAll(events);
         }
-    }
-
-    /**
-     * Calcula si es necesario calcular para la línea de log informada calcular el valor acumulado,
-     *
-     * @param eventLog
-     * @param condition
-     * @param log
-     * @return
-     */
-    private boolean shouldByCalculateValue(EventLog eventLog, Condition condition, Log log) {
-        return condition.getTime() != null
-                && log.getDate().getTime() - eventLog.getInitDate().getTime() < condition.getTime() * 1000;
     }
 
 }

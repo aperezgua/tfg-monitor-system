@@ -70,6 +70,11 @@ public class Agent extends BaseDocument implements Credential {
         return name;
     }
 
+    @Override
+    public Rol getRol() {
+        return Rol.AGENT;
+    }
+
     public List<Rule> getRules() {
         return rules;
     }

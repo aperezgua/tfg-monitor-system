@@ -102,8 +102,31 @@ public class EventLog extends BaseDocument {
         return value;
     }
 
+    /**
+     * Método que nos dice si el evento es de valor directo o no.
+     *
+     * @return True si el evento es de valor directo.
+     */
     public boolean isDirectValue() {
         return CalculationType.DIRECT_VALUE.equals(rule.getCalculationType());
+    }
+
+    /**
+     * Calcula si el evento ha sido satisfecho dependiendo de la configuración de la regla y si deben coincidir todas
+     * las condiciones o sólo una.
+     *
+     * @return True si se cumplen las condiciones del evento.
+     */
+    public boolean isFullFilled() {
+
+        boolean allFullFilled = false;
+        for (ConditionValue conditionValue : conditionsValues) {
+            if (MatchType.ANY.equals(rule.getMatchType()) && conditionValue.isFullFilled()) {
+                return true;
+            }
+            allFullFilled |= conditionValue.isFullFilled();
+        }
+        return allFullFilled;
     }
 
     public void setAgent(Agent agent) {
