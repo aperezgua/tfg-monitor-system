@@ -1,5 +1,5 @@
 import React from 'react';
-import { agentService } from '_services';
+import { agentService, logService} from '_services';
 import { systemsService } from '_services';
 import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
 import { Button, Form, Alert } from 'react-bootstrap';
@@ -84,6 +84,7 @@ class AgentEditNoParams extends React.Component {
                                     setStatus({error : error});
                                 }
                             );
+                        logService.updateAgentEvents(values.token)
                     }}>
                     {({values, errors, status, touched, setFieldValue}) => (
                         <FormFormik key="editAgentForm">

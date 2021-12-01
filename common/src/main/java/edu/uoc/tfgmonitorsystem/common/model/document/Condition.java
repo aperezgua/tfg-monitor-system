@@ -3,7 +3,7 @@ package edu.uoc.tfgmonitorsystem.common.model.document;
 /**
  * Condición de una regla.
  */
-public class Condition {
+public class Condition extends BaseDocument {
 
     /**
      * Tipo de comparación a usar en la condición.

@@ -65,7 +65,7 @@ public class LogController {
 
     }
 
-    @RequestMapping(value = "/updateAgentEvents", method = { RequestMethod.GET })
+    @RequestMapping(value = "/updateAgentEvents", method = { RequestMethod.POST })
     public String updateAgentEvents(@Valid @RequestBody AgentLogFilter agentLogFilter)
             throws TfgMonitorSystenException {
 

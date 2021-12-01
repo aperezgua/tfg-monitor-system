@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
 import java.util.List;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -27,6 +28,7 @@ public class Rule extends BaseDocument {
     /**
      * Nombre de la regla.
      */
+    @Id
     private String name;
 
     /**

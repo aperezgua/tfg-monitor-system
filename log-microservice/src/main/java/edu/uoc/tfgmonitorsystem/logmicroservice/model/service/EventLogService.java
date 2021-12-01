@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -27,6 +28,8 @@ import org.springframework.util.CollectionUtils;
 
 @Service
 public class EventLogService implements IEventLogService {
+
+    private static final Logger LOGGER = Logger.getLogger(EventLogService.class);
     /**
      * Para secuencias de autonuméricos.
      */
@@ -81,10 +84,14 @@ public class EventLogService implements IEventLogService {
                 }
             }
 
+            LOGGER.debug("FULLFILED : " + fullFilledEvents);
+
             for (EventLog event : fullFilledEvents) {
                 event.setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
                 eventLogRepository.save(event);
             }
+
+            LOGGER.debug("CURRENT : " + currentEvent);
 
             for (Entry<Rule, EventLog> entry : currentEvent.entrySet()) {
                 entry.getValue().setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
