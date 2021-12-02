@@ -22,7 +22,7 @@
             }, 
             {
                 "active": true,
-                "name" : "Excepción demasiados noSuchElement",
+                "name" : "No se encuentra elemento",
                 "regularExpression" : "(NoSuchElementException){1}",
                 "severity" : "MINOR",
                 "matchType" : "ANY",
@@ -43,6 +43,23 @@
         "systems": {"id":10001},
         "active": true,
         "createdDate": 1637099647598,
+        "rules": [
+            {
+                "active": true,
+                "calculationType": "COUNT_EVENT",
+                "matchType": "ALL",
+                "name": "Nivel crítico",
+                "regularExpression": ".*crítico.*",
+                "severity": "CRITICAL",
+                "conditions": [
+                    {
+                        "comparationType": "GREATER_THAN",
+                        "value": "10",
+                        "time": 30
+                    }
+                ]
+            }
+        ],
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"
     }
     

@@ -12,14 +12,17 @@ import edu.uoc.tfgmonitorsystem.common.model.repository.EventLogRepository;
 import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import edu.uoc.tfgmonitorsystem.common.model.util.RegexpUtil;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogFilter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -52,6 +55,23 @@ public class EventLogService implements IEventLogService {
 
     @Autowired
     private ILogService logService;
+
+    @Override
+    public List<EventLog> findLastEventLog(EventLogFilter filter) throws TfgMonitorSystenException {
+
+        Query query = new Query(Criteria.where("fullFilled").is(true));
+
+        if (filter.getAgentTokenId() != null) {
+            query.addCriteria(Criteria.where("agent.token").is(filter.getAgentTokenId()));
+        }
+        if (filter.getLimitResults() != null) {
+            query.limit(filter.getLimitResults());
+        }
+
+        query.with(Sort.by(Sort.Direction.DESC, "date"));
+
+        return mongoTemplate.find(query, EventLog.class);
+    }
 
     @Override
     public void processExistentLog(String agentTokenId) throws TfgMonitorSystenException {
@@ -230,6 +250,7 @@ public class EventLogService implements IEventLogService {
                 processLog(eventLog, log);
 
                 if (eventLog.computeFullFilled()) {
+                    eventLog.setDate(new Date());
                     fullFilledEvents.add(eventLog);
                     currentEvent.remove(rule.getName());
                 }

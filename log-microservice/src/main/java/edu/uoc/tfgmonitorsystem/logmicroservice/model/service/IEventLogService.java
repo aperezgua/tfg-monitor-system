@@ -1,9 +1,21 @@
 package edu.uoc.tfgmonitorsystem.logmicroservice.model.service;
 
+import edu.uoc.tfgmonitorsystem.common.model.document.EventLog;
 import edu.uoc.tfgmonitorsystem.common.model.document.Log;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogFilter;
+import java.util.List;
 
 public interface IEventLogService {
+
+    /**
+     * Busca los últimos eventos según un filtro y un límite especificado.
+     *
+     * @param filter Filtro que se aplica
+     * @return
+     * @throws TfgMonitorSystenException
+     */
+    List<EventLog> findLastEventLog(EventLogFilter filter) throws TfgMonitorSystenException;
 
     /**
      * Procesa todo el log generado por un agente desde sus inicios generando los diferentes eventos según las nuevas

@@ -74,9 +74,13 @@ public class ConditionValue extends BaseDocument {
      * @param value         Valor a introducir.
      */
     public void updateValue(Date logDate, Integer timeInSeconds, Double value) {
-        clearOldValuesAndTimes(logDate, timeInSeconds);
-        values.add(value);
-        times.add(logDate.getTime());
+        synchronized (this) {
+
+            clearOldValuesAndTimes(logDate, timeInSeconds);
+            values.add(value);
+            times.add(logDate.getTime());
+
+        }
     }
 
     /**

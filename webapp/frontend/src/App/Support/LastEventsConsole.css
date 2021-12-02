@@ -1,0 +1,17 @@
+
+.console {
+    background: #000;
+    color: #00CC00;
+}
+
+.console span {
+	padding: 0 0 0 10px;
+}
+
+.console .severityMAJOR {
+    color: yellow;	
+}
+
+.console .severityCRITICAL {
+    color: red;
+}

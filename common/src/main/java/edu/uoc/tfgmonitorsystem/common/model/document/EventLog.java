@@ -129,6 +129,10 @@ public class EventLog extends BaseDocument {
         return initDate;
     }
 
+    public Rule getRule() {
+        return agent.findRuleByName(ruleName);
+    }
+
     public String getRuleName() {
         return ruleName;
     }
