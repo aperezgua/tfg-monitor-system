@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Documento que representa a un agente de datos.
@@ -56,6 +57,23 @@ public class Agent extends BaseDocument implements Credential {
         this.systems = agent.systems;
         this.name = agent.name;
         this.createdDate = agent.createdDate;
+    }
+
+    /**
+     * Busca una regla por nombre.
+     *
+     * @param name
+     * @return
+     */
+    public Rule findRuleByName(String name) {
+        if (!CollectionUtils.isEmpty(rules)) {
+            for (Rule rule : rules) {
+                if (rule.getName().equals(name)) {
+                    return rule;
+                }
+            }
+        }
+        return null;
     }
 
     public Boolean getActive() {

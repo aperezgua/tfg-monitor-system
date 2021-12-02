@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.util.CollectionUtils;
 
 @Document
 public class EventLog extends BaseDocument {
@@ -42,24 +43,57 @@ public class EventLog extends BaseDocument {
     /**
      * Regla que usa para el evento.
      */
-    @DBRef()
-    private Rule rule;
+    private String ruleName;
 
     /**
      * Fecha de inicio.
      */
     private Date initDate;
 
+    /**
+     * Conjunto de valores de las condiciones de la regla.
+     */
     private List<ConditionValue> conditionsValues;
+
+    private boolean fullFilled;
 
     public EventLog() {
         super();
     }
 
-    public EventLog(Agent agent, Rule rule) {
+    public EventLog(Agent agent, String ruleName) {
         this.agent = agent;
-        this.rule = rule;
-        this.conditionsValues = initConditionsValues(rule);
+        this.ruleName = ruleName;
+        this.conditionsValues = initConditionsValues();
+    }
+
+    /**
+     * Calcula si el evento ha sido satisfecho dependiendo de la configuración de la regla y si deben coincidir todas
+     * las condiciones o sólo una.
+     *
+     * @return True si se cumplen las condiciones del evento.
+     */
+    public boolean computeFullFilled() {
+        Rule rule = agent.findRuleByName(ruleName);
+        if (rule != null) {
+            if (MatchType.ANY.equals(rule.getMatchType())) {
+                fullFilled = false;
+                for (ConditionValue conditionValue : conditionsValues) {
+                    if (conditionValue.isFullFilled()) {
+                        fullFilled = true;
+                        break;
+                    }
+                }
+            } else {
+                fullFilled = true;
+                for (ConditionValue conditionValue : conditionsValues) {
+                    fullFilled &= conditionValue.isFullFilled();
+                }
+            }
+        } else {
+            fullFilled = false;
+        }
+        return fullFilled;
     }
 
     public int conditionsValuesSize() {
@@ -67,7 +101,8 @@ public class EventLog extends BaseDocument {
     }
 
     public Condition findConditionByIndex(int index) {
-        return this.getRule().getConditions().get(index);
+        Rule rule = agent.findRuleByName(ruleName);
+        return rule != null ? rule.getConditions().get(index) : null;
     }
 
     public ConditionValue findConditionValueByIndex(int index) {
@@ -94,8 +129,8 @@ public class EventLog extends BaseDocument {
         return initDate;
     }
 
-    public Rule getRule() {
-        return rule;
+    public String getRuleName() {
+        return ruleName;
     }
 
     public Double getValue() {
@@ -108,25 +143,12 @@ public class EventLog extends BaseDocument {
      * @return True si el evento es de valor directo.
      */
     public boolean isDirectValue() {
-        return CalculationType.DIRECT_VALUE.equals(rule.getCalculationType());
+        Rule rule = agent.findRuleByName(ruleName);
+        return rule != null && CalculationType.DIRECT_VALUE.equals(rule.getCalculationType());
     }
 
-    /**
-     * Calcula si el evento ha sido satisfecho dependiendo de la configuración de la regla y si deben coincidir todas
-     * las condiciones o sólo una.
-     *
-     * @return True si se cumplen las condiciones del evento.
-     */
     public boolean isFullFilled() {
-
-        boolean allFullFilled = false;
-        for (ConditionValue conditionValue : conditionsValues) {
-            if (MatchType.ANY.equals(rule.getMatchType()) && conditionValue.isFullFilled()) {
-                return true;
-            }
-            allFullFilled |= conditionValue.isFullFilled();
-        }
-        return allFullFilled;
+        return fullFilled;
     }
 
     public void setAgent(Agent agent) {
@@ -141,6 +163,10 @@ public class EventLog extends BaseDocument {
         this.date = date;
     }
 
+    public void setFullFilled(boolean fullFilled) {
+        this.fullFilled = fullFilled;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -149,8 +175,8 @@ public class EventLog extends BaseDocument {
         this.initDate = initDate;
     }
 
-    public void setRule(Rule rule) {
-        this.rule = rule;
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
     }
 
     public void setValue(Double value) {
@@ -163,10 +189,13 @@ public class EventLog extends BaseDocument {
      * @param rule Regla que va a inicializar los valores
      * @return List con el listado inicializado.
      */
-    private final List<ConditionValue> initConditionsValues(Rule rule) {
-        List<ConditionValue> values = new ArrayList<>(rule.getConditions().size());
-        for (int i = 0; i < rule.getConditions().size(); i++) {
-            values.add(new ConditionValue());
+    private final List<ConditionValue> initConditionsValues() {
+        Rule rule = agent.findRuleByName(ruleName);
+        List<ConditionValue> values = new ArrayList<>();
+        if (rule != null && !CollectionUtils.isEmpty(rule.getConditions())) {
+            for (int i = 0; i < rule.getConditions().size(); i++) {
+                values.add(new ConditionValue());
+            }
         }
         return values;
     }

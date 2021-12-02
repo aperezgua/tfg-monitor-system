@@ -19,7 +19,7 @@ public class ConditionValue extends BaseDocument {
     /**
      * Si la condición ha sido satisfecha.
      */
-    private Boolean fullFilled;
+    private boolean fullFilled;
 
     public ConditionValue() {
         super();
@@ -29,10 +29,6 @@ public class ConditionValue extends BaseDocument {
 
     public double getAvgValue() {
         return getTotalValue() / values.size();
-    }
-
-    public Boolean getFullFilled() {
-        return fullFilled;
     }
 
     public List<Long> getTimes() {
@@ -52,10 +48,10 @@ public class ConditionValue extends BaseDocument {
     }
 
     public boolean isFullFilled() {
-        return fullFilled != null && fullFilled;
+        return fullFilled;
     }
 
-    public void setFullFilled(Boolean fullFilled) {
+    public void setFullFilled(boolean fullFilled) {
         this.fullFilled = fullFilled;
     }
 

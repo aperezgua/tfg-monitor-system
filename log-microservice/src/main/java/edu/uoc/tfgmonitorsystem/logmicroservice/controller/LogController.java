@@ -12,6 +12,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,12 +53,16 @@ public class LogController {
 
         if (Rol.AGENT.equals(credential.getRol())) {
 
+            Agent agent = (Agent) credential;
+
             Log log = new Log();
-            log.setAgent((Agent) credential);
+            log.setAgent(agent);
             log.setLogLine(lineLog);
 
             LOGGER.debug("lineLog=" + lineLog);
             logService.createLog(log);
+
+            eventLogService.processNewLog(agent.getSubject(), log);
 
             return "OK";
         }
@@ -66,11 +71,11 @@ public class LogController {
     }
 
     @RequestMapping(value = "/updateAgentEvents", method = { RequestMethod.POST })
-    public String updateAgentEvents(@Valid @RequestBody AgentLogFilter agentLogFilter)
+    public ResponseEntity<String> updateAgentEvents(@Valid @RequestBody AgentLogFilter agentLogFilter)
             throws TfgMonitorSystenException {
 
         eventLogService.processExistentLog(agentLogFilter.getAgentTokenId());
 
-        return "OK";
+        return ResponseEntity.ok("OK");
     }
 }

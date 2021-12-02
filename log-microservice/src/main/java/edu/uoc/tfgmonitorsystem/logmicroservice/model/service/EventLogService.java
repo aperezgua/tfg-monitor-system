@@ -13,10 +13,10 @@ import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import edu.uoc.tfgmonitorsystem.common.model.util.RegexpUtil;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,50 +57,21 @@ public class EventLogService implements IEventLogService {
     public void processExistentLog(String agentTokenId) throws TfgMonitorSystenException {
 
         Optional<Agent> agent = agentRepository.findById(agentTokenId);
-        List<EventLog> fullFilledEvents = new ArrayList<>();
 
-        Map<Rule, EventLog> currentEvent = new HashMap<>();
+        Map<String, EventLog> currentEvent = new HashMap<>();
 
         if (agent.isPresent()) {
             clearEventsFromAgent(agentTokenId);
 
             List<Log> logs = logService.findByAgent(new AgentLogFilter(agentTokenId));
+            List<EventLog> fullFilledEvents = new ArrayList<>();
 
             for (Log log : logs) {
-                for (Rule rule : agent.get().getRules()) {
-                    EventLog eventLog;
-                    if (!currentEvent.containsKey(rule)) {
-                        eventLog = new EventLog(agent.get(), rule);
-                        currentEvent.put(rule, eventLog);
-                    } else {
-                        eventLog = currentEvent.get(rule);
-                    }
-                    processLog(eventLog, log);
-
-                    if (eventLog.isFullFilled()) {
-                        fullFilledEvents.add(eventLog);
-                        currentEvent.remove(rule);
-                    }
-                }
+                fullFilledEvents.addAll(processAgentLog(agent.get(), currentEvent, log));
             }
 
-            LOGGER.debug("FULLFILED : " + fullFilledEvents);
+            saveEvents(currentEvent.values(), fullFilledEvents);
 
-            for (EventLog event : fullFilledEvents) {
-                event.setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
-                eventLogRepository.save(event);
-            }
-
-            LOGGER.debug("CURRENT : " + currentEvent);
-
-            for (Entry<Rule, EventLog> entry : currentEvent.entrySet()) {
-                entry.getValue().setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
-                eventLogRepository.save(entry.getValue());
-            }
-
-            // logService.findByRegexp(null)
-
-            // List<EventLog eventLog =
         }
     }
 
@@ -129,6 +100,25 @@ public class EventLogService implements IEventLogService {
         }
 
         return false;
+    }
+
+    @Override
+    public void processNewLog(String agentTokenId, Log log) throws TfgMonitorSystenException {
+
+        Optional<Agent> agent = agentRepository.findById(agentTokenId);
+
+        if (agent.isPresent()) {
+            List<EventLog> notFullFilledEvents = findNotFullFilledEvents(agentTokenId);
+            Map<String, EventLog> currentEvent = new HashMap<>();
+            for (EventLog eventLog : notFullFilledEvents) {
+                currentEvent.put(eventLog.getRuleName(), eventLog);
+            }
+
+            List<EventLog> fullFilledEvents = processAgentLog(agent.get(), currentEvent, log);
+
+            saveEvents(currentEvent.values(), fullFilledEvents);
+        }
+
     }
 
     /**
@@ -202,4 +192,63 @@ public class EventLogService implements IEventLogService {
         }
     }
 
+    /**
+     * Busca los eventos no completados para un agente
+     *
+     * @param agentTokenId
+     * @return
+     * @throws TfgMonitorSystenException
+     */
+    private List<EventLog> findNotFullFilledEvents(String agentTokenId) throws TfgMonitorSystenException {
+        Query query = new Query(Criteria.where("agent.token").is(agentTokenId));
+        query.addCriteria(Criteria.where("fullFilled").is(false));
+        return mongoTemplate.find(query, EventLog.class);
+    }
+
+    /**
+     * Dado un agent un mapa que va a contener los eventos actuales y una línea de log, la procesa generando un conjunto
+     * de posibles eventos si fuese el caso.
+     *
+     * @param agent        Agent con el agente.
+     * @param currentEvent Map con los eventos actuales
+     * @param log          Linea de log
+     * @return List con el conjunto de eventos completos generados
+     */
+    private List<EventLog> processAgentLog(Agent agent, Map<String, EventLog> currentEvent, Log log) {
+        List<EventLog> fullFilledEvents = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(agent.getRules())) {
+            for (Rule rule : agent.getRules()) {
+                EventLog eventLog;
+                if (!currentEvent.containsKey(rule.getName())) {
+                    eventLog = new EventLog(agent, rule.getName());
+                    eventLog.setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
+                    currentEvent.put(rule.getName(), eventLog);
+                } else {
+                    eventLog = currentEvent.get(rule.getName());
+                }
+
+                processLog(eventLog, log);
+
+                if (eventLog.computeFullFilled()) {
+                    fullFilledEvents.add(eventLog);
+                    currentEvent.remove(rule.getName());
+                }
+            }
+        }
+        return fullFilledEvents;
+    }
+
+    /**
+     * Guarda los eventos generados por el sistema, los current que son los no completados y los completados.
+     *
+     * @param currentEvents
+     * @param fullFilledEvents
+     */
+    private void saveEvents(Collection<EventLog> currentEvents, List<EventLog> fullFilledEvents) {
+        LOGGER.debug("FULLFILED : " + fullFilledEvents);
+        eventLogRepository.saveAll(fullFilledEvents);
+
+        LOGGER.debug("CURRENT : " + currentEvents);
+        eventLogRepository.saveAll(currentEvents);
+    }
 }

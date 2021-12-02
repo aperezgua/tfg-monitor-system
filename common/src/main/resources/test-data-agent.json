@@ -8,13 +8,13 @@
         "rules" :[ 
             {
                 "active": true,
-                "name" : "Regla 1",
+                "name" : "Tiempos elevados",
                 "regularExpression" : "([.]*)([0-9]+s)",
                 "severity" : "MAJOR",
                 "matchType" : "ANY",
                 "calculationType" : "DIRECT_VALUE",
                 "conditions" : [ {
-                    "value" : 10,
+                    "value" : 5,
                     "comparationType" : "AVG_GREATER_THAN",
                     "time" : "300"
                 }
@@ -22,7 +22,7 @@
             }, 
             {
                 "active": true,
-                "name" : "Regla 2",
+                "name" : "Excepción demasiados noSuchElement",
                 "regularExpression" : "(NoSuchElementException){1}",
                 "severity" : "MINOR",
                 "matchType" : "ANY",

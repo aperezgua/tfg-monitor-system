@@ -1,13 +1,11 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
 import java.util.List;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * Regla usada por el documento Agent.
  */
-@Document
 public class Rule extends BaseDocument {
 
     /**
@@ -28,7 +26,6 @@ public class Rule extends BaseDocument {
     /**
      * Nombre de la regla.
      */
-    @Id
     private String name;
 
     /**
@@ -46,6 +43,9 @@ public class Rule extends BaseDocument {
      */
     private List<Condition> conditions;
 
+    @DBRef
+    private Agent agent;
+
     public Rule() {
         super();
     }
@@ -56,6 +56,10 @@ public class Rule extends BaseDocument {
 
     public Boolean getActive() {
         return active;
+    }
+
+    public Agent getAgent() {
+        return agent;
     }
 
     public CalculationType getCalculationType() {
@@ -84,6 +88,10 @@ public class Rule extends BaseDocument {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public void setCalculationType(CalculationType calculationType) {
