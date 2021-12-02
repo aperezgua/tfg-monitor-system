@@ -93,16 +93,15 @@ public class ConditionValue extends BaseDocument {
 
         long cutTime = logDate.getTime() - timeInSeconds * 1000;
 
-        List<Integer> indexToRemove = new ArrayList<>();
         int index = 0;
         for (Long time : times) {
             if (time <= cutTime) {
-                indexToRemove.add(index++);
+                index++;
             }
         }
-        for (int indexR : indexToRemove) {
-            values.remove(indexR);
-            times.remove(indexR);
+        for (int i = index - 1; i >= 0; i--) {
+            values.remove(i);
+            times.remove(i);
         }
     }
 
