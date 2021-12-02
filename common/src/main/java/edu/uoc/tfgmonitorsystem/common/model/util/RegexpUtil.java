@@ -8,7 +8,7 @@ public class RegexpUtil {
 
     private static final Logger LOGGER = Logger.getLogger(RegexpUtil.class);
 
-    private static Pattern DOUBLE_PATTERN = Pattern.compile("C=(\\d+[\\.\\d]*)");
+    private static Pattern DOUBLE_PATTERN = Pattern.compile("(\\d+[\\.\\d]*)");
 
     private RegexpUtil() {
         super();
