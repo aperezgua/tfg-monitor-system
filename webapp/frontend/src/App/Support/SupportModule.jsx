@@ -59,10 +59,10 @@ class SupportModule extends React.Component {
                                 <Nav.Item>
                                     <Select options={this.state.systemsList} 
                                             isMulti
-                                            value={eventFilter.systemIds}
+                                            value={eventFilter.systems}
                                             onChange={e => {
                                                 let eventFilter = this.state.eventFilter;
-                                                eventFilter.systemIds = e;
+                                                eventFilter.systems = e;
                                                 eventLogService.saveEventFilter(eventFilter);
                                                 this.setState({eventFilter});
                                               }}

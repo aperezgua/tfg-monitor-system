@@ -27,7 +27,9 @@ class LastEventsConsole extends React.Component {
     /** Cuando es creado el componente se llama al servicio para cargar los sistemas y si se especifica token, los datos
         del agente */
     componentDidMount() {
-        /*this.interval = setInterval(() => eventLogService.findLastLogEvents({limitResults : 10}).then(
+        
+        this.interval = setInterval(() => 
+        eventLogService.findLastLogEvents(10).then(
                     eventList => {
                         this.setState( { eventList } );
                     },
@@ -35,7 +37,7 @@ class LastEventsConsole extends React.Component {
                         this.setState({error});
                     }
                 ) 
-            , 2000);*/
+            , 2000);
          
     }
     render() {

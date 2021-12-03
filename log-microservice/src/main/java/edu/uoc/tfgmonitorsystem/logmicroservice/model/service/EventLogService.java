@@ -14,6 +14,7 @@ import edu.uoc.tfgmonitorsystem.common.model.util.RegexpUtil;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogFilter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,25 @@ public class EventLogService implements IEventLogService {
         if (filter.getAgentTokenId() != null) {
             query.addCriteria(Criteria.where("agent.token").is(filter.getAgentTokenId()));
         }
+
+        if (!CollectionUtils.isEmpty(filter.getSystemIds())) {
+
+            List<Criteria> whereSystemIds = new ArrayList<>();
+            for (Integer systemsId : filter.getSystemIds()) {
+                whereSystemIds.add(Criteria.where("systems.id").is(systemsId));
+            }
+
+            List<Agent> agents = mongoTemplate
+                    .find(new Query(Criteria.where("active").is(Boolean.TRUE).orOperator(whereSystemIds)), Agent.class);
+
+            query.addCriteria(Criteria.where("agent").in(agents));
+        }
+
+        if (filter.getLastTimeInSeconds() != null) {
+            Date date = new Date(System.currentTimeMillis() - filter.getLastTimeInSeconds() * 1000L);
+            query.addCriteria(Criteria.where("date").gt(date));
+        }
+
         if (filter.getLimitResults() != null) {
             query.limit(filter.getLimitResults());
         }
