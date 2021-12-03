@@ -190,26 +190,31 @@ public class EventLogService implements IEventLogService {
      * @param value     Valor de la condición acumulado.
      */
     private void checkDirectValue(EventLog eventLog, Log log, Condition condition, ConditionValue value) {
-
         if (condition.needAccumulatedAvgValue()) {
             Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
+
             if (doubleValue != null) {
                 value.updateValue(log.getDate(), condition.getTime(), doubleValue);
+
                 if (condition.matchValue(value.getAvgValue())) {
                     value.setFullFilled(Boolean.TRUE);
                 } else {
                     value.setFullFilled(Boolean.FALSE);
                 }
+
             } else {
                 value.setFullFilled(Boolean.FALSE);
             }
+
         } else if (condition.needDoubleValueComparation()) {
+
             Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
-            if (doubleValue != null) {
-                value.setFullFilled(condition.matchValue(doubleValue));
+            if (doubleValue != null && condition.matchValue(doubleValue)) {
+                value.setFullFilled(Boolean.TRUE);
             } else {
                 value.setFullFilled(Boolean.FALSE);
             }
+
         } else {
             value.setFullFilled(condition.matchValue(log.getLogLine()));
         }
@@ -268,21 +273,31 @@ public class EventLogService implements IEventLogService {
         List<EventLog> fullFilledEvents = new ArrayList<>();
         if (!CollectionUtils.isEmpty(agent.getRules())) {
             for (Rule rule : agent.getRules()) {
-                EventLog eventLog;
-                if (!currentEvent.containsKey(rule.getName())) {
-                    eventLog = new EventLog(agent, rule.getName());
-                    eventLog.setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
-                    currentEvent.put(rule.getName(), eventLog);
-                } else {
-                    eventLog = currentEvent.get(rule.getName());
-                }
 
-                processLog(eventLog, log);
+                boolean match = rule.matchRegegularExpression(log.getLogLine());
+                LOGGER.debug("MATCH: " + log.getLogLine() + " / " + rule.getRegularExpression() + "  -> " + match);
 
-                if (eventLog.computeFullFilled()) {
-                    eventLog.setDate(log.getDate());
-                    fullFilledEvents.add(eventLog);
-                    currentEvent.remove(rule.getName());
+                if (match) {
+
+                    EventLog eventLog;
+                    if (!currentEvent.containsKey(rule.getName())) {
+                        eventLog = new EventLog(agent, rule.getName());
+                        eventLog.setId((int) dbSequenceService.generateDbSequence(EventLog.SEQUENCE_NAME));
+                        currentEvent.put(rule.getName(), eventLog);
+                    } else {
+                        eventLog = currentEvent.get(rule.getName());
+                    }
+
+                    processLog(eventLog, log);
+
+                    if (eventLog.computeFullFilled()) {
+                        eventLog.setDate(log.getDate());
+
+                        eventLog.setValue(log.getLogLine());
+
+                        fullFilledEvents.add(eventLog);
+                        currentEvent.remove(rule.getName());
+                    }
                 }
             }
         }

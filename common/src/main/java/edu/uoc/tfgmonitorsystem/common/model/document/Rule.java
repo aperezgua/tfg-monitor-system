@@ -1,6 +1,7 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
 import java.util.List;
+import java.util.regex.Pattern;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
@@ -84,6 +85,16 @@ public class Rule extends BaseDocument {
 
     public Severity getSeverity() {
         return severity;
+    }
+
+    /**
+     * Devuelve si la condición coincide con el regexp de la regla.
+     *
+     * @param value
+     * @return
+     */
+    public boolean matchRegegularExpression(String value) {
+        return Pattern.matches(regularExpression, value);
     }
 
     public void setActive(Boolean active) {

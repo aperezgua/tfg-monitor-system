@@ -30,9 +30,9 @@ public class EventLog extends BaseDocument {
     private Date date;
 
     /**
-     * Valor
+     * Valor que produce la alarma.
      */
-    private Double value;
+    private String value;
 
     /**
      * Agente sobre el cual se produce el evento.
@@ -137,7 +137,7 @@ public class EventLog extends BaseDocument {
         return ruleName;
     }
 
-    public Double getValue() {
+    public String getValue() {
         return value;
     }
 
@@ -183,7 +183,7 @@ public class EventLog extends BaseDocument {
         this.ruleName = ruleName;
     }
 
-    public void setValue(Double value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

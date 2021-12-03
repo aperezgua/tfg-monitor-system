@@ -8,7 +8,7 @@ export const logService = {
 
 
 function findByRegexp(agentTokenId, regexp) {
-    return requestUrl(`${config.apiLogUrl}/rest/log/findByRegexp`, 'POST',  JSON.stringify({agentTokenId : agentTokenId, regexp : regexp}));
+    return requestUrl(`${config.apiLogUrl}/rest/log/findByRegexp`, 'POST',  JSON.stringify({agentTokenId : agentTokenId, regexp : regexp, limitResults : 10}));
 }
 
 function updateAgentEvents(agentTokenId) {

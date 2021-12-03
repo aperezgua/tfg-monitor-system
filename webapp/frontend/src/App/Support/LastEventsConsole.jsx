@@ -49,8 +49,10 @@ class LastEventsConsole extends React.Component {
                     {eventList.map((event, index) =>
                         <div key={'event_' +index} className={'severity' +event.rule.severity}>
                             <span>{Moment(event.date).format('DD/MM/yyyy HH:mm:ss')}</span>
+                            <span>{event.agent.systems.name}</span>
                             <span>{event.agent.name}</span>
                             <span>{event.ruleName}</span>
+                            <span><em>({event.value})</em></span>
                         </div>
                     )}
                     </div>

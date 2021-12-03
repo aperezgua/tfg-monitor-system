@@ -9,12 +9,12 @@
             {
                 "active": true,
                 "name" : "Tiempos elevados",
-                "regularExpression" : "([.]*)([0-9]+s)",
+                "regularExpression" : ".*[0-9]+s",
                 "severity" : "MAJOR",
                 "matchType" : "ANY",
                 "calculationType" : "DIRECT_VALUE",
                 "conditions" : [ {
-                    "value" : 10,
+                    "value" : 80,
                     "comparationType" : "AVG_GREATER_THAN",
                     "time" : "100"
                 }
@@ -54,8 +54,8 @@
                 "conditions": [
                     {
                         "comparationType": "GREATER_THAN",
-                        "value": "10",
-                        "time": 30
+                        "value": "5",
+                        "time": 60
                     }
                 ]
             }
