@@ -11,11 +11,9 @@ import edu.uoc.tfgmonitorsystem.common.model.repository.AgentRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.EventLogRepository;
 import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import edu.uoc.tfgmonitorsystem.common.model.util.RegexpUtil;
-import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogFilter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,16 +43,16 @@ public class EventLogService implements IEventLogService {
     private MongoTemplate mongoTemplate;
 
     /**
-     *
+     * Repository de eventlog.
      */
     @Autowired
     private EventLogRepository eventLogRepository;
 
+    /**
+     * Repository de agent.
+     */
     @Autowired
     private AgentRepository agentRepository;
-
-    @Autowired
-    private ILogService logService;
 
     @Override
     public List<EventLog> findLastEventLog(EventLogFilter filter) throws TfgMonitorSystenException {
@@ -83,9 +81,9 @@ public class EventLogService implements IEventLogService {
         if (agent.isPresent()) {
             clearEventsFromAgent(agentTokenId);
 
-            List<Log> logs = logService.findByAgent(new AgentLogFilter(agentTokenId));
-            List<EventLog> fullFilledEvents = new ArrayList<>();
+            List<Log> logs = findByAgent(agentTokenId);
 
+            List<EventLog> fullFilledEvents = new ArrayList<>();
             for (Log log : logs) {
                 fullFilledEvents.addAll(processAgentLog(agent.get(), currentEvent, log));
             }
@@ -213,6 +211,18 @@ public class EventLogService implements IEventLogService {
     }
 
     /**
+     * Busca el log de un agente.
+     *
+     * @param agentTokenId String con el token del agente.
+     * @return List con el listado de logs.
+     */
+    private List<Log> findByAgent(String agentTokenId) {
+        Query query = new Query(Criteria.where("agent.token").is(agentTokenId));
+        query.with(Sort.by(Sort.Direction.ASC, "date"));
+        return mongoTemplate.find(query, Log.class);
+    }
+
+    /**
      * Busca los eventos no completados para un agente
      *
      * @param agentTokenId
@@ -250,7 +260,7 @@ public class EventLogService implements IEventLogService {
                 processLog(eventLog, log);
 
                 if (eventLog.computeFullFilled()) {
-                    eventLog.setDate(new Date());
+                    eventLog.setDate(log.getDate());
                     fullFilledEvents.add(eventLog);
                     currentEvent.remove(rule.getName());
                 }

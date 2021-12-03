@@ -1,27 +1,51 @@
 import React from 'react';
-import { authenticationService } from '_services';
+import { authenticationService, systemsService, eventLogService } from '_services';
 import { Route, Routes} from 'react-router-dom'
+import { Navbar, Nav, Form } from 'react-bootstrap';
+import Select from 'react-select'
+
 import { SupportHomePage} from 'App/Support';
 import { NotFound } from 'App/NotFound';
-import { Navbar, Nav } from 'react-bootstrap';
+
 import './SupportModule.css';
 
 /** Modulo principal de soporte */
 class SupportModule extends React.Component {
     constructor(props) {
         super(props);
+        
         this.state = {
-            currentUser: authenticationService.currentUserValue
+            currentUser: authenticationService.currentUserValue,
+            eventList : [],
+            eventFilter : eventLogService.getEventFilter()
         };
         
     }
     
     logout() {
         authenticationService.logout();
-    }    
+    }
+    
+    /** Cuando es creado el componente se llama al servicio para cargar los sistemas y si se especifica token, los datos
+        del agente */
+    componentDidMount() {
+        systemsService.find({}).then(
+            systemsList => {
+                let data = [];
+                for(var i=0; i < systemsList.length; i++) {
+                    data.push({value : systemsList[i].id, label : systemsList[i].name});
+                }
+                                
+                this.setState( { systemsList : data } );
+            },
+            error => {
+                this.setState({error});
+            }
+        ) ;
+    }
     
     render() {
-        const { currentUser} = this.state;
+        const { currentUser, eventFilter} = this.state;
         
         return (
             <div className="support-page">
@@ -31,6 +55,38 @@ class SupportModule extends React.Component {
                             <Nav className="me-auto">
                                 <Nav.Link href="/support/home">Home</Nav.Link>
                              </Nav>
+                             <Nav  className="justify-content-end">
+                                <Nav.Item>
+                                    <Select options={this.state.systemsList} 
+                                            isMulti
+                                            value={eventFilter.systemIds}
+                                            onChange={e => {
+                                                let eventFilter = this.state.eventFilter;
+                                                eventFilter.systemIds = e;
+                                                eventLogService.saveEventFilter(eventFilter);
+                                                this.setState({eventFilter});
+                                              }}
+                                        />
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Form.Control
+                                          as="select"
+                                          value={eventFilter.lastTimeInSeconds}
+                                          onChange={e => {
+                                            
+                                            let eventFilter = this.state.eventFilter;
+                                            eventFilter.lastTimeInSeconds = e.target.value;
+                                            eventLogService.saveEventFilter(eventFilter);
+                                            this.setState({eventFilter});
+                                          }}
+                                        >
+                                      <option></option>
+                                      <option value="60">&Uacute;ltimo minuto</option>
+                                      <option value="300">&Uacute;ltimos 5 minutos</option>
+                                      <option value="600">&Uacute;ltimos 10 minutos</option>
+                                    </Form.Control>
+                                </Nav.Item>
+                             </Nav>                             
                              <Nav className="justify-content-end">
                                 <Navbar.Text>[{currentUser.sub}] ::</Navbar.Text>
                                 <Nav.Link href="/" onClick={this.logout}>Salir</Nav.Link>
@@ -41,7 +97,7 @@ class SupportModule extends React.Component {
                 </div>
                 <div className="supoort-body"> 
                     {currentUser &&
-                       <div> 
+                       <div>
                          <Routes>
                             <Route path="/home" element={<SupportHomePage/>} />
                             <Route path="/*" element={NotFound}/>
