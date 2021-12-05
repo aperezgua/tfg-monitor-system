@@ -1,17 +1,20 @@
 
-.console {
-    background: #000;
+.consoleEvents {    
     color: #00CC00;
 }
 
-.console span {
+.consoleEvents span {
 	padding: 0 0 0 10px;
 }
 
-.console .severityMAJOR {
+.consoleEvents .severityMINOR {
+	color: #00CC00;
+}
+
+.consoleEvents .severityMAJOR {
     color: yellow;	
 }
 
-.console .severityCRITICAL {
+.consoleEvents .severityCRITICAL {
     color: red;
 }

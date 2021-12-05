@@ -1,8 +1,22 @@
-.support-home {
+.support-home {	
+	padding-top: 10px;
+}
+
+.support-home .support-home-cards {	
+	background: #FFF;
 	
 }
 
-.support-home .support-home-cards {
-	background: #FFF;
-	padding: 0 10px 0 10px;
+.support-home .support-home-events-severity {
+       position:absolute;
+       bottom: 150px; left: 0; right: 0; top: 190px;
+       background : #FFF;
+       overflow-y: auto;
+}
+
+.support-home .support-home-console {
+    position:absolute;
+    bottom: 0; left: 0; right: 0; 
+    height: 150px;
+    background: #000;
 }

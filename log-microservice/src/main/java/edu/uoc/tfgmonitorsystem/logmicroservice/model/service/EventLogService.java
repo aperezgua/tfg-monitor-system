@@ -86,11 +86,15 @@ public class EventLogService implements IEventLogService {
                     numberEvents++;
                 }
             }
-            if (numberPrevious > 0 && numberPrevious > 0) {
-                summary.setIncrement((int) (100 - numberEvents * 100.0 / numberPrevious));
-            } else {
-                summary.setIncrement(0);
+            if (numberPrevious > 0 && numberEvents > 0) {
+                summary.setIncrement((int) (100 - numberPrevious * 100.0 / numberEvents));
+            } else if (numberPrevious > 0 && numberEvents == 0) {
+                summary.setIncrement(-numberPrevious * 100);
+            } else if (numberPrevious == 0 && numberEvents > 0) {
+                summary.setIncrement(numberEvents * 100);
             }
+
+            LOGGER.debug("Antes: " + numberPrevious + " vs " + numberEvents + " --> " + summary.getIncrement());
         }
 
         summary.setNumber(numberEvents);

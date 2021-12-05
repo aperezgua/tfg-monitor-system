@@ -5,6 +5,7 @@ import { requestUrl } from '_helpers';
 
 export const eventLogService = {
     findLastLogEvents,
+    findLogBySeverity,
     getEventFilter,
     saveEventFilter,
     findEventSummary
@@ -27,6 +28,15 @@ function findEventSummary(severity) {
     eventFilter["severity"] = severity;
     
     return requestUrl(`${config.apiLogUrl}/rest/eventLog/findEventSummary`, 'POST',  JSON.stringify(eventFilter));
+}
+
+function findLogBySeverity(severity) {
+    
+    let eventFilter = getEventFilterToServer();
+    
+    eventFilter["severity"] = severity;
+    
+    return requestUrl(`${config.apiLogUrl}/rest/eventLog/findLastLogEvents`, 'POST',  JSON.stringify(eventFilter));
 }
 
 /** Construye un objeto filter para enviar al servidor con el conjunto de ids de sistemas correcto */

@@ -49,7 +49,7 @@ class SupportModule extends React.Component {
         
         return (
             <div className="support-page">
-                <div className="admin-header">
+                <div className="support-header">
                     {currentUser && 
                         <Navbar bg="light" expand="lg">
                             <Nav className="me-auto">
@@ -95,14 +95,12 @@ class SupportModule extends React.Component {
                         
                     }
                 </div>
-                <div className="supoort-body"> 
+                <div className="support-body"> 
                     {currentUser &&
-                       <div>
                          <Routes>
                             <Route path="/home" element={<SupportHomePage/>} />
                             <Route path="/*" element={NotFound}/>
                         </Routes>
-                       </div>
                      }
                      {!currentUser
                      && <div className="alert alert-error">

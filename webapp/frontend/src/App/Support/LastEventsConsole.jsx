@@ -10,7 +10,8 @@ class LastEventsConsole extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            eventList : []
+            eventList : [],
+            refreshTime : props.refreshTime
         };
     }
 
@@ -29,7 +30,7 @@ class LastEventsConsole extends React.Component {
     componentDidMount() {
         
         this.interval = setInterval(() => 
-        eventLogService.findLastLogEvents(10).then(
+        eventLogService.findLastLogEvents(6).then(
                     eventList => {
                         this.setState( { eventList } );
                     },
@@ -37,15 +38,15 @@ class LastEventsConsole extends React.Component {
                         this.setState({error});
                     }
                 ) 
-            , 2000);
+            , this.state.refreshTime);
          
     }
     render() {
         const { eventList } = this.state;
         return (
-            <div>
+            <div className="consoleEvents">
                 {eventList && eventList.length > 0 &&
-                    <div className="console">
+                    <div>
                     {eventList.map((event, index) =>
                         <div key={'event_' +index} className={'severity' +event.rule.severity}>
                             <span>{Moment(event.date).format('DD/MM/yyyy HH:mm:ss')}</span>

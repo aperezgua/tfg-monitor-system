@@ -9,14 +9,12 @@ class App extends React.Component {
     render() {
         return (
             <Router >
-                <div>
-                    <Routes>
-                        <Route path="/admin/*" element={<AdminModule/>} />
-                        <Route path="/support/*" element={<SupportModule/>} />
-                        <Route path="/" element={<LoginPage/>} />
-                        <Route path="*" element={<NotFound/>}/>
-                    </Routes>
-                </div>
+                <Routes>
+                    <Route path="/admin/*" element={<AdminModule/>} />
+                    <Route path="/support/*" element={<SupportModule/>} />
+                    <Route path="/" element={<LoginPage/>} />
+                    <Route path="*" element={<NotFound/>}/>
+                </Routes>
             </Router>
         );
     }
