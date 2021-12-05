@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ public class LogController {
     @Autowired
     private IEventLogService eventLogService;
 
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     @RequestMapping(value = "/findByRegexp", method = { RequestMethod.POST })
     public List<Log> findByRegexp(@Valid @RequestBody AgentLogFilter regexpFilter) throws TfgMonitorSystenException {
 
@@ -46,6 +48,7 @@ public class LogController {
 
     }
 
+    @PreAuthorize("hasAuthority('AGENT')")
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
     public String put(Authentication authentication, @RequestBody String lineLog) throws TfgMonitorSystenException {
 
@@ -70,6 +73,7 @@ public class LogController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     @RequestMapping(value = "/updateAgentEvents", method = { RequestMethod.POST })
     public ResponseEntity<String> updateAgentEvents(@Valid @RequestBody AgentLogFilter agentLogFilter)
             throws TfgMonitorSystenException {

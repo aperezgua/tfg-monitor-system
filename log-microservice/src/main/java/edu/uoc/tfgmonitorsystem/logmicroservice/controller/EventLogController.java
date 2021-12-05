@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class EventLogController {
     @Autowired
     private IEventLogService eventLogService;
 
+    @PreAuthorize("hasAuthority('SUPPORT')")
     @RequestMapping(value = "/findLastLogEvents", method = { RequestMethod.POST })
     public ResponseEntity<List<EventLog>> findLastLogEvents(@Valid @RequestBody EventLogFilter eventFilter)
             throws TfgMonitorSystenException {

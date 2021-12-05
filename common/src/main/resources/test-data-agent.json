@@ -54,7 +54,7 @@
                 "conditions": [
                     {
                         "comparationType": "GREATER_THAN",
-                        "value": "5",
+                        "value": "3",
                         "time": 60
                     }
                 ]

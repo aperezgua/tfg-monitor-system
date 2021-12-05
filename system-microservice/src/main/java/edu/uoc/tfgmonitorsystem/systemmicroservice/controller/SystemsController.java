@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Controlador de sistemas.
+ * Controlador de sistemas por defecto rol de administrador.
  */
 @RestController
 @CrossOrigin
+@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 @RequestMapping(value = "/rest/systems")
 public class SystemsController {
 
@@ -38,6 +40,7 @@ public class SystemsController {
      * @param filter SystemFilter con los datos de filtrado de los sistemas.
      * @return Listado de sistemas que coinciden con el filtro.
      */
+    @PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('SUPPORT') ")
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
     public List<Systems> find(@RequestBody SystemFilter filter) throws TfgMonitorSystenException {
         List<Systems> systems = systemsService.findByFilter(filter);
