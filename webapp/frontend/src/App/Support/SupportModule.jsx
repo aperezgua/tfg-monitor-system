@@ -4,7 +4,7 @@ import { Route, Routes} from 'react-router-dom'
 import { Navbar, Nav, Form } from 'react-bootstrap';
 import Select from 'react-select'
 
-import { SupportHomePage} from 'App/Support';
+import { SupportHomePage, RuleEventsPage} from 'App/Support';
 import { NotFound } from 'App/NotFound';
 
 import './SupportModule.css';
@@ -98,7 +98,8 @@ class SupportModule extends React.Component {
                 <div className="support-body"> 
                     {currentUser &&
                          <Routes>
-                            <Route path="/home" element={<SupportHomePage/>} />
+                            <Route path="home" element={<SupportHomePage/>} />
+                            <Route path="view/:token/:rule" element={<RuleEventsPage/>} />
                             <Route path="/*" element={NotFound}/>
                         </Routes>
                      }

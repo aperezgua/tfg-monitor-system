@@ -1,57 +1,56 @@
 import React from 'react';
 
 import Moment from 'moment';
+import { useParams } from "react-router-dom";
 import { eventLogService } from '_services';
-import { Link } from "react-router-dom";
-import './EventsBySeverity.css';
+import { Chart } from 'react-charts'
+
 
 
 /** Compontente para mostrar los eventos segun su criticidad */
-class EventsBySeverity extends React.Component {
+class RuleEventsPageNoParams extends React.Component {
+    
     constructor(props) {
-        super(props);
+        super(props);        
+      
+           let data =  [
+              {
+                label: 'Series 1',
+                data: [[0, 1], [1, 2], [2, 4], [3, 2], [4, 7]]
+              },
+              {
+                label: 'Series 2',
+                data: [[0, 3], [1, 1], [2, 5], [3, 6], [4, 4]]
+              }
+            ];
+       let axes =  [
+              { primary: true, type: 'linear', position: 'bottom' },
+              { type: 'linear', position: 'left' }
+            ];
         this.state={
-            eventList : [],            
-            eventSeverity : props.eventSeverity,
-            refreshTime : props.refreshTime
+            eventList : null,
+            data : data, 
+            axes : axes
         };
+        
+        //https://www.npmjs.com/package/react-charts
+        
     }
 
-    /** Cuando se recibe async del padre, se actualiza el valores */
-    componentWillReceiveProps(nextProps) {
-       this.state={            
-            eventSeverity : nextProps.eventSeverity
-        };
-    }
-
-    componentWillUnmount() {
-      clearInterval(this.interval);
-    }
     
      
-    /** Cuando es creado el componente se llama al servicio para cargar los sistemas y si se especifica token, los datos
-        del agente */
+    /** */
     componentDidMount() {
-        
-        this.interval = setInterval(() => 
-        eventLogService.findLogBySeverity(this.state.eventSeverity).then(
-                    eventList => {
-                        this.setState( { eventList } );
-                    },
-                    error => {
-                        this.setState({error});
-                    }
-                ) 
-            , this.state.refreshTime);
-         
+        console.log("AKI: " +this.props.params.token + " " + this.props.params.rule);
+     
     }
     render() {
-        const { eventList } = this.state;
+        const { eventList, agentTokenId, data, axes} = this.state;
         return (
             <div>
-                <h1>Listado de eventos de tipo: {this.state.eventSeverity}</h1>
+                <h1>Grafica de eventos de {agentTokenId}</h1>
+                {data && <Chart data={data} axes={axes} />}
                 {eventList && eventList.length > 0 &&
-                    <div className="div-scroll">
                     <table className="table table-striped table-hover">
                         <thead>
                             <tr>
@@ -60,7 +59,6 @@ class EventsBySeverity extends React.Component {
                                 <th scope="col">Sistema</th>
                                 <th scope="col">Agente</th>
                                 <th scope="col">Regla</th>
-                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,16 +69,20 @@ class EventsBySeverity extends React.Component {
                                     <td>{event.agent.systems.name}</td>
                                     <td>{event.agent.name}</td>
                                     <td>{event.ruleName}</td>
-                                    <td><Link to={'/support/view/' +event.agent.token + '/' +event.ruleName} >Ver</Link></td>
                                 </tr>
                             )}
                         </tbody>
                      </table>
-                     </div>
                 }
             </div>
         );
     }
 }
 
-export { EventsBySeverity }
+
+function RuleEventsPage(props) {
+    let params = useParams();
+    return <RuleEventsPageNoParams {...props} params={params} />
+}
+
+export { RuleEventsPage }
