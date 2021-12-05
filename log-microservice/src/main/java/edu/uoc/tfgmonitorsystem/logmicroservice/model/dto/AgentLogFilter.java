@@ -4,6 +4,9 @@ import javax.validation.constraints.NotBlank;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+/**
+ * Filtro para buscar elementos de log.
+ */
 public class AgentLogFilter {
 
     @NotBlank(message = "agentLogFilter.agentTokenId.mandatory")

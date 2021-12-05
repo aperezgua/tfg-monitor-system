@@ -3,6 +3,7 @@ package edu.uoc.tfgmonitorsystem.logmicroservice.controller;
 import edu.uoc.tfgmonitorsystem.common.model.document.EventLog;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogFilter;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogSummary;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.service.IEventLogService;
 import java.util.List;
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @CrossOrigin
+@PreAuthorize("hasAuthority('SUPPORT')")
 @RequestMapping(value = "/rest/eventLog")
 public class EventLogController {
 
@@ -29,7 +31,29 @@ public class EventLogController {
     @Autowired
     private IEventLogService eventLogService;
 
-    @PreAuthorize("hasAuthority('SUPPORT')")
+    /**
+     * Realiza el resumen de un conjunto de eventos filtrados según el filtro, de tal forma que se pueda saber su nº y
+     * su incremento/decremento vs su periodo anterior.
+     *
+     * @param eventFilter con el filtro a aplicar.
+     * @return entidad EventLogSummary con los datos.
+     * @throws TfgMonitorSystenException en caso de producirse un error.
+     */
+    @RequestMapping(value = "/findEventSummary", method = { RequestMethod.POST })
+    public ResponseEntity<EventLogSummary> findEventSummary(@Valid @RequestBody EventLogFilter eventFilter)
+            throws TfgMonitorSystenException {
+        EventLogSummary summary = eventLogService.findEventLogSummary(eventFilter);
+        LOGGER.debug("findEventSummary filter=" + eventFilter + "=" + summary);
+        return ResponseEntity.ok(summary);
+    }
+
+    /**
+     * Busca los últimos eventos
+     *
+     * @param eventFilter
+     * @return
+     * @throws TfgMonitorSystenException
+     */
     @RequestMapping(value = "/findLastLogEvents", method = { RequestMethod.POST })
     public ResponseEntity<List<EventLog>> findLastLogEvents(@Valid @RequestBody EventLogFilter eventFilter)
             throws TfgMonitorSystenException {

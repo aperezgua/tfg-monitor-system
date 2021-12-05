@@ -6,13 +6,32 @@ import { requestUrl } from '_helpers';
 export const eventLogService = {
     findLastLogEvents,
     getEventFilter,
-    saveEventFilter
+    saveEventFilter,
+    findEventSummary
 };
 
 
 function findLastLogEvents(limitResults) {
     
-    let eventFilter = getEventFilter() ;
+    let eventFilter = getEventFilterToServer();
+    
+    eventFilter["limitResults"] = limitResults;
+    
+    return requestUrl(`${config.apiLogUrl}/rest/eventLog/findLastLogEvents`, 'POST',  JSON.stringify(eventFilter));
+}
+
+function findEventSummary(severity) {
+    
+    let eventFilter = getEventFilterToServer();
+    
+    eventFilter["severity"] = severity;
+    
+    return requestUrl(`${config.apiLogUrl}/rest/eventLog/findEventSummary`, 'POST',  JSON.stringify(eventFilter));
+}
+
+/** Construye un objeto filter para enviar al servidor con el conjunto de ids de sistemas correcto */
+function getEventFilterToServer() {
+     let eventFilter = getEventFilter() ;
     let ids = [];
     if(eventFilter.systems && eventFilter.systems.length  > 0) {
         for(var i=0; i < eventFilter.systems.length; i++) {
@@ -23,13 +42,10 @@ function findLastLogEvents(limitResults) {
     let filterToServer = {
         lastTimeInSeconds : eventFilter.lastTimeInSeconds,
         systemIds : ids,
-        limitResults : limitResults
     }
-    
-    eventFilter["limitResults"] = limitResults;
-    
-    return requestUrl(`${config.apiLogUrl}/rest/eventLog/findLastLogEvents`, 'POST',  JSON.stringify(filterToServer));
+    return filterToServer;
 }
+
 
 /** obtiene un filtro de la memoria */
 function getEventFilter() {

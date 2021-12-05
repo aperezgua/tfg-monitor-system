@@ -14,7 +14,7 @@
                 "matchType" : "ANY",
                 "calculationType" : "DIRECT_VALUE",
                 "conditions" : [ {
-                    "value" : 80,
+                    "value" : 50,
                     "comparationType" : "AVG_GREATER_THAN",
                     "time" : "100"
                 }
@@ -28,7 +28,7 @@
                 "matchType" : "ANY",
                 "calculationType" : "COUNT_EVENT",
                 "conditions" : [ {
-                    "value" : 4,
+                    "value" : 3,
                     "comparationType" : "GREATER_THAN",
                     "time" : "100"
                 }

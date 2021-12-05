@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+
 import Moment from 'moment';
 import { eventLogService } from '_services';
 

@@ -1,5 +1,8 @@
 import React from 'react';
-import { LastEventsConsole} from 'App/Support';
+import { LastEventsConsole, EventCard } from 'App/Support';
+import { Row, Col } from 'react-bootstrap';
+import './SupportHomePage.css';
+
 
 class SupportHomePage extends React.Component {
     constructor(props) {
@@ -10,13 +13,26 @@ class SupportHomePage extends React.Component {
     }
     
   
-    render() {
-        
-        return (             
-            <div>
-             <h3>Support:</h3>
-             <LastEventsConsole/>
-             </div>
+    render() {        
+        return (
+            <div className="support-home">
+                <div className="support-home-cards">
+                    <Row>
+                        <Col>
+                            <EventCard eventSeverity="CRITICAL" />
+                        </Col>
+                        <Col>
+                            <EventCard eventSeverity="MAJOR" />
+                        </Col>
+                        <Col>
+                            <EventCard eventSeverity="MINOR"/>
+                        </Col>
+                    </Row>
+                </div>
+                <div className="support-home-console">
+                    <LastEventsConsole/>
+                </div>
+            </div>
         );
     }
 }

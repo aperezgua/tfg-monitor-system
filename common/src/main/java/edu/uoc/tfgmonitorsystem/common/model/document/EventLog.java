@@ -46,6 +46,11 @@ public class EventLog extends BaseDocument {
     private String ruleName;
 
     /**
+     * Nivel de criticidad del evento generado.
+     */
+    private Severity severity;
+
+    /**
      * Fecha de inicio.
      */
     private Date initDate;
@@ -65,6 +70,7 @@ public class EventLog extends BaseDocument {
         this.agent = agent;
         this.ruleName = ruleName;
         this.conditionsValues = initConditionsValues();
+        this.severity = getRule().getSeverity();
     }
 
     /**
@@ -185,6 +191,14 @@ public class EventLog extends BaseDocument {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Severity getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(Severity severity) {
+        this.severity = severity;
     }
 
     /**

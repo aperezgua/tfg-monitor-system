@@ -12,6 +12,7 @@ import edu.uoc.tfgmonitorsystem.common.model.repository.EventLogRepository;
 import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import edu.uoc.tfgmonitorsystem.common.model.util.RegexpUtil;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogFilter;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogSummary;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -56,6 +57,48 @@ public class EventLogService implements IEventLogService {
     private AgentRepository agentRepository;
 
     @Override
+    public EventLogSummary findEventLogSummary(EventLogFilter filter) throws TfgMonitorSystenException {
+
+        EventLogSummary summary = new EventLogSummary();
+
+        summary.setSeverity(filter.getSeverity());
+        summary.setPeriodInSeconds(filter.getLastTimeInSeconds());
+
+        long timeCut;
+        // El doble de tiempo para calcular.
+        if (filter.getLastTimeInSeconds() != null) {
+            timeCut = System.currentTimeMillis() - filter.getLastTimeInSeconds() * 1000L;
+            filter.setLastTimeInSeconds(filter.getLastTimeInSeconds() * 2);
+
+        } else {
+            timeCut = 0L;
+        }
+        List<EventLog> events = this.findLastEventLog(filter);
+
+        int numberPrevious = 0;
+        int numberEvents = 0;
+
+        if (!CollectionUtils.isEmpty(events)) {
+            for (EventLog event : events) {
+                if (event.getDate().getTime() < timeCut) {
+                    numberPrevious++;
+                } else {
+                    numberEvents++;
+                }
+            }
+            if (numberPrevious > 0 && numberPrevious > 0) {
+                summary.setIncrement((int) (100 - numberEvents * 100.0 / numberPrevious));
+            } else {
+                summary.setIncrement(0);
+            }
+        }
+
+        summary.setNumber(numberEvents);
+
+        return summary;
+    }
+
+    @Override
     public List<EventLog> findLastEventLog(EventLogFilter filter) throws TfgMonitorSystenException {
 
         Query query = new Query(Criteria.where("fullFilled").is(true));
@@ -75,6 +118,10 @@ public class EventLogService implements IEventLogService {
                     .find(new Query(Criteria.where("active").is(Boolean.TRUE).orOperator(whereSystemIds)), Agent.class);
 
             query.addCriteria(Criteria.where("agent").in(agents));
+        }
+
+        if (filter.getSeverity() != null) {
+            query.addCriteria(Criteria.where("severity").is(filter.getSeverity()));
         }
 
         if (filter.getLastTimeInSeconds() != null) {
