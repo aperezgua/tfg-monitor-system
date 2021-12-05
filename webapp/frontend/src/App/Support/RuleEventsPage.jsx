@@ -4,32 +4,22 @@ import Moment from 'moment';
 import { useParams } from "react-router-dom";
 import { eventLogService } from '_services';
 import { Chart } from 'react-charts'
-
+import './RuleEventsPage.css';
 
 
 /** Compontente para mostrar los eventos segun su criticidad */
 class RuleEventsPageNoParams extends React.Component {
     
     constructor(props) {
-        super(props);        
+       super(props);
       
-           let data =  [
-              {
-                label: 'Series 1',
-                data: [[0, 1], [1, 2], [2, 4], [3, 2], [4, 7]]
-              },
-              {
-                label: 'Series 2',
-                data: [[0, 3], [1, 1], [2, 5], [3, 6], [4, 4]]
-              }
-            ];
        let axes =  [
-              { primary: true, type: 'linear', position: 'bottom' },
+              { primary: true, type: 'time', position: 'bottom' },
               { type: 'linear', position: 'left' }
             ];
         this.state={
             eventList : null,
-            data : data, 
+            data : null, 
             axes : axes
         };
         
@@ -41,7 +31,32 @@ class RuleEventsPageNoParams extends React.Component {
      
     /** */
     componentDidMount() {
-        console.log("AKI: " +this.props.params.token + " " + this.props.params.rule);
+       console.log("AKI: " +this.props.params.token + " " + this.props.params.rule);
+       eventLogService.findEventsByRule(this.props.params.token, this.props.params.rule).then(
+                    eventList => {
+                        this.setState( { eventList } );
+                        
+                        let values = [] 
+                        for(let i=0; i < eventList.length; i++) {
+                            values.push([new Date(eventList[i].date), eventList[i].ruleDoubleValue ]);
+                        }
+                        
+                        
+                        let data =  [
+                              {
+                                label: 'Series 1',
+                                data: values
+                              }
+                            ];
+            
+       this.setState({data : data});
+                    },
+                    error => {
+                        this.setState({error});
+                    }
+                ) 
+        
+      
      
     }
     render() {
@@ -49,7 +64,9 @@ class RuleEventsPageNoParams extends React.Component {
         return (
             <div>
                 <h1>Grafica de eventos de {agentTokenId}</h1>
+                <div className="graphic">
                 {data && <Chart data={data} axes={axes} />}
+                </div>
                 {eventList && eventList.length > 0 &&
                     <table className="table table-striped table-hover">
                         <thead>

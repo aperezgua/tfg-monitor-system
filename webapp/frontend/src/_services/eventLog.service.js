@@ -8,7 +8,8 @@ export const eventLogService = {
     findLogBySeverity,
     getEventFilter,
     saveEventFilter,
-    findEventSummary
+    findEventSummary,
+    findEventsByRule
 };
 
 
@@ -35,6 +36,15 @@ function findLogBySeverity(severity) {
     let eventFilter = getEventFilterToServer();
     
     eventFilter["severity"] = severity;
+    
+    return requestUrl(`${config.apiLogUrl}/rest/eventLog/findLastLogEvents`, 'POST',  JSON.stringify(eventFilter));
+}
+
+function findEventsByRule(agentTokenId, ruleName) {
+    let eventFilter = getEventFilterToServer();
+    
+    eventFilter["agentTokenId"] = agentTokenId;
+    eventFilter["ruleName"] = ruleName;
     
     return requestUrl(`${config.apiLogUrl}/rest/eventLog/findLastLogEvents`, 'POST',  JSON.stringify(eventFilter));
 }

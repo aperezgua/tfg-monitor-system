@@ -35,6 +35,11 @@ public class EventLog extends BaseDocument {
     private String value;
 
     /**
+     * Valor calculado para la alarma.
+     */
+    private Double ruleDoubleValue;
+
+    /**
      * Agente sobre el cual se produce el evento.
      */
     @DBRef()
@@ -71,6 +76,20 @@ public class EventLog extends BaseDocument {
         this.ruleName = ruleName;
         this.conditionsValues = initConditionsValues();
         this.severity = getRule().getSeverity();
+    }
+
+    /**
+     * Comprueba que una fecha se encuentra fuera del rango para considerear el tiempo mínimo para que un evento se
+     * cumpla.
+     *
+     * @param timeInSeconds
+     * @param dateToCheck
+     * @return
+     */
+    public boolean checkMinTime(Integer timeInSeconds, Date dateToCheck) {
+
+        return dateToCheck.getTime() > initDate.getTime() + timeInSeconds * 1000L;
+
     }
 
     /**
@@ -139,8 +158,16 @@ public class EventLog extends BaseDocument {
         return agent.findRuleByName(ruleName);
     }
 
+    public Double getRuleDoubleValue() {
+        return ruleDoubleValue;
+    }
+
     public String getRuleName() {
         return ruleName;
+    }
+
+    public Severity getSeverity() {
+        return severity;
     }
 
     public String getValue() {
@@ -185,20 +212,20 @@ public class EventLog extends BaseDocument {
         this.initDate = initDate;
     }
 
+    public void setRuleDoubleValue(Double ruleDoubleValue) {
+        this.ruleDoubleValue = ruleDoubleValue;
+    }
+
     public void setRuleName(String ruleName) {
         this.ruleName = ruleName;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Severity getSeverity() {
-        return severity;
-    }
-
     public void setSeverity(Severity severity) {
         this.severity = severity;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     /**
@@ -217,5 +244,4 @@ public class EventLog extends BaseDocument {
         }
         return values;
     }
-
 }

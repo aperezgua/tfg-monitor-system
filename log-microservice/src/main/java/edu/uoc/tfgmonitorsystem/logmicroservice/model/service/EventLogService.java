@@ -111,6 +111,10 @@ public class EventLogService implements IEventLogService {
             query.addCriteria(Criteria.where("agent.token").is(filter.getAgentTokenId()));
         }
 
+        if (filter.getRuleName() != null) {
+            query.addCriteria(Criteria.where("ruleName").is(filter.getRuleName()));
+        }
+
         if (!CollectionUtils.isEmpty(filter.getSystemIds())) {
 
             List<Criteria> whereSystemIds = new ArrayList<>();
@@ -221,7 +225,11 @@ public class EventLogService implements IEventLogService {
     private void checkCountValue(EventLog eventLog, Log log, Condition condition, ConditionValue value) {
         if (condition.needDoubleValueComparation()) {
             value.updateCountValue(log.getDate(), condition.getTime());
-            if (condition.matchValue(value.getTotalValue())) {
+            if (condition.matchValue(value.getTotalValue())
+                    && eventLog.checkMinTime(condition.getTime(), log.getDate())) {
+
+                eventLog.setRuleDoubleValue(value.getTotalValue());
+
                 value.setFullFilled(Boolean.TRUE);
             } else {
                 value.setFullFilled(Boolean.FALSE);
@@ -247,7 +255,11 @@ public class EventLogService implements IEventLogService {
             if (doubleValue != null) {
                 value.updateValue(log.getDate(), condition.getTime(), doubleValue);
 
-                if (condition.matchValue(value.getAvgValue())) {
+                if (condition.matchValue(value.getAvgValue())
+                        && eventLog.checkMinTime(condition.getTime(), log.getDate())) {
+
+                    eventLog.setRuleDoubleValue(doubleValue);
+
                     value.setFullFilled(Boolean.TRUE);
                 } else {
                     value.setFullFilled(Boolean.FALSE);
@@ -260,7 +272,11 @@ public class EventLogService implements IEventLogService {
         } else if (condition.needDoubleValueComparation()) {
 
             Double doubleValue = RegexpUtil.getDoubleFromString(log.getLogLine());
-            if (doubleValue != null && condition.matchValue(doubleValue)) {
+            if (doubleValue != null && condition.matchValue(doubleValue)
+                    && eventLog.checkMinTime(condition.getTime(), log.getDate())) {
+
+                eventLog.setRuleDoubleValue(doubleValue);
+
                 value.setFullFilled(Boolean.TRUE);
             } else {
                 value.setFullFilled(Boolean.FALSE);

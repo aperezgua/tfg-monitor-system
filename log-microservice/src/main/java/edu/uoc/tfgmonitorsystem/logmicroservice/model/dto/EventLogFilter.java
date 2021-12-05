@@ -35,6 +35,11 @@ public class EventLogFilter {
      */
     private Severity severity;
 
+    /**
+     * Nombre de la regla que se va a filtrar.
+     */
+    private String ruleName;
+
     public EventLogFilter() {
         super();
     }
@@ -55,6 +60,10 @@ public class EventLogFilter {
         return limitResults;
     }
 
+    public String getRuleName() {
+        return ruleName;
+    }
+
     public Severity getSeverity() {
         return severity;
     }
@@ -73,6 +82,10 @@ public class EventLogFilter {
 
     public void setLimitResults(Integer limitResults) {
         this.limitResults = limitResults;
+    }
+
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
     }
 
     public void setSeverity(Severity severity) {

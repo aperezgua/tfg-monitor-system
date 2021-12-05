@@ -14,9 +14,9 @@
                 "matchType" : "ANY",
                 "calculationType" : "DIRECT_VALUE",
                 "conditions" : [ {
-                    "value" : 40,
+                    "value" : 6,
                     "comparationType" : "AVG_GREATER_THAN",
-                    "time" : "100"
+                    "time" : "30"
                 }
                 ]
             }, 
@@ -30,7 +30,7 @@
                 "conditions" : [ {
                     "value" : 2,
                     "comparationType" : "GREATER_THAN",
-                    "time" : "100"
+                    "time" : "30"
                 }
                 ]
             }
@@ -54,8 +54,8 @@
                 "conditions": [
                     {
                         "comparationType": "GREATER_THAN",
-                        "value": "3",
-                        "time": 100
+                        "value": "2",
+                        "time": 30
                     }
                 ]
             }

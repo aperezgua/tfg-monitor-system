@@ -25,13 +25,13 @@ public abstract class AbstractTestAppender extends Thread {
 
         while (accumulatedTime <= maxSeconds) {
             getLogger().debug(logsTest[random.nextInt(logsTest.length)]);
-            getLogger().debug("La ejecución ha tardado " + random.nextInt(100) + "s");
+            getLogger().debug("La ejecución ha tardado " + random.nextInt(10) + "s");
 
-            int sleepTime = random.nextInt(10);
+            int sleepTime = random.nextInt(5);
 
             try {
 
-                Thread.sleep(sleepTime * 1000);
+                Thread.sleep(sleepTime * 500);
                 accumulatedTime += sleepTime;
             } catch (InterruptedException e) {
                 e.printStackTrace();
