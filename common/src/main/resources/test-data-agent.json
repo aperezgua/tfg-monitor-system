@@ -14,7 +14,7 @@
                 "matchType" : "ANY",
                 "calculationType" : "DIRECT_VALUE",
                 "conditions" : [ {
-                    "value" : 6,
+                    "value" : 4,
                     "comparationType" : "AVG_GREATER_THAN",
                     "time" : "30"
                 }
