@@ -13,13 +13,26 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Systems extends BaseDocument {
 
+    /**
+     * Nombre de la secuencia para el autonumérico.
+     */
     @Transient
     public static final String SEQUENCE_NAME = "systems_sequence";
 
+    /**
+     * Atributo para especificar si el sistema está activo o no.
+     */
     private Boolean active;
+
+    /**
+     * País al que pertenece este sistema.
+     */
     @DBRef()
     private Country country;
 
+    /**
+     * Fecha de creación del sistema.
+     */
     private Date createdDate;
 
     /**

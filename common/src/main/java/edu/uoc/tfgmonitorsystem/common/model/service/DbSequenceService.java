@@ -10,6 +10,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementación del servicio de secuencias encargado de generar la secuencia para una colección.
+ */
 @Service
 public class DbSequenceService implements IDbSequenceService {
 

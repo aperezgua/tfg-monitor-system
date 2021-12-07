@@ -50,6 +50,7 @@ public class UserService implements IUserService {
         userToUpdate.setName(user.getName());
         userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
         userToUpdate.setActive(user.getActive());
+        userToUpdate.setRol(user.getRol());
 
         return userRepository.save(userToUpdate);
 

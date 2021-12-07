@@ -1,10 +1,13 @@
 package edu.uoc.tfgmonitorsystem.common.controller.security;
 
 import edu.uoc.tfgmonitorsystem.common.model.document.Credential;
+import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -30,6 +35,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    /**
+     * Convierte los roles en authorities.
+     *
+     * @param roles
+     * @return
+     */
+    private List<GrantedAuthority> getGrantedAuthorities(List<Rol> roles) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Rol rol : roles) {
+            authorities.add(new SimpleGrantedAuthority(rol.name()));
+        }
+        return authorities;
+    }
 
     private void printLog(HttpServletRequest request) {
         StringBuilder builder = new StringBuilder();
@@ -62,7 +81,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (credential != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        credential, null, new ArrayList<>());
+                        credential, null, getGrantedAuthorities(Arrays.asList(credential.getRol())));
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

@@ -3,6 +3,9 @@ package edu.uoc.tfgmonitorsystem.common.model.document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Representa a una entidad país en el aplicativo.
+ */
 @Document
 public class Country extends BaseDocument {
 

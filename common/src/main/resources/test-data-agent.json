@@ -8,29 +8,29 @@
         "rules" :[ 
             {
                 "active": true,
-                "name" : "Regla 1",
-                "regularExpression" : "([.]*)([0-9]+s)",
+                "name" : "Tiempos elevados",
+                "regularExpression" : ".*[0-9]+s",
                 "severity" : "MAJOR",
                 "matchType" : "ANY",
                 "calculationType" : "DIRECT_VALUE",
                 "conditions" : [ {
-                    "value" : 10,
+                    "value" : 4,
                     "comparationType" : "AVG_GREATER_THAN",
-                    "time" : "300"
+                    "time" : "30"
                 }
                 ]
             }, 
             {
                 "active": true,
-                "name" : "Regla 2",
+                "name" : "No se encuentra elemento",
                 "regularExpression" : "(NoSuchElementException){1}",
                 "severity" : "MINOR",
                 "matchType" : "ANY",
                 "calculationType" : "COUNT_EVENT",
                 "conditions" : [ {
-                    "value" : 4,
+                    "value" : 2,
                     "comparationType" : "GREATER_THAN",
-                    "time" : "100"
+                    "time" : "30"
                 }
                 ]
             }
@@ -43,6 +43,23 @@
         "systems": {"id":10001},
         "active": true,
         "createdDate": 1637099647598,
+        "rules": [
+            {
+                "active": true,
+                "calculationType": "COUNT_EVENT",
+                "matchType": "ALL",
+                "name": "Nivel crítico",
+                "regularExpression": ".*crítico.*",
+                "severity": "CRITICAL",
+                "conditions": [
+                    {
+                        "comparationType": "GREATER_THAN",
+                        "value": "2",
+                        "time": 30
+                    }
+                ]
+            }
+        ],
         "_class": "edu.uoc.tfgmonitorsystem.common.model.document.Agent"
     }
     

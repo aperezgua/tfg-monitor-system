@@ -6,19 +6,38 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Representa a una entidad log.
+ */
 @Document
 public class Log extends BaseDocument {
+
+    /**
+     * Identificador del nombre de secuencia usado.
+     */
     @Transient
     public static final String SEQUENCE_NAME = "log_sequence";
 
+    /**
+     * Identificador autonumérico de la entidad.
+     */
     @Id
     private Long id;
 
+    /**
+     * Referencia al agente al que pertenece este log.
+     */
     @DBRef()
     private Agent agent;
 
+    /**
+     * Fecha de cuándo se produce el log.
+     */
     private Date date;
 
+    /**
+     * Línea de log a guardar.
+     */
     private String logLine;
 
     public Log() {

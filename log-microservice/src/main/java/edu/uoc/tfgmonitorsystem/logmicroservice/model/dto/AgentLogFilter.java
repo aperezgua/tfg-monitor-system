@@ -4,16 +4,32 @@ import javax.validation.constraints.NotBlank;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class RegexpFilter {
+/**
+ * Filtro para buscar elementos de log.
+ */
+public class AgentLogFilter {
 
-    @NotBlank(message = "regexpFilter.agentTokenId.mandatory")
+    @NotBlank(message = "agentLogFilter.agentTokenId.mandatory")
     private String agentTokenId;
 
-    @NotBlank(message = "regexpFilter.regexp.mandatory")
     private String regexp;
+
+    private Integer limitResults;
+
+    public AgentLogFilter() {
+        super();
+    }
+
+    public AgentLogFilter(String agentTokenId) {
+        this.agentTokenId = agentTokenId;
+    }
 
     public String getAgentTokenId() {
         return agentTokenId;
+    }
+
+    public Integer getLimitResults() {
+        return limitResults;
     }
 
     public String getRegexp() {
@@ -22,6 +38,10 @@ public class RegexpFilter {
 
     public void setAgentTokenId(String agentTokenId) {
         this.agentTokenId = agentTokenId;
+    }
+
+    public void setLimitResults(Integer limitResults) {
+        this.limitResults = limitResults;
     }
 
     public void setRegexp(String regexp) {

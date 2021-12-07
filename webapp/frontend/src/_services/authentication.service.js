@@ -6,6 +6,7 @@ import jwt from 'jwt-decode';
 const currentTokenSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('jwtToken')));
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')));
 
+
 export const authenticationService = {
     login,
     logout,
@@ -14,6 +15,8 @@ export const authenticationService = {
     get currentTokenValue () { return currentTokenSubject.value },
     get currentUserValue () { return currentUserSubject.value }
 };
+
+
 
 /**
  * Se hace login. En caso de producirse un error el handleResponse lo manejará, si se produce un error de conexión se 
@@ -35,7 +38,7 @@ function login(username, password) {
             currentTokenSubject.next(token);            
             
             let user = jwt(token.token);
-            currentUserSubject.next(user);            
+            currentUserSubject.next(user);
             localStorage.setItem('user', JSON.stringify(user));
             
             console.log("Datos usuario: " +currentUserSubject.value.sub);
@@ -48,6 +51,7 @@ function login(username, password) {
 function logout() {    
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('user');
+    localStorage.removeItem('eventFilter');
     currentTokenSubject.next(null);
     currentUserSubject.next(null);
 }
