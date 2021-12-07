@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,10 +45,10 @@ public class AgentsController {
      * @return Listado de agentes que coinciden con el filtro.
      */
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
-    public List<Agent> find(@RequestBody AgentFilter filter) throws TfgMonitorSystenException {
+    public ResponseEntity<List<Agent>> find(@RequestBody AgentFilter filter) throws TfgMonitorSystenException {
         List<Agent> agents = agentService.findByFilter(filter);
         LOGGER.debug("filter=" + filter + ", return=" + agents);
-        return agents;
+        return ResponseEntity.ok(agents);
     }
 
     /**
@@ -57,9 +58,13 @@ public class AgentsController {
      * @return Listado de usuarios que coinciden con el filtro.
      */
     @RequestMapping(value = "/findLastNotificationData", method = { RequestMethod.GET })
-    public List<AgentWithLastNotificationData> findLastNotificationData() throws TfgMonitorSystenException {
+    public ResponseEntity<List<AgentWithLastNotificationData>> findLastNotificationData()
+            throws TfgMonitorSystenException {
         List<AgentWithLastNotificationData> agents = agentService.findLastNotificationData();
-        return agents;
+
+        LOGGER.debug("return=" + agents);
+
+        return ResponseEntity.ok(agents);
     }
 
     /**
@@ -68,10 +73,10 @@ public class AgentsController {
      * @return String con el token aleatorio.
      */
     @GetMapping("/generateToken")
-    public TokenDto generateToken() {
+    public ResponseEntity<TokenDto> generateToken() {
         String token = UUID.randomUUID().toString();
         LOGGER.debug("token=" + token);
-        return new TokenDto(token);
+        return ResponseEntity.ok(new TokenDto(token));
     }
 
     /**
@@ -82,10 +87,10 @@ public class AgentsController {
      * @throws TfgMonitorSystenException
      */
     @GetMapping("/get/{token}")
-    public Agent get(@PathVariable String token) throws TfgMonitorSystenException {
+    public ResponseEntity<Agent> get(@PathVariable String token) throws TfgMonitorSystenException {
         Agent agent = agentService.findByToken(token);
         LOGGER.debug("token=" + token + ", return=" + agent);
-        return agent;
+        return ResponseEntity.ok(agent);
     }
 
     /**
@@ -95,11 +100,11 @@ public class AgentsController {
      * @return agent actualizado.
      */
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
-    public Agent put(@Valid @RequestBody Agent agent) throws TfgMonitorSystenException {
+    public ResponseEntity<Agent> put(@Valid @RequestBody Agent agent) throws TfgMonitorSystenException {
 
         Agent updatedAgent = agentService.createOrUpdate(agent);
         LOGGER.debug("agent=" + agent + ", return=" + updatedAgent);
-        return updatedAgent;
+        return ResponseEntity.ok(updatedAgent);
     }
 
 }
