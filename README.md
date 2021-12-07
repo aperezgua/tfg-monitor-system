@@ -58,5 +58,6 @@ Docker Compose para descargar y arrancar dicha imagen.
 
 ## Despliegue en entorno de preproducción:
 Para el despliegue de entorno de preproducción se debe realizar una compilación con el perfil docker: `mvn clean install docker:build` 
-lo que generará las imágenes de Docker necesarias para ejecutar el `docker-compose -f tfg-monitor-system.yml up -d`
+lo que generará las imágenes de Docker necesarias para ejecutar el `docker-compose -f tfg-monitor-system.yml up -d` 
+se usa un sistema de parametrización substituyendo las variables @server.host@ y @mongodb.host@
 

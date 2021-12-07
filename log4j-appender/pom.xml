@@ -33,7 +33,41 @@
             </resource>
         </resources>
         <plugins>
-
+<!--
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-dependency-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>copy-dependencies</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>copy-dependencies</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>
+			                    ${project.build.directory}/libs
+			                </outputDirectory>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+			-->
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-jar-plugin</artifactId>
+			    <configuration>
+			        <archive>
+			            <manifest>
+			                <addClasspath>true</addClasspath>
+			                <classpathPrefix>/deps-release</classpathPrefix>
+			                <mainClass>
+			                    edu.uoc.tfgmonitorsystem.log4jappender.Log4jTestApp
+			                </mainClass>
+			            </manifest>
+			        </archive>
+			    </configuration>
+			</plugin>
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -48,10 +82,24 @@
 
                             <build>
                                 <from>java:8</from>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                                <cmd>java -jar /maven/${project.artifactId}-${project.version}.jar</cmd>
+                                <assemblies>
+	                                <assembly>
+							            <name>deps-release</name>
+							            <descriptorRef>release-dependencies</descriptorRef>
+							        </assembly>
+	                                <assembly>
+	                                    <descriptorRef>artifact</descriptorRef>
+	                                </assembly>
+                                </assemblies>
+                                <entryPoint>
+								  <!-- exec form  -->
+								   <exec>
+								     <arg>java</arg>
+								     <arg>-jar</arg>
+								     <arg>/maven/${project.artifactId}-${project.version}.jar</arg>
+								   </exec>
+								</entryPoint>
+                                <!-- <cmd>java -jar /maven/${project.artifactId}-${project.version}.jar</cmd> -->
                                 
                             </build>
 

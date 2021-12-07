@@ -61,6 +61,12 @@ services:
       - tfg_network
     ports:
       - 8080:8080
+      
+  log4j-appender:
+    image: log4j-appender:1.0-SNAPSHOT
+    restart: always
+    networks:
+      - tfg_network
 
   mongo-express:
     image: mongo-express
