@@ -2,8 +2,8 @@
 <log4j:configuration debug="true" xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
     <appender name="agentAppender1" class="edu.uoc.tfgmonitorsystem.log4jappender.AgentAppender">        
-        <param name="authenticationUrl" value="http://auth-microservice:8091/authenticate" />
-        <param name="putLogUrl" value="http://log-microservice:8095/rest/log/put" />
+        <param name="authenticationUrl" value="http://vps-1f79b26a.vps.ovh.net:8091/authenticate" />
+        <param name="putLogUrl" value="http://vps-1f79b26a.vps.ovh.net:8095/rest/log/put" />
         <param name="agentToken" value="ac714c1a-4953-11ec-81d3-0242ac130003" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
@@ -11,8 +11,8 @@
     </appender>
     
     <appender name="agentAppender2" class="edu.uoc.tfgmonitorsystem.log4jappender.AgentAppender">
-        <param name="authenticationUrl" value="http://auth-microservice:8091/authenticate" />
-        <param name="putLogUrl" value="http://log-microservice:8095/rest/log/put" />
+        <param name="authenticationUrl" value="http://vps-1f79b26a.vps.ovh.net:8091/authenticate" />
+        <param name="putLogUrl" value="http://vps-1f79b26a.vps.ovh.net:8095/rest/log/put" />
         <param name="agentToken" value="0bac5204-4951-11ec-81d3-0242ac130003" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
