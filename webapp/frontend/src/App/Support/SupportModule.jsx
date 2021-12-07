@@ -1,6 +1,6 @@
 import React from 'react';
 import { authenticationService, systemsService, eventLogService } from '_services';
-import { Route, Routes} from 'react-router-dom'
+import { Route, Routes, Link} from 'react-router-dom'
 import { Navbar, Nav, Form } from 'react-bootstrap';
 import Select from 'react-select'
 
@@ -53,7 +53,7 @@ class SupportModule extends React.Component {
                     {currentUser && 
                         <Navbar bg="light" expand="lg">
                             <Nav className="me-auto">
-                                <Nav.Link href="/support/home">Home</Nav.Link>
+                                <Link to="/support/home"  className="nav-link">Home</Link>
                              </Nav>
                              <Nav  className="justify-content-end">
                                 <Nav.Item>
@@ -89,7 +89,7 @@ class SupportModule extends React.Component {
                              </Nav>                             
                              <Nav className="justify-content-end">
                                 <Navbar.Text>[{currentUser.sub}] ::</Navbar.Text>
-                                <Nav.Link href="/" onClick={this.logout}>Salir</Nav.Link>
+                                <Link to="/" onClick={this.logout}  className="nav-link">Salir</Link>
                              </Nav>
                         </Navbar>
                         

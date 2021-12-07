@@ -26,6 +26,10 @@ class LoginPageNoNavigate extends React.Component {
                     Username: aperezgua@uoc.edu<br />
                     Password: pw
                 </div>
+                <div className="alert alert-info">
+                    Username: sam@uoc.edu<br />
+                    Password: pw
+                </div>
                 <h2>Login</h2>
                 <Formik
                     initialValues={{
