@@ -1,13 +1,23 @@
-package edu.uoc.tfgmonitorsystem.authmicroservice.controller;
+package edu.uoc.tfgmonitorsystem.authmicroservice.model.dto;
 
-import java.io.Serializable;
+/**
+ * Petición de autenticación para un agente o usuario.
+ */
+public class JwtRequest {
 
-public class JwtRequest implements Serializable {
-
-    private static final long serialVersionUID = 5926468583005150707L;
-
+    /**
+     * Token de agente para hacer login.
+     */
     private String agentToken;
+
+    /**
+     * Password usado por el usuario.
+     */
     private String password;
+
+    /**
+     * Nombre del usaurio.
+     */
     private String username;
 
     public JwtRequest() {
