@@ -29,7 +29,7 @@ services:
     depends_on:
       - "mongo"
     healthcheck:
-        test: curl --fail -s http://localhost:8091/health || exit 1
+        test: ["CMD", "curl", "-f", "http://localhost:8091/health"]
         interval: 10s
         timeout: 10s
         retries: 5
@@ -44,7 +44,7 @@ services:
     depends_on:
       - "mongo"
     healthcheck:
-        test: curl --fail -s http://localhost:8092/health || exit 1
+        test: ["CMD", "curl", "-f", "http://localhost:8092/health"]
         interval: 10s
         timeout: 10s
         retries: 5
@@ -59,7 +59,7 @@ services:
     depends_on:
       - "mongo"
     healthcheck:
-        test: curl --fail -s http://localhost:8093/health || exit 1
+        test: ["CMD", "curl", "-f", "http://localhost:8093/health"]
         interval: 10s
         timeout: 10s
         retries: 5
@@ -74,7 +74,7 @@ services:
     depends_on:
       - "mongo"
     healthcheck:
-        test: curl --fail -s http://localhost:8094/health || exit 1
+        test: ["CMD", "curl", "-f", "http://localhost:8094/health"]
         interval: 10s
         timeout: 10s
         retries: 5
@@ -89,7 +89,7 @@ services:
     depends_on:
       - mongo
     healthcheck:
-        test: curl --fail -s http://localhost:8095/health || exit 1
+        test: ["CMD", "curl", "-f", "http://localhost:8095/health"]
         interval: 10s
         timeout: 10s
         retries: 5
@@ -102,7 +102,7 @@ services:
     ports:
       - 8080:8080
     healthcheck:
-        test: curl --fail -s http://localhost:8080/health || exit 1
+        test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
         interval: 10s
         timeout: 10s
         retries: 5
@@ -127,7 +127,7 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: toor
       ME_CONFIG_MONGODB_URL: mongodb://root:toor@mongo:27017/
     depends_on:
-      - mongo
+      - "mongo"
 
 networks:
     tfg_network:
