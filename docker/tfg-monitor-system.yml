@@ -27,7 +27,12 @@ services:
     ports:
       - 8091:8091
     depends_on:
-      - mongo
+      - "mongo"
+    healthcheck:
+        test: curl --fail -s http://localhost:8091/health || exit 1
+        interval: 10s
+        timeout: 10s
+        retries: 5
 
   user-microservice:
     image: user-microservice:1.0-SNAPSHOT
@@ -37,7 +42,12 @@ services:
     ports:
       - 8092:8092
     depends_on:
-      - mongo
+      - "mongo"
+    healthcheck:
+        test: curl --fail -s http://localhost:8092/health || exit 1
+        interval: 10s
+        timeout: 10s
+        retries: 5
 
   system-microservice:
     image: system-microservice:1.0-SNAPSHOT
@@ -47,7 +57,12 @@ services:
     ports:
       - 8093:8093
     depends_on:
-      - mongo
+      - "mongo"
+    healthcheck:
+        test: curl --fail -s http://localhost:8093/health || exit 1
+        interval: 10s
+        timeout: 10s
+        retries: 5
       
   agent-microservice:
     image: agent-microservice:1.0-SNAPSHOT
@@ -57,7 +72,12 @@ services:
     ports:
       - 8094:8094
     depends_on:
-      - mongo
+      - "mongo"
+    healthcheck:
+        test: curl --fail -s http://localhost:8094/health || exit 1
+        interval: 10s
+        timeout: 10s
+        retries: 5
       
   log-microservice:
     image: log-microservice:1.0-SNAPSHOT
@@ -69,7 +89,7 @@ services:
     depends_on:
       - mongo
     healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:8095"]
+        test: curl --fail -s http://localhost:8095/health || exit 1
         interval: 10s
         timeout: 10s
         retries: 5
@@ -81,6 +101,11 @@ services:
       - tfg_network
     ports:
       - 8080:8080
+    healthcheck:
+        test: curl --fail -s http://localhost:8080/health || exit 1
+        interval: 10s
+        timeout: 10s
+        retries: 5
       
   log4j-appender:
     image: log4j-appender:1.0-SNAPSHOT
@@ -88,7 +113,7 @@ services:
     networks:
       - tfg_network
     depends_on:
-      - log-microservice
+      - "log-microservice"
 
   mongo-express:
     image: mongo-express
