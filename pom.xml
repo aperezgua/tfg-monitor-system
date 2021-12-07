@@ -165,12 +165,14 @@
 	        </activation>
             <properties>
                 <mongodb.host>localhost</mongodb.host>
+                <docker.host>localhost</docker.host>
             </properties>
        </profile>
         <profile>
             <id>docker</id>
             <properties>
                 <mongodb.host>mongo</mongodb.host>
+                <docker.host>vps-1f79b26a.vps.ovh.net</docker.host>
             </properties>
        </profile>
     </profiles>

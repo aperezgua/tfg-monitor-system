@@ -100,7 +100,7 @@ class AgentsList extends React.Component {
                                     <Col lg="12" className="text-center">
                                          <Form.Group>
                                             <Button variant="primary" type="submit">Buscar</Button>  &nbsp;
-                                            <Button href="/admin/agents/edit/0" variant="secondary" >Nuevo</Button>
+                                            <Link to="/admin/agents/edit/0" className="btn btn-secondary" >Nuevo</Link>
                                         </Form.Group>
                                      </Col>
                                 </Row>

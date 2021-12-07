@@ -1,6 +1,6 @@
 import React from 'react';
 import { authenticationService } from '_services';
-import { Route, Routes} from 'react-router-dom'
+import { Route, Routes, useNavigate, Link } from 'react-router-dom'
 import { HomePage, UsersPage, SystemsPage, AgentsPage} from 'App/Admin';
 import { NotFound } from 'App/NotFound';
 import { Navbar, Nav } from 'react-bootstrap';
@@ -20,7 +20,7 @@ class AdminModule extends React.Component {
         authenticationService.logout();
     }    
     render() {
-        const { currentUser} = this.state;
+        const { currentUser, navigate} = this.state;
         
         return (
             <div className="admin-page">
@@ -28,14 +28,14 @@ class AdminModule extends React.Component {
                     {currentUser && 
                         <Navbar bg="light" expand="lg">
                             <Nav className="me-auto">
-                                <Nav.Link href="/admin/home">Home</Nav.Link>
-                                <Nav.Link href="/admin/users/list">Usuarios</Nav.Link>
-                                <Nav.Link href="/admin/systems/list">Sistemas</Nav.Link>
-                                <Nav.Link href="/admin/agents/list">Agentes</Nav.Link>
+                                <Link to="/admin/home" className="nav-link">Home</Link>
+                                <Link to="/admin/users/list"  className="nav-link">Usuarios</Link>
+                                <Link to="/admin/systems/list" className="nav-link">Sistemas</Link>
+                                <Link to="/admin/agents/list" className="nav-link">Agentes</Link>
                              </Nav>
                              <Nav className="justify-content-end">
                                 <Navbar.Text>[{currentUser.sub}] ::</Navbar.Text>
-                                <Nav.Link href="/" onClick={this.logout}>Salir</Nav.Link>
+                                <Link to="/" onClick={this.logout}  className="nav-link">Salir</Link>
                              </Nav>
                         </Navbar>
                         

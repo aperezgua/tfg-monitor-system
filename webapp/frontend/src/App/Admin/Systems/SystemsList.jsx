@@ -98,7 +98,7 @@ class SystemsList extends React.Component {
                                     <Col lg="12" className="text-center">
                                          <Form.Group>
                                             <Button variant="primary" type="submit">Buscar</Button>  &nbsp;
-                                            <Button href="/admin/systems/edit/0" variant="secondary" >Nuevo</Button>
+                                            <Link to="/admin/systems/edit/0" className="btn btn-secondary" >Nuevo</Link>
                                         </Form.Group>
                                      </Col>
                                 </Row>
