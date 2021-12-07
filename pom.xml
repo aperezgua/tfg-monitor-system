@@ -41,7 +41,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<junit.version>4.12</junit.version>
 		
-        <commons-lang3.version>3.12.0</commons-lang3.version>		
+        <commons-lang3.version>3.12.0</commons-lang3.version>
 
 	</properties>
 
@@ -96,6 +96,7 @@
 
 
 	<build>
+	
 		<pluginManagement>
 
 			<plugins>
@@ -152,17 +153,37 @@
                 </plugin>
 			</plugins>
 		</pluginManagement>
+		
+		
 	</build>
+	
+	<profiles>
+       <profile>
+            <id>dev</id>
+            <activation>
+	            <activeByDefault>true</activeByDefault>
+	        </activation>
+            <properties>
+                <mongodb.host>localhost</mongodb.host>
+            </properties>
+       </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <mongodb.host>mongo</mongodb.host>
+            </properties>
+       </profile>
+    </profiles>
 
 	<modules>
 		<module>common</module>
 		<module>auth-microservice</module>
-		<module>user-microservice</module>
-		<module>webapp</module>
-    <module>system-microservice</module>
-    <module>agent-microservice</module>
-    <module>log4j-appender</module>
-    <module>log-microservice</module>
+		<module>user-microservice</module>		
+	    <module>system-microservice</module>
+	    <module>agent-microservice</module>
+	    <module>log-microservice</module>
+	    <module>webapp</module>
+	    <module>log4j-appender</module>
   </modules>
 
 </project>

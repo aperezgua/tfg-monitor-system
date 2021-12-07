@@ -14,7 +14,7 @@ public class AgentMicroserviceApp {
     private static final Logger LOGGER = Logger.getLogger(AgentMicroserviceApp.class);
 
     public static void main(String[] args) {
-        LOGGER.debug(".........Start APP.........");
+        LOGGER.debug(".........Start Agent Microservice.........");
         SpringApplication.run(AgentMicroserviceApp.class, args);
     }
 

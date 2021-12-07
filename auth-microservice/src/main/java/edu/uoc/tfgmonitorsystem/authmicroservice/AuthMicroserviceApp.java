@@ -14,7 +14,7 @@ public class AuthMicroserviceApp {
     private static final Logger LOGGER = Logger.getLogger(AuthMicroserviceApp.class);
 
     public static void main(String[] args) {
-        LOGGER.debug(".........Start APP.........");
+        LOGGER.debug(".........Start Auth Microservice.........");
         SpringApplication.run(AuthMicroserviceApp.class, args);
     }
 

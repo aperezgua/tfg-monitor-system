@@ -48,10 +48,10 @@ public class EventLogController {
     }
 
     /**
-     * Busca los últimos eventos
+     * Busca los últimos eventos según un filtro aplicado.
      *
-     * @param eventFilter
-     * @return
+     * @param eventFilter Filtro que se aplica al listado de eventos.
+     * @return Listado de eventos filtrado.
      * @throws TfgMonitorSystenException
      */
     @RequestMapping(value = "/findLastLogEvents", method = { RequestMethod.POST })

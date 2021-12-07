@@ -2,10 +2,10 @@ package edu.uoc.tfgmonitorsystem.logmicroservice.controller;
 
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtConstants;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtTokenUtil;
-import edu.uoc.tfgmonitorsystem.common.model.document.Log;
+import edu.uoc.tfgmonitorsystem.common.model.document.EventLog;
 import edu.uoc.tfgmonitorsystem.common.model.document.Rol;
 import edu.uoc.tfgmonitorsystem.common.model.document.User;
-import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
+import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.EventLogFilter;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Assert;
@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class LogControllerTest {
+public class EventLogControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -35,17 +35,16 @@ public class LogControllerTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void findByRegexpTest() {
+    public void findLastLogEventsTest() {
 
-        AgentLogFilter regexpFilter = new AgentLogFilter();
-        regexpFilter.setAgentTokenId("0bac5204-4951-11ec-81d3-0242ac130003");
+        EventLogFilter filter = new EventLogFilter();
 
-        ResponseEntity<Object> response = testRestTemplate.postForEntity("/rest/log/findByRegexp", regexpFilter,
+        ResponseEntity<Object> response = testRestTemplate.postForEntity("/rest/eventLog/findLastLogEvents", filter,
                 Object.class);
 
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        List<Log> logs = (List<Log>) response.getBody();
+        List<EventLog> logs = (List<EventLog>) response.getBody();
 
         Assert.assertEquals(Integer.valueOf(0), Integer.valueOf(logs.size()));
     }
@@ -57,9 +56,9 @@ public class LogControllerTest {
     public void setup() {
 
         User user = new User();
-        user.setName("Admin");
-        user.setRol(Rol.ADMINISTRATOR);
-        user.setEmail("a@b.com");
+        user.setName("Support");
+        user.setRol(Rol.SUPPORT);
+        user.setEmail("c@d.com");
 
         testRestTemplate.getRestTemplate().setInterceptors(Collections.singletonList((request, body, execution) -> {
             request.getHeaders().add(JwtConstants.AUTHORIZATION_HEADER, jwtTokenUtil.generateToken(user));

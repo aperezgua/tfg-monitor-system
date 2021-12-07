@@ -32,7 +32,7 @@ public class UsersControllerTest {
     private JwtTokenUtil jwtTokenUtil;
 
     /**
-     * Se prueba la petición de búsqueda de sistemas.
+     * Se prueba la petición de búsqueda de usuarios.
      */
     @SuppressWarnings("unchecked")
     @Test

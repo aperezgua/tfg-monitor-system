@@ -1,0 +1,79 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    networks:
+      - tfg_network    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+      MONGO_INITDB_DATABASE : tfg-monitor-system-db
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+  auth-microservice:
+    image: auth-microservice:1.0-SNAPSHOT
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8091:8091
+
+  user-microservice:
+    image: user-microservice:1.0-SNAPSHOT
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8092:8092
+
+  system-microservice:
+    image: system-microservice:1.0-SNAPSHOT
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8093:8093
+
+  agent-microservice:
+    image: agent-microservice:1.0-SNAPSHOT
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8094:8094
+
+  log-microservice:
+    image: log-microservice:1.0-SNAPSHOT
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8095:8095
+
+  webapp:
+    image: webapp:1.0-SNAPSHOT
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8080:8080
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: toor
+      ME_CONFIG_MONGODB_URL: mongodb://root:toor@mongo:27017/
+
+networks:
+    tfg_network:
+        driver: bridge
