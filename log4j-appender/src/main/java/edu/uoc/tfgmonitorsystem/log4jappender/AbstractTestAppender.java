@@ -1,19 +1,19 @@
 package edu.uoc.tfgmonitorsystem.log4jappender;
 
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.util.Random;
 import org.apache.log4j.Logger;
 
 public abstract class AbstractTestAppender extends Thread {
 
-    private final SecureRandom random;
+    private final Random random;
 
     private int maxSeconds = 0;
 
     private final String[] logsTest;
 
     public AbstractTestAppender(String[] logsTest, int maxSeconds) throws NoSuchAlgorithmException {
-        random = SecureRandom.getInstanceStrong();
+        random = new Random();
         this.logsTest = logsTest;
         this.maxSeconds = maxSeconds;
     }
