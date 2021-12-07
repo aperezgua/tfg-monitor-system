@@ -13,6 +13,11 @@ services:
       MONGO_INITDB_DATABASE : tfg-monitor-system-db
     volumes:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   auth-microservice:
     image: auth-microservice:1.0-SNAPSHOT
@@ -21,6 +26,8 @@ services:
       - tfg_network
     ports:
       - 8091:8091
+    depends_on:
+      - mongo
 
   user-microservice:
     image: user-microservice:1.0-SNAPSHOT
@@ -29,6 +36,8 @@ services:
       - tfg_network
     ports:
       - 8092:8092
+    depends_on:
+      - mongo
 
   system-microservice:
     image: system-microservice:1.0-SNAPSHOT
@@ -37,7 +46,9 @@ services:
       - tfg_network
     ports:
       - 8093:8093
-
+    depends_on:
+      - mongo
+      
   agent-microservice:
     image: agent-microservice:1.0-SNAPSHOT
     restart: always
@@ -45,7 +56,9 @@ services:
       - tfg_network
     ports:
       - 8094:8094
-
+    depends_on:
+      - mongo
+      
   log-microservice:
     image: log-microservice:1.0-SNAPSHOT
     restart: always
@@ -53,7 +66,14 @@ services:
       - tfg_network
     ports:
       - 8095:8095
-
+    depends_on:
+      - mongo
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8095"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+      
   webapp:
     image: webapp:1.0-SNAPSHOT
     restart: always
@@ -67,6 +87,8 @@ services:
     restart: always
     networks:
       - tfg_network
+    depends_on:
+      - log-microservice
 
   mongo-express:
     image: mongo-express
@@ -79,6 +101,8 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: toor
       ME_CONFIG_MONGODB_URL: mongodb://root:toor@mongo:27017/
+    depends_on:
+      - mongo
 
 networks:
     tfg_network:

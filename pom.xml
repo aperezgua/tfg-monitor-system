@@ -175,6 +175,13 @@
                 <server.host>vps-1f79b26a.vps.ovh.net</server.host>
             </properties>
        </profile>
+        <profile>
+            <id>docker-local</id>
+            <properties>
+                <mongodb.host>mongo</mongodb.host>
+                <server.host>localhost</server.host>
+            </properties>
+       </profile>
     </profiles>
 
 	<modules>
