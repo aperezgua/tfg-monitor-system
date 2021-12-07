@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,17 +42,17 @@ public class UsersController {
      * @return Listado de usuarios que coinciden con el filtro.
      */
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
-    public List<User> find(@RequestBody UserFilter filter) throws TfgMonitorSystenException {
+    public ResponseEntity<List<User>> find(@RequestBody UserFilter filter) throws TfgMonitorSystenException {
         List<User> users = userService.findByFilter(filter);
         LOGGER.debug("filter=" + filter + ", return=" + users);
-        return users;
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/get/{id}")
-    public User get(@PathVariable Integer id) throws TfgMonitorSystenException {
+    public ResponseEntity<User> get(@PathVariable Integer id) throws TfgMonitorSystenException {
         User user = userService.findByIdNoPassword(id);
         LOGGER.debug("id=" + id + ", return=" + user);
-        return user;
+        return ResponseEntity.ok(user);
     }
 
     /**
@@ -61,11 +62,11 @@ public class UsersController {
      * @return usuario actualizado.
      */
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
-    public User put(@Valid @RequestBody User user) throws TfgMonitorSystenException {
+    public ResponseEntity<User> put(@Valid @RequestBody User user) throws TfgMonitorSystenException {
 
         User updatedUser = userService.createOrUpdate(user);
         LOGGER.debug("user=" + user + ", return=" + updatedUser);
-        return updatedUser;
+        return ResponseEntity.ok(updatedUser);
 
     }
 

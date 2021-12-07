@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,10 +43,10 @@ public class SystemsController {
      */
     @PreAuthorize("hasAuthority('ADMINISTRATOR') or hasAuthority('SUPPORT') ")
     @RequestMapping(value = "/find", method = { RequestMethod.POST })
-    public List<Systems> find(@RequestBody SystemFilter filter) throws TfgMonitorSystenException {
+    public ResponseEntity<List<Systems>> find(@RequestBody SystemFilter filter) throws TfgMonitorSystenException {
         List<Systems> systems = systemsService.findByFilter(filter);
         LOGGER.debug("filter=" + filter + ", return=" + systems);
-        return systems;
+        return ResponseEntity.ok(systems);
     }
 
     /**
@@ -56,10 +57,10 @@ public class SystemsController {
      * @throws TfgMonitorSystenException en caso de producirse un error
      */
     @GetMapping("/get/{id}")
-    public Systems get(@PathVariable Integer id) throws TfgMonitorSystenException {
+    public ResponseEntity<Systems> get(@PathVariable Integer id) throws TfgMonitorSystenException {
         Systems systems = systemsService.findById(id);
         LOGGER.debug("id=" + id + ", return=" + systems);
-        return systems;
+        return ResponseEntity.ok(systems);
     }
 
     /**
@@ -69,11 +70,11 @@ public class SystemsController {
      * @return sistema actualizado.
      */
     @RequestMapping(value = "/put", method = { RequestMethod.POST })
-    public Systems put(@Valid @RequestBody Systems systems) throws TfgMonitorSystenException {
+    public ResponseEntity<Systems> put(@Valid @RequestBody Systems systems) throws TfgMonitorSystenException {
 
         Systems updatedSystems = systemsService.createOrUpdate(systems);
         LOGGER.debug("systems=" + systems + ", return=" + updatedSystems);
-        return updatedSystems;
+        return ResponseEntity.ok(updatedSystems);
 
     }
 

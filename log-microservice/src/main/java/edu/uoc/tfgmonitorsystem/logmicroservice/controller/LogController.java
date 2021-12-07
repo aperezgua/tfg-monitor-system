@@ -45,12 +45,13 @@ public class LogController {
      */
     @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     @RequestMapping(value = "/findByRegexp", method = { RequestMethod.POST })
-    public List<Log> findByRegexp(@Valid @RequestBody AgentLogFilter regexpFilter) throws TfgMonitorSystenException {
+    public ResponseEntity<List<Log>> findByRegexp(@Valid @RequestBody AgentLogFilter regexpFilter)
+            throws TfgMonitorSystenException {
 
         List<Log> logs = logService.findByAgent(regexpFilter);
 
         LOGGER.debug("findByRegexp=" + regexpFilter + " -> " + logs);
-        return logs;
+        return ResponseEntity.ok(logs);
 
     }
 
