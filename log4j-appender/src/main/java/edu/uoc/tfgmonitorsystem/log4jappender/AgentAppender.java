@@ -1,12 +1,9 @@
 package edu.uoc.tfgmonitorsystem.log4jappender;
 
 import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 
 public class AgentAppender extends AppenderSkeleton {
-
-    private static final Logger LOGGER = Logger.getLogger(AgentAppender.class);
 
     private String authenticationUrl;
     private String putLogUrl;

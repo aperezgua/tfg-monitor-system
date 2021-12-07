@@ -64,6 +64,7 @@ public class HttpClient {
             connection.setDoOutput(true);
             return connection;
         } catch (IOException e) {
+            System.out.println("Cannot create connection " + authenticateUrl);
             e.printStackTrace();
         }
         return null;
@@ -96,9 +97,8 @@ public class HttpClient {
                 os.write(input, 0, input.length);
             }
         } catch (IOException e) {
-//            System.out.println("Cannot send " + json);
-//            e.printStackTrace();
-
+            System.out.println("Cannot send " + authenticateUrl + " > " + json);
+            e.printStackTrace();
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
@@ -109,8 +109,8 @@ public class HttpClient {
 
             return response.toString();
         } catch (IOException e) {
-//            System.out.println("Cannot send receive response " + json);
-//            e.printStackTrace();
+            System.out.println("Cannot send receive response " + authenticateUrl + " > " + json);
+            e.printStackTrace();
         }
         return null;
     }
