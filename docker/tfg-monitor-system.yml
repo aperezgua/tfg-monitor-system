@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.1'
 
 services:
 
@@ -27,8 +27,7 @@ services:
     ports:
       - 8091:8091
     depends_on:
-        mongo:
-            condition: service_healthy
+        - mongo
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:8091/health"]
         interval: 10s
@@ -43,13 +42,13 @@ services:
     ports:
       - 8092:8092
     depends_on:
-        mongo:
-            condition: service_healthy
+       - mongo
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:8092/health"]
         interval: 10s
         timeout: 10s
         retries: 5
+
 
   system-microservice:
     image: system-microservice:1.0-SNAPSHOT
@@ -59,14 +58,14 @@ services:
     ports:
       - 8093:8093
     depends_on:
-        mongo:
-            condition: service_healthy
+        - mongo
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:8093/health"]
         interval: 10s
         timeout: 10s
         retries: 5
-      
+
+
   agent-microservice:
     image: agent-microservice:1.0-SNAPSHOT
     restart: always
@@ -75,14 +74,14 @@ services:
     ports:
       - 8094:8094
     depends_on:
-        mongo:
-            condition: service_healthy
+        - mongo
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:8094/health"]
         interval: 10s
         timeout: 10s
         retries: 5
-      
+
+
   log-microservice:
     image: log-microservice:1.0-SNAPSHOT
     restart: always
@@ -91,14 +90,14 @@ services:
     ports:
       - 8095:8095
     depends_on:
-        mongo:
-            condition: service_healthy
+        - mongo
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:8095/health"]
         interval: 10s
         timeout: 10s
         retries: 5
-      
+
+
   webapp:
     image: webapp:1.0-SNAPSHOT
     restart: always
@@ -111,15 +110,16 @@ services:
         interval: 10s
         timeout: 10s
         retries: 5
-      
+
+
   log4j-appender:
     image: log4j-appender:1.0-SNAPSHOT
     restart: always
     networks:
       - tfg_network
     depends_on:
-        log-microservice:
-            condition: service_healthy
+        - log-microservice
+
 
   mongo-express:
     image: mongo-express
@@ -133,8 +133,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: toor
       ME_CONFIG_MONGODB_URL: mongodb://root:toor@mongo:27017/
     depends_on:
-        mongo:
-            condition: service_healthy
+        - mongo
+
 
 networks:
     tfg_network:
