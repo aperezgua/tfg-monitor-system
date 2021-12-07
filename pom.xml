@@ -160,9 +160,6 @@
 	<profiles>
        <profile>
             <id>dev</id>
-            <activation>
-	            <activeByDefault>true</activeByDefault>
-	        </activation>
             <properties>
                 <mongodb.host>localhost</mongodb.host>
                 <server.host>localhost</server.host>
@@ -170,6 +167,10 @@
        </profile>
         <profile>
             <id>docker</id>
+            
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <mongodb.host>mongo</mongodb.host>
                 <server.host>vps-1f79b26a.vps.ovh.net</server.host>
