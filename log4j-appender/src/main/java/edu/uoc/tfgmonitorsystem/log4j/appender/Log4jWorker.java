@@ -14,6 +14,7 @@ public class Log4jWorker {
 
         @Override
         public void run() {
+            System.out.println("Start current thread");
 
             while (!logToSend.isEmpty()) {
                 boolean send = false;
