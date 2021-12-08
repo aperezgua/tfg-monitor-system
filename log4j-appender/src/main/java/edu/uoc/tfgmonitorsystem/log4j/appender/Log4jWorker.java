@@ -1,9 +1,10 @@
 package edu.uoc.tfgmonitorsystem.log4j.appender;
 
+import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Log4jWorker {
 
@@ -21,13 +22,13 @@ public class Log4jWorker {
                 AgentLineLog agentLineLog = null;
                 try {
                     // elimina de la cola.
-                    agentLineLog = logToSend.take();
+                    agentLineLog = logToSend.poll();
 
                     HttpClient client = findHttpClient(agentLineLog);
 
                     if (client.putLogAndRetry(agentLineLog.getLogLine())) {
                         send = true;
-                        System.out.println("Line send correctly: " + agentLineLog);
+                        System.out.println(new Date() + " > Line send correctly: " + agentLineLog);
                     } else {
                         System.out.println("Error in send: " + agentLineLog);
                         Thread.sleep(1000L);
@@ -51,7 +52,7 @@ public class Log4jWorker {
 
     private static Log4jWorker instance;
 
-    private BlockingQueue<AgentLineLog> logToSend = new SynchronousQueue<>();
+    private Queue<AgentLineLog> logToSend = new ConcurrentLinkedQueue<>();
 
     private Map<String, HttpClient> clients = new ConcurrentHashMap<>();;
 
@@ -111,15 +112,9 @@ public class Log4jWorker {
      */
     private void putLogToSend(AgentLineLog lineLog) {
 
-        try {
-            logToSend.put(lineLog);
+        logToSend.add(lineLog);
+        checkThread();
 
-            checkThread();
-
-        } catch (InterruptedException e) {
-            System.out.println("Cannot putLogToSend. Interrupted exception");
-            Thread.currentThread().interrupt();
-        }
     }
 
 }
