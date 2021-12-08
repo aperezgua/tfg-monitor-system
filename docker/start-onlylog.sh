@@ -1,2 +1,3 @@
 #!/bin/sh
-docker run --restart always --rm -d log4j-appender:1.0-SNAPSHOT
+docker rm log4j-appender
+docker run --restart always --name log4j-appender -d log4j-appender:1.0-SNAPSHOT
