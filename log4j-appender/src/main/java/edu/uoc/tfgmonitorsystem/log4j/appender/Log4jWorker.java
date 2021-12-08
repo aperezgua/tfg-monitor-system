@@ -86,7 +86,7 @@ public class Log4jWorker {
         putLogToSend(new AgentLineLog(authenticationUrl, putLogUrl, agentTokenId, logLine));
     }
 
-    private void checkThread() {
+    private synchronized void checkThread() {
         if (currentThread == null || currentThread.isInterrupted() || !currentThread.isAlive()) {
             System.out.println("\n#######\nWorker not run, start it");
             currentThread = new Log4jWorkerThread();
