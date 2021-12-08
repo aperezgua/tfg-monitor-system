@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Log4jWorker {
 
@@ -14,8 +13,6 @@ public class Log4jWorker {
 
     private Map<String, HttpClient> clients = new ConcurrentHashMap<>();
 
-    private AtomicBoolean running = new AtomicBoolean(true);
-
     /**
      * Thread principal encargado de consumir la cola.
      */
@@ -24,7 +21,7 @@ public class Log4jWorker {
         @Override
         public void run() {
 
-            while (running.get()) {
+            while (!logToSend.isEmpty()) {
                 boolean send = false;
                 AgentLineLog agentLineLog = null;
                 try {
@@ -57,7 +54,6 @@ public class Log4jWorker {
 
     private Log4jWorker() {
         super();
-        thread.start();
     }
 
     /**
@@ -85,13 +81,6 @@ public class Log4jWorker {
     }
 
     /**
-     * Realiza un set del bucle principal del worker a false para que pare.
-     */
-    public void stop() {
-        running.set(false);
-    }
-
-    /**
      * Busca un cliente activo para enviar la línea de log para evitar realizar el cálculo de token.
      *
      * @param agentLineLog
@@ -111,6 +100,11 @@ public class Log4jWorker {
         System.out.println("Put line to send " + lineLog);
         try {
             logToSend.put(lineLog);
+
+            if (!thread.isAlive()) {
+                thread.start();
+            }
+
         } catch (InterruptedException e) {
             System.out.println("Cannot putLogToSend. Interrupted exception");
             Thread.currentThread().interrupt();

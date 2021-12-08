@@ -15,7 +15,7 @@ public class AgentAppender extends AppenderSkeleton {
 
     @Override
     public void close() {
-        Log4jWorker.getInstance().stop();
+
     }
 
     public String getAgentToken() {
