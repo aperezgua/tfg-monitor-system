@@ -30,13 +30,11 @@
     <logger name="edu.uoc.tfgmonitorsystem.log4j.app.TestAppender1" additivity="false">
         <level value="DEBUG" />
         <appender-ref ref="agentAppender1" />
-        <appender-ref ref="console"/>
     </logger>
     
     <logger name="edu.uoc.tfgmonitorsystem.log4j.app.TestAppender2" additivity="false">
         <level value="DEBUG" />
         <appender-ref ref="agentAppender2" />
-        <appender-ref ref="console"/>
     </logger>
     
 
