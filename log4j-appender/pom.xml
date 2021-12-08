@@ -33,26 +33,6 @@
             </resource>
         </resources>
         <plugins>
-<!--
-			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-dependency-plugin</artifactId>
-			    <executions>
-			        <execution>
-			            <id>copy-dependencies</id>
-			            <phase>prepare-package</phase>
-			            <goals>
-			                <goal>copy-dependencies</goal>
-			            </goals>
-			            <configuration>
-			                <outputDirectory>
-			                    ${project.build.directory}/libs
-			                </outputDirectory>
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin>
-			-->
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-jar-plugin</artifactId>
@@ -62,7 +42,7 @@
 			                <addClasspath>true</addClasspath>
 			                <classpathPrefix>/deps-release</classpathPrefix>
 			                <mainClass>
-			                    edu.uoc.tfgmonitorsystem.log4jappender.Log4jTestApp
+			                    edu.uoc.tfgmonitorsystem.log4j.app.Log4jTestApp
 			                </mainClass>
 			            </manifest>
 			        </archive>
@@ -99,8 +79,6 @@
 								     <arg>/maven/${project.artifactId}-${project.version}.jar</arg>
 								   </exec>
 								</entryPoint>
-                                <!-- <cmd>java -jar /maven/${project.artifactId}-${project.version}.jar</cmd> -->
-                                
                             </build>
 
                         </image>
