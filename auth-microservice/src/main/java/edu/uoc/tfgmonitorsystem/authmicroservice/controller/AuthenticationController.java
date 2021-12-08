@@ -1,5 +1,7 @@
 package edu.uoc.tfgmonitorsystem.authmicroservice.controller;
 
+import edu.uoc.tfgmonitorsystem.authmicroservice.model.dto.JwtRequest;
+import edu.uoc.tfgmonitorsystem.authmicroservice.model.dto.JwtResponse;
 import edu.uoc.tfgmonitorsystem.authmicroservice.model.service.IAuthService;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtConstants;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtTokenUtil;
@@ -27,6 +29,13 @@ public class AuthenticationController {
     @Autowired
     private IAuthService authService;
 
+    /**
+     * Autentica un agente o un usuario con rol de administrador o de agente.
+     *
+     * @param authenticationRequest Request usada.
+     * @return String o JwtResponse dependiendo de si es un agente o un usuario.
+     * @throws Exception En caso de producirse un error.
+     */
     @RequestMapping(value = JwtConstants.AUTHORIZATION_URL, method = RequestMethod.POST)
     public ResponseEntity<?> authenticate(@RequestBody JwtRequest authenticationRequest) throws Exception {
 

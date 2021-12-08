@@ -1,5 +1,6 @@
 import React from 'react';
 import { agentService } from '_services';
+import Moment from 'moment';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -42,7 +43,7 @@ class HomePage extends React.Component {
                               <th scope="row">{agent.token}</th>
                               <td>{agent.name}</td>
                               <td>{agent.systems && agent.systems.name}</td>
-                              <td>{agent.lastNotification}</td>
+                              <td>{Moment(agent.lastNotification).format('DD/MM/yyyy HH:mm:ss')}</td>
                               <td>{agent.size}</td>
                             </tr>
                         )}

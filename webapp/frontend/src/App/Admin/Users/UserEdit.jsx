@@ -12,6 +12,7 @@ class UserEditNoParams extends React.Component {
             user : null,
             error : null
         };
+        
     }
     componentDidMount() {
         if (this.props.params.id && this.props.params.id > 0) {
@@ -77,6 +78,14 @@ class UserEditNoParams extends React.Component {
                                 <label htmlFor="password">Password:</label>
                                 <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
                                 <ErrorMessage name="password" component="div" className="alert alert-error" />
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Rol:</Form.Label>
+                                <Field name="rol" as="select"  className="form-select" >
+                                   <option value=""></option>
+                                   <option value="ADMINISTRATOR">Administrador</option>
+                                   <option value="SUPPORT">Soporte</option>
+                                 </Field>
                             </Form.Group>
                             <Form.Group>
                                 <Form.Label>Activo:</Form.Label>

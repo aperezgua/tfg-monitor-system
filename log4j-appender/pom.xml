@@ -25,5 +25,70 @@
         </dependency>       
     </dependencies>
 
+    <build>
+         <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-jar-plugin</artifactId>
+			    <configuration>
+			        <archive>
+			            <manifest>
+			                <addClasspath>true</addClasspath>
+			                <classpathPrefix>/deps-release</classpathPrefix>
+			                <mainClass>
+			                    edu.uoc.tfgmonitorsystem.log4j.app.Log4jTestApp
+			                </mainClass>
+			            </manifest>
+			        </archive>
+			    </configuration>
+			</plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+
+                <configuration>
+
+                    <images>
+                        <!-- A single's image configuration -->
+                        <image>
+                            <alias>${project.name}</alias>
+                            <name>${project.name}:${project.version}</name>
+
+                            <build>
+                                <from>java:8</from>
+                                <assemblies>
+	                                <assembly>
+							            <name>deps-release</name>
+							            <descriptorRef>release-dependencies</descriptorRef>
+							        </assembly>
+	                                <assembly>
+	                                    <descriptorRef>artifact</descriptorRef>
+	                                </assembly>
+                                </assemblies>
+                                <entryPoint>
+								  <!-- exec form  -->
+								   <exec>
+								     <arg>java</arg>
+								     <arg>-jar</arg>
+								     <arg>/maven/${project.artifactId}-${project.version}.jar</arg>
+								   </exec>
+								</entryPoint>
+                            </build>
+
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+
+
+    </build>
+
 
 </project>

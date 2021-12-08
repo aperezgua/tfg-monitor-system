@@ -2,8 +2,12 @@ import React from 'react';
 import { logService } from '_services';
 import {  Form, InputGroup, FormControl } from 'react-bootstrap';
 import './RuleRegexp.css';
+import Moment from 'moment';
 
+/** Componente que representa a la expresión regular de una regla */
 class RuleRegexp extends React.Component {
+    
+    /** Constructor para inicilizar parámetros */
     constructor(props) {
         super(props);
         this.state = {
@@ -24,6 +28,7 @@ class RuleRegexp extends React.Component {
         );
     }
     
+    /** Cuando se produce un cambio de valor se actualiza el parent. */
     changeRegepx(event) {
         let fieldName = event.target.name;
         let fieldValue = event.target.value;
@@ -58,7 +63,7 @@ class RuleRegexp extends React.Component {
                 {logList && logList.length > 0 &&
                     <div className="console">
                         {logList.map((log, index) =>
-                            <div>{log.date} - {log.logLine}</div>
+                            <div>{Moment(log.date).format('DD/MM/yyyy HH:mm:ss')} - {log.logLine}</div>
                         )}
                     </div>
                 }

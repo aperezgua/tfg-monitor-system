@@ -1,0 +1,12 @@
+.graphic {
+	height: 300px;
+}
+
+.rule-events-eventList {
+	position:absolute;
+	top: 320px;
+	bottom: 0;
+	left :0;
+	right: 0;
+	overflow-y: auto;
+}

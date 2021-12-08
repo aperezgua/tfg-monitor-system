@@ -8,6 +8,7 @@ import edu.uoc.tfgmonitorsystem.common.model.repository.CountryRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.SystemsRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import java.util.Arrays;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -52,10 +53,12 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     @Override
     protected void configureClientSettings(Builder builder) {
 
-        builder.credential(MongoCredential.createCredential(username, database, password.toCharArray()))
-                .applyToClusterSettings(settings -> {
-                    settings.hosts(Arrays.asList(new ServerAddress(host, port)));
-                });
+        if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
+            builder.credential(MongoCredential.createCredential(username, database, password.toCharArray()))
+                    .applyToClusterSettings(settings -> {
+                        settings.hosts(Arrays.asList(new ServerAddress(host, port)));
+                    });
+        }
     }
 
     /**

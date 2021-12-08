@@ -44,7 +44,6 @@ export async function requestUrl(url, methodDescription, bodyData) {
         response = await fetch(url, requestOptions);
     } catch (error) {
         console.log(error);
-        const response = undefined;
     }
     return handleResponse(response);
     

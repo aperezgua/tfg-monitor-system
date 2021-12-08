@@ -1,0 +1,27 @@
+html,body{
+    height:100%;
+}
+
+#root {
+    height:100%;	
+}
+
+/* Estilo de pagina con padding para evitar el height del 100% en el body por culpa del menu.*/
+.support-page {
+	position:relative;
+	height: 100%;
+    margin: 0px 50px 0px 50px;
+    padding-bottom: 80px;
+}
+
+.support-header {
+    position: relative;
+}
+
+.support-body {
+	position: relative;
+    margin: 2px 0 0 0;
+    padding: 10px;
+    background: #FFF;
+    height: 100%;
+}
