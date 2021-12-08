@@ -97,11 +97,12 @@ public class Log4jWorker {
      * @param lineLog
      */
     private void putLogToSend(AgentLineLog lineLog) {
-        System.out.println("Put line to send " + lineLog);
+
         try {
             logToSend.put(lineLog);
 
             if (!thread.isAlive()) {
+                System.out.println("\n#######\nWorker not run, start it");
                 thread.start();
             }
 
