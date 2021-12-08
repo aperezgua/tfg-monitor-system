@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
-import Moment from 'moment';
 import { eventLogService } from '_services';
 
 
@@ -53,9 +52,9 @@ class EventCard extends React.Component {
     render() {
         const { eventSummary } = this.state;
         let bgClass = 'success';
-        if (eventSummary && eventSummary.severity == 'CRITICAL') {
+        if (eventSummary && eventSummary.severity === 'CRITICAL') {
             bgClass = 'danger';
-        } else if (eventSummary && eventSummary.severity == 'MAJOR') {
+        } else if (eventSummary && eventSummary.severity === 'MAJOR') {
             bgClass = 'warning';
         }
 

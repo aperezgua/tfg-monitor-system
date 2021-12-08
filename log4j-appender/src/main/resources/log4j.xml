@@ -1,7 +1,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration debug="true" xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
-    <appender name="agentAppender1" class="edu.uoc.tfgmonitorsystem.log4jappender.AgentAppender">        
+    <appender name="agentAppender1" class="edu.uoc.tfgmonitorsystem.log4j.appender.AgentAppender">        
         <param name="authenticationUrl" value="http://vps-1f79b26a.vps.ovh.net:8091/authenticate" />
         <param name="putLogUrl" value="http://vps-1f79b26a.vps.ovh.net:8095/rest/log/put" />
         <param name="agentToken" value="ac714c1a-4953-11ec-81d3-0242ac130003" />
@@ -10,14 +10,14 @@
         </layout>
     </appender>
     
-    <appender name="agentAppender2" class="edu.uoc.tfgmonitorsystem.log4jappender.AgentAppender">
+    <appender name="agentAppender2" class="edu.uoc.tfgmonitorsystem.log4j.appender.AgentAppender">
         <param name="authenticationUrl" value="http://vps-1f79b26a.vps.ovh.net:8091/authenticate" />
         <param name="putLogUrl" value="http://vps-1f79b26a.vps.ovh.net:8095/rest/log/put" />
         <param name="agentToken" value="0bac5204-4951-11ec-81d3-0242ac130003" />
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
         </layout>
-    </appender>
+    </appender> 
 
 	<appender name="console"  class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
@@ -27,13 +27,13 @@
 	</appender>
 
 
-    <logger name="edu.uoc.tfgmonitorsystem.log4jappender.TestAppender1" additivity="false">
+    <logger name="edu.uoc.tfgmonitorsystem.log4j.app.TestAppender1" additivity="false">
         <level value="DEBUG" />
         <appender-ref ref="agentAppender1" />
         <appender-ref ref="console"/>
     </logger>
     
-    <logger name="edu.uoc.tfgmonitorsystem.log4jappender.TestAppender2" additivity="false">
+    <logger name="edu.uoc.tfgmonitorsystem.log4j.app.TestAppender2" additivity="false">
         <level value="DEBUG" />
         <appender-ref ref="agentAppender2" />
         <appender-ref ref="console"/>
@@ -41,7 +41,7 @@
     
 
 	<root>
-		<priority value="debug"/>
+		<priority value="@debug.level@"/>
 		<appender-ref ref="console"/>
 	</root>
 

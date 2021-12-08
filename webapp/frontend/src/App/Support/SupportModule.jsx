@@ -79,11 +79,13 @@ class SupportModule extends React.Component {
                                             eventLogService.saveEventFilter(eventFilter);
                                             this.setState({eventFilter});
                                           }}
-                                        >
-                                      <option></option>
+                                        >                                      
                                       <option value="60">&Uacute;ltimo minuto</option>
                                       <option value="300">&Uacute;ltimos 5 minutos</option>
                                       <option value="600">&Uacute;ltimos 10 minutos</option>
+                                      <option value="900">&Uacute;ltimos 15 minutos</option>
+                                      <option value="1800">&Uacute;ltimos 30 minutos</option>
+                                      <option value="3600">&Uacute;ltima hora</option>
                                     </Form.Control>
                                 </Nav.Item>
                              </Nav>                             

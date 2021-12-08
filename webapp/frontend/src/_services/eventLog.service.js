@@ -75,7 +75,7 @@ function getEventFilter() {
     if(!eventFilter) {
         eventFilter = {
             systems : [],
-            lastTimeInSeconds : null
+            lastTimeInSeconds : 3600
         } 
     }
     

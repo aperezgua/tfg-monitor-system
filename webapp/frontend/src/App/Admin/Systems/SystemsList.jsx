@@ -11,8 +11,7 @@ class SystemsList extends React.Component {
         this.state = {
             countriesList : null,
             error : null, 
-            systemsList : null,
-            error : null
+            systemsList : null
         };
         
         this.findSystems = this.findSystems.bind(this);

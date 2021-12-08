@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.log4jappender;
+package edu.uoc.tfgmonitorsystem.log4j.appender;
 
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
@@ -9,15 +9,13 @@ public class AgentAppender extends AppenderSkeleton {
     private String putLogUrl;
     private String agentToken;
 
-    private HttpClient httpClient;
-
     public AgentAppender() {
         super();
     }
 
     @Override
     public void close() {
-        httpClient = null;
+        Log4jWorker.getInstance().stop();
     }
 
     public String getAgentToken() {
@@ -51,13 +49,8 @@ public class AgentAppender extends AppenderSkeleton {
 
     @Override
     protected void append(LoggingEvent event) {
-        if (httpClient == null) {
 
-            httpClient = new HttpClient(authenticationUrl, putLogUrl, agentToken);
-        }
-
-        httpClient.putLogAndRetry(event.getRenderedMessage());
-
+        Log4jWorker.getInstance().addLogToSend(authenticationUrl, putLogUrl, agentToken, event.getRenderedMessage());
     }
 
 }

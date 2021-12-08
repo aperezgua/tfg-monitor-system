@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.log4jappender;
+package edu.uoc.tfgmonitorsystem.log4j.appender;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,29 +21,38 @@ public class HttpClient {
     }
 
     /**
-     * Se autentica contra el servidor de autenticación y obtiene un jwtToken
+     * Entrega una línea de log y revisa que está autenticado.
      *
+     * @param log String con el log.
      * @return
      */
-    public String authenticate() {
+    public boolean putLogAndRetry(String log) {
+
+        if (jwtToken == null) {
+            authenticate();
+        }
+        if (jwtToken != null) {
+            String result = putLog(log);
+            return result != null && result.equals("OK");
+        }
+        return false;
+    }
+
+    /**
+     * Se autentica contra el servidor de autenticación y obtiene un jwtToken
+     *
+     * @return String con el token autenticado o null si no ha autenticado correctamente.
+     */
+    private void authenticate() {
         HttpURLConnection connection = createPostConnection(authenticateUrl, "application/json; utf-8");
         if (connection != null) {
             jwtToken = sendPostData(connection, "{ \"agentToken\" : \"" + agentTokenId + "\" }\n");
             connection.disconnect();
+
+            System.out.println("authenticate. " + jwtToken);
         } else {
             jwtToken = null;
         }
-
-        return jwtToken;
-    }
-
-    public String putLogAndRetry(String log) {
-        String result = putLog(log);
-        if (result == null || !result.equals("OK")) {
-            authenticate();
-            result = putLog(log);
-        }
-        return result;
     }
 
     /**
@@ -64,12 +73,17 @@ public class HttpClient {
             connection.setDoOutput(true);
             return connection;
         } catch (IOException e) {
-            System.out.println("Cannot create connection " + authenticateUrl);
-            e.printStackTrace();
+            System.out.println("createPostConnection. Cannot create connection " + authenticateUrl);
         }
         return null;
     }
 
+    /**
+     * Escribe una línea de log en la conexión y espera el resultado OK.
+     *
+     * @param log
+     * @return
+     */
     private String putLog(String log) {
         HttpURLConnection connection = createPostConnection(putUrl, "text/plain; utf-8");
 
@@ -97,8 +111,7 @@ public class HttpClient {
                 os.write(input, 0, input.length);
             }
         } catch (IOException e) {
-            System.out.println("Cannot send " + authenticateUrl + " > " + json);
-            e.printStackTrace();
+            System.out.println("sendPostData. Cannot send " + authenticateUrl + " > " + json);
         }
         try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
@@ -109,8 +122,7 @@ public class HttpClient {
 
             return response.toString();
         } catch (IOException e) {
-            System.out.println("Cannot send receive response " + authenticateUrl + " > " + json);
-            e.printStackTrace();
+            System.out.println("sendPostData. Cannot send receive response " + authenticateUrl + " > " + json);
         }
         return null;
     }

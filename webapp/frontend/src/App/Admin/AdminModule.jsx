@@ -1,6 +1,6 @@
 import React from 'react';
 import { authenticationService } from '_services';
-import { Route, Routes, useNavigate, Link } from 'react-router-dom'
+import { Route, Routes,  Link } from 'react-router-dom'
 import { HomePage, UsersPage, SystemsPage, AgentsPage} from 'App/Admin';
 import { NotFound } from 'App/NotFound';
 import { Navbar, Nav } from 'react-bootstrap';
@@ -20,7 +20,7 @@ class AdminModule extends React.Component {
         authenticationService.logout();
     }    
     render() {
-        const { currentUser, navigate} = this.state;
+        const { currentUser} = this.state;
         
         return (
             <div className="admin-page">

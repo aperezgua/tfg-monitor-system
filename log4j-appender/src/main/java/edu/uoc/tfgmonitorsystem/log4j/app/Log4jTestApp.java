@@ -1,4 +1,4 @@
-package edu.uoc.tfgmonitorsystem.log4jappender;
+package edu.uoc.tfgmonitorsystem.log4j.app;
 
 import java.security.NoSuchAlgorithmException;
 import org.apache.log4j.Logger;

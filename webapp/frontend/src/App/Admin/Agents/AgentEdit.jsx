@@ -39,7 +39,7 @@ class AgentEditNoParams extends React.Component {
             }
         );
         
-        if (this.props.params.token && this.props.params.token != '0') {
+        if (this.props.params.token && this.props.params.token !== '0') {
             agentService.get(this.props.params.token).then(
                 agent => {
                     
