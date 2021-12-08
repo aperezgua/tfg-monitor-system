@@ -80,6 +80,13 @@ public class Log4jWorker {
         putLogToSend(new AgentLineLog(authenticationUrl, putLogUrl, agentTokenId, logLine));
     }
 
+    private void checkThread() {
+        if (!thread.isAlive() || thread.isInterrupted()) {
+            System.out.println("\n#######\nWorker not run, start it");
+            thread.start();
+        }
+    }
+
     /**
      * Busca un cliente activo para enviar la línea de log para evitar realizar el cálculo de token.
      *
@@ -101,10 +108,7 @@ public class Log4jWorker {
         try {
             logToSend.put(lineLog);
 
-            if (!thread.isAlive()) {
-                System.out.println("\n#######\nWorker not run, start it");
-                thread.start();
-            }
+            checkThread();
 
         } catch (InterruptedException e) {
             System.out.println("Cannot putLogToSend. Interrupted exception");
