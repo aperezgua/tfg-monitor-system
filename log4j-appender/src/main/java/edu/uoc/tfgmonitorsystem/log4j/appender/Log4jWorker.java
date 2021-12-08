@@ -7,16 +7,10 @@ import java.util.concurrent.SynchronousQueue;
 
 public class Log4jWorker {
 
-    private static Log4jWorker instance;
-
-    private BlockingQueue<AgentLineLog> logToSend = new SynchronousQueue<>();
-
-    private Map<String, HttpClient> clients = new ConcurrentHashMap<>();
-
     /**
      * Thread principal encargado de consumir la cola.
      */
-    private Thread thread = new Thread() {
+    private class Log4jWorkerThread extends Thread {
 
         @Override
         public void run() {
@@ -49,8 +43,18 @@ public class Log4jWorker {
 
             }
 
-        };
-    };
+            System.out.println("Stop current thread");
+        }
+
+    }
+
+    private static Log4jWorker instance;
+
+    private BlockingQueue<AgentLineLog> logToSend = new SynchronousQueue<>();
+
+    private Map<String, HttpClient> clients = new ConcurrentHashMap<>();;
+
+    private Thread currentThread = null;
 
     private Log4jWorker() {
         super();
@@ -81,9 +85,10 @@ public class Log4jWorker {
     }
 
     private void checkThread() {
-        if (!thread.isAlive() || thread.isInterrupted()) {
+        if (currentThread == null || currentThread.isInterrupted() || !currentThread.isAlive()) {
             System.out.println("\n#######\nWorker not run, start it");
-            thread.start();
+            currentThread = new Log4jWorkerThread();
+            currentThread.start();
         }
     }
 
