@@ -28,7 +28,7 @@ public abstract class AbstractTestAppender extends Thread {
             getLogger().debug(logsTest[random.nextInt(logsTest.length)]);
             getLogger().debug("La ejecución ha tardado " + random.nextInt(10) + "s");
 
-            int sleepTime = random.nextInt(5);
+            long sleepTime = random.nextInt(5);
 
             try {
                 Thread.sleep(sleepTime * 300);
