@@ -9,7 +9,7 @@ import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,7 +50,7 @@ public class LogControllerTest {
     /**
      * Setup de configuración de las peticiones para tener token de autenticación.
      */
-    @BeforeAll
+    @BeforeEach
     void setup() {
 
         User user = new User();

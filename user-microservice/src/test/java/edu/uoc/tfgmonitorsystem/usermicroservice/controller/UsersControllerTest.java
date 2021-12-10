@@ -10,7 +10,7 @@ import edu.uoc.tfgmonitorsystem.usermicroservice.model.dto.UserFilter;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -74,8 +74,8 @@ public class UsersControllerTest {
     /**
      * Setup de configuración de las peticiones para tener token de autenticación.
      */
-    @BeforeAll
-    public void setup() {
+    @BeforeEach
+    void setup() {
 
         User user = new User();
         user.setName("Admin");
