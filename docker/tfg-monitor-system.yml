@@ -20,7 +20,7 @@ services:
       retries: 5
 
   auth-microservice:
-    image: auth-microservice:1.0-SNAPSHOT
+    image: auth-microservice:1.2
     restart: always
     networks:
       - tfg_network
@@ -35,7 +35,7 @@ services:
         retries: 5
 
   user-microservice:
-    image: user-microservice:1.0-SNAPSHOT
+    image: user-microservice:1.2
     restart: always
     networks:
       - tfg_network
@@ -51,7 +51,7 @@ services:
 
 
   system-microservice:
-    image: system-microservice:1.0-SNAPSHOT
+    image: system-microservice:1.2
     restart: always
     networks:
       - tfg_network
@@ -67,7 +67,7 @@ services:
 
 
   agent-microservice:
-    image: agent-microservice:1.0-SNAPSHOT
+    image: agent-microservice:1.2
     restart: always
     networks:
       - tfg_network
@@ -83,7 +83,7 @@ services:
 
 
   log-microservice:
-    image: log-microservice:1.0-SNAPSHOT
+    image: log-microservice:1.2
     restart: always
     networks:
       - tfg_network
@@ -99,7 +99,7 @@ services:
 
 
   webapp:
-    image: webapp:1.0-SNAPSHOT
+    image: webapp:1.2
     restart: always
     networks:
       - tfg_network
@@ -113,7 +113,7 @@ services:
 
 
   log4j-appender:
-    image: log4j-appender:1.0-SNAPSHOT
+    image: log4j-appender:1.2
     restart: always
     networks:
       - tfg_network
