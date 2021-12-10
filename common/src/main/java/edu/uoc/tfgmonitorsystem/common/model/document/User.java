@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -53,6 +54,7 @@ public class User extends BaseDocument implements Credential {
     /**
      * Rol de este usuario.
      */
+    @NotNull(message = "user.rol.mandatory")
     private Rol rol;
 
     public User() {
@@ -83,6 +85,7 @@ public class User extends BaseDocument implements Credential {
         return password;
     }
 
+    @Override
     public Rol getRol() {
         return rol;
     }

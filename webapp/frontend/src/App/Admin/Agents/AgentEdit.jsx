@@ -2,7 +2,7 @@ import React from 'react';
 import { agentService, logService} from '_services';
 import { systemsService } from '_services';
 import { Formik, Form as FormFormik,  Field, ErrorMessage} from 'formik';
-import { Button, Form, Alert } from 'react-bootstrap';
+import { Button, Form, Alert, Row, Col } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 import { AgentToken, AgentRules } from 'App/Admin/Agents';
 import * as Yup from 'yup';
@@ -64,7 +64,7 @@ class AgentEditNoParams extends React.Component {
              <div className="form-edit">
                 <h2>Edición de agente</h2>
                 {!error &&
-                <Formik key="editUserFormik"
+                <Formik key="editAgentFormik"
 					enableReinitialize
                     initialValues={agent}
                     validationSchema={Yup.object().shape({
@@ -72,52 +72,90 @@ class AgentEditNoParams extends React.Component {
                         name: Yup.string().required('El nombre es obligatorio.')
                     })}
                     onSubmit={( values, { setStatus, setSubmitting }) => {
+                        setSubmitting(true)
                         setStatus();
+                        
                         agentService.put(values)
                             .then(
+                                
                                 updatedAgent => {    
-                                    setStatus( {result : 'updated' });
-                                    setSubmitting(false);
+                                    
+                                    
+                                    logService.updateAgentEvents(values.token).then(
+                                        ok => {
+                                            console.log("OK" +ok);
+                                            setStatus( {result : 'updated' });
+                                            setSubmitting(false);    
+                                        },
+                                        errorLog => {  setSubmitting(false);
+                                            setStatus({error : errorLog});
+                                        }
+                                    );
+                                    
                                 },
                                 error => {
                                     setSubmitting(false);
                                     setStatus({error : error});
                                 }
                             );
-                        logService.updateAgentEvents(values.token)
+                        
                     }}>
-                    {({values, errors, status, touched, setFieldValue}) => (
+                    {({values, errors, status, isSubmitting, touched, setFieldValue}) => (
                         <FormFormik key="editAgentForm">
-                            <Form.Group>
-                                <AgentToken name="token" value={values && values.token} setFieldValue={setFieldValue}/>
-                                <ErrorMessage name="token" component="div" className="alert alert-error" />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label >Nombre:</Form.Label>
-                                <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
-                                <ErrorMessage name="name" component="div" className="alert alert-error" />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Sistema</Form.Label>
-                                <Field name="systems.id" as="select"  className="form-select" >
-                                   <option value=""></option>
-                                   {systemsList && systemsList.map(system => <option key={system.id} value={system.id}>{system.name}</option>)}
-                                 </Field>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Activo:</Form.Label>
-                                <Field name="active" as="select"  className="form-select" >
-                                   <option value=""></option>
-                                   <option value="true">Activo</option>
-                                   <option value="false">Inactivo</option>
-                                 </Field>
-                            </Form.Group>
-                            <AgentRules value={values && values.rules} agentTokenId={values && values.token}  name="rules" setFieldValue={setFieldValue} />
-                            {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
-                            {status && status.result && <Alert key="alertOk" variant="success" >{status.result}</Alert> }
-                            <Form.Group>
-                                <Button variant="primary" type="submit">Guardar</Button>
-                            </Form.Group>
+                            <Row>
+                               <Col lg="12">
+                                    <Form.Group>
+                                        <AgentToken name="token" value={values && values.token} setFieldValue={setFieldValue}/>
+                                        <ErrorMessage name="token" component="div" className="alert alert-error" />
+                                    </Form.Group>
+                               </Col>
+                            </Row>
+                            <Row>
+                                <Col lg="12">
+                                    <Form.Group>
+                                        <Form.Label >Nombre:</Form.Label>
+                                        <Field name="name" type="text" className={'form-control' + (errors.name && touched.name ? ' is-invalid' : '')} />
+                                        <ErrorMessage name="name" component="div" className="alert alert-error" />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col lg="6">
+                                    <Form.Group>
+                                        <Form.Label>Sistema</Form.Label>
+                                        <Field name="systems.id" as="select"  className="form-select" >
+                                           <option value=""></option>
+                                           {systemsList && systemsList.map(system => <option key={system.id} value={system.id}>{system.name}</option>)}
+                                         </Field>
+                                    </Form.Group>
+                                </Col>
+                                <Col lg="6">
+                                    <Form.Group>
+                                        <Form.Label>Activo:</Form.Label>
+                                        <Field name="active" as="select"  className="form-select" >
+                                           <option value=""></option>
+                                           <option value="true">Activo</option>
+                                           <option value="false">Inactivo</option>
+                                         </Field>
+                                    </Form.Group>
+                                 </Col>
+                            </Row>
+                            <Row>
+                                <Col lg="12">
+                                    <AgentRules value={values && values.rules} agentTokenId={values && values.token}  name="rules" setFieldValue={setFieldValue} />
+                                 </Col>
+                            </Row>
+                            <Row>
+                                <Col lg="12"  className="text-center">
+                                    <br/>
+                                    {status && status.error && <Alert key="alertError1" variant="danger" >{status.error}</Alert> }
+                                    {status && status.result && <Alert key="alertOk" variant="success" >Se ha guardado correctamente</Alert> }
+                                    <Form.Group>
+                                        <Button variant="primary" type="submit" disabled={isSubmitting}>Guardar</Button> 
+                                        {isSubmitting && <Alert key="submitting" variant="primary" >Se están actualizando datos, espere</Alert>}
+                                    </Form.Group>
+                                </Col>
+                            </Row>
                         </FormFormik>
                     )}
                  </Formik>
