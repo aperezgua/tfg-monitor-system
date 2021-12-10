@@ -13,6 +13,7 @@
       <Bug pattern="EI_EXPOSE_REP"/>
 	  <Bug pattern="EI_EXPOSE_REP2"/>
 	  <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE"/>
+	  <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>	   
     </Or>
   </Match>
 
