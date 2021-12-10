@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -95,11 +95,18 @@
                 <version>${commons-lang3.version}</version>
             </dependency>
             
+            <dependency>
+                <groupId>org.jacoco</groupId>
+                <artifactId>org.jacoco.agent</artifactId>
+                <version>${jacoco.version}</version>                
+            </dependency> 
+            
         </dependencies>
     </dependencyManagement>
 
 
     <build>
+        
         <pluginManagement>
     
             <plugins>
@@ -121,6 +128,14 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
+                        <skipTests>false</skipTests>
+                        <forkCount>1</forkCount>
+                        <reuseForks>false</reuseForks>
+                        <useSystemClassLoader>false</useSystemClassLoader>
+                        <trimStackTrace>false</trimStackTrace>
+                        <systemPropertyVariables>
+                            <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+                        </systemPropertyVariables>
                         <argLine>${jacocoArgLine}</argLine>
                     </configuration>
                 </plugin>
@@ -246,6 +261,28 @@
                 
             </plugins>
         </pluginManagement>
+        
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>${jacocoArgLine}</argLine>
+                </configuration>
+             </plugin>
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-checkstyle-plugin</artifactId>
+             </plugin>
+             <plugin>
+                 <groupId>org.jacoco</groupId>
+                 <artifactId>jacoco-maven-plugin</artifactId>
+                 <inherited>true</inherited>
+             </plugin>
+             <plugin>
+                 <groupId>com.github.spotbugs</groupId>
+                 <artifactId>spotbugs-maven-plugin</artifactId>
+             </plugin>
+        </plugins>
 
     </build>
     
