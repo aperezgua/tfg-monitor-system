@@ -31,6 +31,10 @@
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-site-plugin.version>3.7.1</maven-site-plugin.version>
 		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+		
+		<maven.spotbugs.plugin.version>4.2.3</maven.spotbugs.plugin.version>
+		<maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+		<checkstyle.version>8.45</checkstyle.version>
 
 		<mongodb-driver.version>3.12.10</mongodb-driver.version>
 
@@ -96,9 +100,9 @@
 
 
 	<build>
-	
-		<pluginManagement>
 
+		<pluginManagement>
+	
 			<plugins>
 				<!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
 				<plugin>
@@ -139,23 +143,101 @@
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>${maven-project-info-reports-plugin.version}</version>
 				</plugin>
-				
+	
 				<plugin>
 					<groupId>com.github.eirslett</groupId>
 					<artifactId>frontend-maven-plugin</artifactId>
 					<version>${plugin.frontend.version}</version>
 				</plugin>
-				
+	
 				<plugin>
-				    <groupId>io.fabric8</groupId>
-	                <artifactId>docker-maven-plugin</artifactId>
-	                <version>${docker-maven-plugin.version}</version>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker-maven-plugin.version}</version>
                 </plugin>
+                
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${maven.spotbugs.plugin.version}</version>
+                </plugin>
+                    
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                </plugin>
+				
 			</plugins>
 		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<configuration>
+					<effort>Max</effort>
+					<threshold>Low</threshold>
+					<excludeFilterFile>${project.basedir}/../src/main/config/spotbugs-exclude-filters.xml</excludeFilterFile>
+					<spotbugsXmlOutputDirectory>target/spotbugsreports</spotbugsXmlOutputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>quality-metric-spotbugs</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${checkstyle.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>src/main/config/checkstyle-java-google-style.xml</configLocation>
+					<suppressionsLocation>src/main/config/checkstyle-suppressions.xml</suppressionsLocation>
+					<failOnViolation>true</failOnViolation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<resourceIncludes>**/*.json, **/*.properties, **/*.xml, **/*.yaml, **/*.yml</resourceIncludes>
+					<sourceDirectories>
+						<sourceDirectory>src/main/java</sourceDirectory>
+					</sourceDirectories>
+					<testSourceDirectories>
+						<testSourceDirectory>src/test/java</testSourceDirectory>
+					</testSourceDirectories>
+				</configuration>
+				<executions>
+					<execution>
+						<id>quality-metric-checkstyle</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<inherited>true</inherited>
+					<argLine>${jacocoArgLine}</argLine>
+				</configuration>
+			</plugin>
 		
-	</build>
+		</plugins>
+
+    </build>
 	
 	<profiles>
        <profile>

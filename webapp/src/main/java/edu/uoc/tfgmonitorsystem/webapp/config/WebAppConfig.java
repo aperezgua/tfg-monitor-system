@@ -9,12 +9,16 @@ public class WebAppConfig implements WebMvcConfigurer {
 
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/**").addResourceLocations("/");
+//        registry.addResourceHandler("/*").addResourceLocations("/");
 //    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("forward:/index.html");
+
+        registry.addViewController("/{spring:\\w+}").setViewName("forward:/");
+        registry.addViewController("/**/{spring:\\w+}").setViewName("forward:/");
+        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}").setViewName("forward:/");
     }
 
 }

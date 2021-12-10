@@ -8,3 +8,7 @@
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
 }
+
+.button-login {
+	padding-top: 5px;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form as FormFormik, ErrorMessage } from 'formik';
+import { Form, Button, Alert,  Row, Col } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useNavigate} from "react-router-dom";
 import { authenticationService } from '_services';
@@ -22,14 +23,6 @@ class LoginPageNoNavigate extends React.Component {
     render() {
         return (
             <div className="form-login">
-                <div className="alert alert-info">
-                    Username: aperezgua@uoc.edu<br />
-                    Password: pw
-                </div>
-                <div className="alert alert-info">
-                    Username: sam@uoc.edu<br />
-                    Password: pw
-                </div>
                 <h2>Login</h2>
                 <Formik
                     initialValues={{
@@ -69,29 +62,44 @@ class LoginPageNoNavigate extends React.Component {
                                     }
                                 }
                             );
-                    }}
-                    render={({ errors, status, touched, isSubmitting }) => (
-                        <Form>
-                            <div className="form-group">
-                                <label htmlFor="username">Email</label>
+                    }}>
+                    {({ errors, status, touched, isSubmitting }) => (
+                        <FormFormik>
+                            <Form.Group>
+                                <Form.Label>Email</Form.Label>
                                 <Field name="username" type="text" className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} />
                                 <ErrorMessage name="username" component="div" className="alert alert-error" />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Password</Form.Label>
                                 <Field name="password" type="password" className={'form-control' + (errors.password && touched.password ? ' is-invalid' : '')} />
                                 <ErrorMessage name="password" component="div" className="alert alert-error" />
-                            </div>
-                            <div className="form-group">
-                                <button type="submit" className="btn btn-lg btn-primary btn-block" disabled={isSubmitting}>Login</button>
-                            </div>
+                            </Form.Group>
+                            
+                            <Row>
+                                <Col lg="12" className="text-center button-login">
+                                    <Form.Group>
+                                         <Button variant="primary" type="submit" disabled={isSubmitting}>Login</Button>
+                                    </Form.Group>
+                                 </Col>
+                             </Row>
                             <br/>
-                            {status &&                                
-                                <div className={'alert alert-danger'}>{status}</div>
-                            }
-                        </Form>
+                            { status && <Alert key="alertInfo1" variant="danger" >{status}</Alert> }
+                        </FormFormik>
                     )}
-                />
+                 </Formik>
+                 <Alert key="alertInfo1" variant="info" >
+                    <strong>Usuario admin:</strong>
+                    <hr/>
+                    Username: aperezgua@uoc.edu<br />
+                    Password: pw
+                </Alert>
+                <Alert key="alertInfo2" variant="info" >
+                    <strong>Usuario soporte:</strong>
+                    <hr/>
+                    Username: sam@uoc.edu<br />
+                    Password: pw
+                </Alert>
             </div>
         )
     }
