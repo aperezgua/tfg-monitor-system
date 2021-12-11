@@ -58,6 +58,10 @@ public class Agent extends BaseDocument implements Credential {
         this.createdDate = agent.createdDate;
     }
 
+    public Agent(String token) {
+        this.token = token;
+    }
+
     /**
      * Busca una regla por nombre.
      *
