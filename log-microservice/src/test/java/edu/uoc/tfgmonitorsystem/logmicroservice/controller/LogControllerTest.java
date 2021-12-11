@@ -89,6 +89,11 @@ public class LogControllerTest {
 
         Assertions.assertEquals("OK", output);
 
+        for (int i = 0; i < 10; i++) {
+            testRestTemplate.postForObject("/rest/log/put", "NoSuchElementException", String.class);
+            Assertions.assertEquals("OK", output);
+        }
+
         logService.pruneLog(0L);
     }
 
