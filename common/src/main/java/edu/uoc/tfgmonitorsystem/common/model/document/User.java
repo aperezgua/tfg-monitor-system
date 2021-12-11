@@ -1,7 +1,5 @@
 package edu.uoc.tfgmonitorsystem.common.model.document;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -48,7 +46,6 @@ public class User extends BaseDocument implements Credential {
      * Password encriptado.
      */
     @NotBlank(message = "user.password.mandatory")
-    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     /**
