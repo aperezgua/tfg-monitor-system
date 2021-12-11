@@ -1,5 +1,6 @@
 package edu.uoc.tfgmonitorsystem.logmicroservice.model.service;
 
+import com.mongodb.client.result.DeleteResult;
 import edu.uoc.tfgmonitorsystem.common.model.document.Log;
 import edu.uoc.tfgmonitorsystem.common.model.exception.TfgMonitorSystenException;
 import edu.uoc.tfgmonitorsystem.common.model.repository.LogRepository;
@@ -7,6 +8,7 @@ import edu.uoc.tfgmonitorsystem.common.model.service.IDbSequenceService;
 import edu.uoc.tfgmonitorsystem.logmicroservice.model.dto.AgentLogFilter;
 import java.util.Date;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LogService implements ILogService {
+
+    private static final Logger LOGGER = Logger.getLogger(LogService.class);
     /**
      * Repositorio de log.
      */
@@ -54,6 +58,16 @@ public class LogService implements ILogService {
         query.with(Sort.by(Sort.Direction.DESC, "date"));
 
         return mongoTemplate.find(query, Log.class);
+    }
+
+    @Override
+    public void pruneLog(Long maxTimeInSecondsToMaintaingLog) throws TfgMonitorSystenException {
+        Query query = new Query(Criteria.where("date")
+                .lt(new Date(System.currentTimeMillis() - maxTimeInSecondsToMaintaingLog * 1000L)));
+
+        DeleteResult removed = mongoTemplate.remove(query, Log.class);
+
+        LOGGER.info("Removed: " + removed.getDeletedCount());
     }
 
 }

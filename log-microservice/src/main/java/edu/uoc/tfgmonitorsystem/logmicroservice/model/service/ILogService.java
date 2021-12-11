@@ -25,4 +25,12 @@ public interface ILogService {
      */
     List<Log> findByAgent(AgentLogFilter regexpFilter) throws TfgMonitorSystenException;
 
+    /**
+     * Vacía el log para liberar espacio y que los procesos no tengan que calcular eventos con millones de tuplas.
+     *
+     * @param maxTimeInSecondsToMaintaingLog Long con el tiempo en segundos a mantener el log desde la fecha.
+     * @throws TfgMonitorSystenException en caso de que se produzca un error.
+     */
+    void pruneLog(Long maxTimeInSecondsToMaintaingLog) throws TfgMonitorSystenException;
+
 }
