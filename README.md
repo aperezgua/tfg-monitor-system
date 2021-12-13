@@ -20,93 +20,54 @@ Sistema de información del software en donde se definen los Document y los sist
 microservicios pueden usarlos.
 
 ## Módulo auth-microservice:
-Microservicio de autenticación
-
-** /authenticate **
-* Tipo de petición: POST
-* Ejemplo de post:
-
-```json
-{
-    "username":"aperezgua@uoc.edu",
-    "password":"pw"
-}
-```
-
-o
-
-```json
-{
-    "username":"sam@uoc.edu",
-    "password":"pw"
-}
-```
-
-```json
-{
-    "agentTokenId":"0bac5204-4951-11ec-81d3-0242ac130003"
-}
-```
-
-El servicio devolverá una respuesta con un token que debe ser usado en cada una de las peticiones que se vayan a realizar
-a los microservicios .
-
-### Ejemplo de cabecera de autenticación:
-
-```
-Authorization: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcGVyZXpndWFAdW9jLmVkdSIsIm5hbWUiOiJBYmVsIiwiZXhwIjoxNjM5NDQyNDQzLCJpYXQiOjE2Mzk0MjQ0NDMsInJvbCI6IkFETUlOSVNUUkFUT1IifQ.mYF-FiUyhyMbnFV6eDdDeoMOX0lb2fpzya1fayyIuq0keXGYsRfMHZlW4-yRYEiv7AsGyCtSbeaYBjLjDVS5gg
-```
+Microservicio de autenticación.
 
 ## Módulo user-microservice:
-Microservicio de consulta de usuarios:
+Microservicio con apirest para la gestión de usuarios.
 
-** /rest/users/find **
-* Tipo de petición: POST
-* Ejemplo de petición:
+## Módulo system-microservice:
+Microservicio con apirest para la gestión de sistemas.
 
-```json
-{
-    "name" : "",
-    "email" : "",
-    "activeTypeFilter" : ALL
-}
-```
+## Módulo agent-microservice:
+Microservicio con apirest para la gestión de agentes.
 
-** /rest/users/get/{id} **
-* Tipo de petición: GET
-* Ejemplo de petición: /rest/users/get/10001
+## Módulo log-microservice:
+Microservicio con apirest para la gestión de log.
 
-** /rest/users/put **
-* Tipo de petición: POST
-* Ejemplo de petición:
+## Módulo webapp:
+Servidor web de aplicativo react.
 
-```json
-{  
-    name : '',
-    email : '',
-    password : '',
-    active : true,
-    rol : 'ADMINISTRATOR'
-}
-```
+## Módulo log4j-appender:
+Appender de log4j con aplicativo de ejemplo generador de log aleatorio.
+
+## Perfiles de maven:
+* dev: Perfil por defecto que define la base de datos y todos los servicios contra localhost.
+* docker-local: Perfil para compilar y generar imágenes de docker en arranque local, asegurándose que se especifica adecuadamente
+el host de mongo de la red interna y el la IP sobre la cual docker está realizando NAT.
+* docker: Perfil para generar imágenes para un servidor linux público.
 
 ## Preparación de entorno de desarrollo
-Para el entorno de desarrollo es necesario disponer de una base de datos MongoDB, para ello se usará Docker, Docker Hub y
-Docker Compose para descargar y arrancar dicha imagen. 
 
-1. Descargar imagen de mongo Docker Hub con el siguiente comando: `docker pull mongo` 
-2. Arrancar imagen con Docker Compose: `docker-compose -f mongo.yml up`
-3. Acceder al módulo de administración: [http://127.0.0.1:8081](http://127.0.0.1:8081)
-4. Arrancar auth-microservice
-5. Arrancar user-microservice
-6. Arrancar system-microservice
-7. Arrancar agent-microservice
-8. Arrancar log-microservice
-9. Arrancar log4j-appender (opcional)
-10. Arrancar webapp
+Para el entorno de desarrollo es necesario disponer de una base de datos MongoDB, para ello se usará Docker-desktop para
+arrancar la imagen de mongo usando docker-compose. Esta configuración funciona con localhost por
 
-## Despliegue en entorno de preproducción:
-Para el despliegue de entorno de preproducción se debe realizar una compilación con el perfil docker: `mvn clean install docker:build` 
-lo que generará las imágenes de Docker necesarias para ejecutar el `docker-compose -f tfg-monitor-system.yml up -d` 
-se usa un sistema de parametrización substituyendo las variables @server.host@ y @mongodb.host@
+- Arrancar de mongo usando el fichero: docker/start-mongo.bat
+- Acceder al módulo de administración de mongo: [http://127.0.0.1:8081](http://127.0.0.1:8081)
+- Arrancar auth-microservice
+- Arrancar user-microservice
+- Arrancar system-microservice
+- Arrancar agent-microservice
+- Arrancar log-microservice
+- Arrancar log4j-appender (opcional generador de log)
+- Arrancar webapp (ver webapp/README para configuración)
+
+## Despliegue en entorno de docker:
+Para el despliegue de entorno de preproducción en una máquina pública se debe realizar una compilación con el perfil docker 
+que se desee (docker o docker-local):  `mvn clean install docker:build -P docker`  
+
+Este comando se encargará de realizar la compilación, pruebas de test, checkstyle, spotbugs y si todo resulta satisfactorio,
+generará las imágenes de Docker.
+
+Finalmente, con el comando `docker-compose -f tfg-monitor-system.yml up -d` se podrá levantar un sistema de contenedores
+que pongan en funcionamiento el aplicativo. 
 
