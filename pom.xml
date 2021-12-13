@@ -177,7 +177,13 @@
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>${maven.spotbugs.plugin.version}</version>                    
+                    <version>${maven.spotbugs.plugin.version}</version>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                        <excludeFilterFile>${project.basedir}/../src/main/config/spotbugs-exclude-filters.xml</excludeFilterFile>
+                        <spotbugsXmlOutputDirectory>target/spotbugsreports</spotbugsXmlOutputDirectory>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>quality-metric-spotbugs</id>
@@ -187,14 +193,8 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration>
-                        <effort>Max</effort>
-                        <threshold>Low</threshold>
-                        <excludeFilterFile>${project.basedir}/../src/main/config/spotbugs-exclude-filters.xml</excludeFilterFile>
-                        <spotbugsXmlOutputDirectory>target/spotbugsreports</spotbugsXmlOutputDirectory>
-                    </configuration>
                 </plugin>
-                                    
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -205,16 +205,7 @@
                             <artifactId>checkstyle</artifactId>
                             <version>${checkstyle.version}</version>
                         </dependency>
-                    </dependencies>
-                    <executions>
-                         <execution>
-                             <id>quality-metric-checkstyle</id>
-                             <phase>validate</phase>
-                             <goals>
-                                 <goal>check</goal>
-                             </goals>
-                         </execution>
-                     </executions>
+                    </dependencies>                    
                     <configuration>
                         <configLocation>src/main/config/checkstyle-java-google-style.xml</configLocation>
                         <suppressionsLocation>src/main/config/checkstyle-suppressions.xml</suppressionsLocation>
@@ -228,6 +219,15 @@
                             <testSourceDirectory>src/test/java</testSourceDirectory>
                         </testSourceDirectories>                        
                     </configuration>
+                    <executions>
+                         <execution>
+                             <id>quality-metric-checkstyle</id>
+                             <phase>prepare-package</phase>
+                             <goals>
+                                 <goal>check</goal>
+                             </goals>
+                         </execution>
+                     </executions>
                 </plugin>
                 
                 <plugin>
@@ -310,7 +310,7 @@
             <id>docker-local</id>
             <properties>
                 <mongodb.host>mongo</mongodb.host>
-                <server.host>localhost</server.host>
+                <server.host>192.168.1.35</server.host>
                 <debug.level>DEBUG</debug.level>
             </properties>
        </profile>

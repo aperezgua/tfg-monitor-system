@@ -11,7 +11,15 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: toor
       MONGO_INITDB_DATABASE : tfg-monitor-system-db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
     volumes:
+      - mongo-vol:/data
+      - mongo-vol:/data/configdb
+      - mongo-vol:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
   mongo-express:
@@ -23,3 +31,8 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: toor
       ME_CONFIG_MONGODB_URL: mongodb://root:toor@mongo:27017/
+    depends_on:
+      - mongo
+
+volumes:
+    mongo-vol:
