@@ -1,6 +1,6 @@
 # Webapp
 
-## Develop en local con VisualStudioCode + Node
+## Develop en local con Eclipse u otro editor y servidor Yarn.
 
 - Instalar Node [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 - Instalar Yarn: [Install via npm](https://classic.yarnpkg.com/lang/en/docs/install) mediante comando `npm install --global yarn`
