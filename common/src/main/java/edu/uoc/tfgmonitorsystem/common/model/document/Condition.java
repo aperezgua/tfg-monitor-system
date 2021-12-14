@@ -42,14 +42,14 @@ public class Condition extends BaseDocument {
      * @param valueToMatch
      * @return
      */
-    public boolean matchValue(Double valueToMatch) {
+    public boolean matchValue(double valueToMatch) {
         switch (getComparationType()) {
         case AVG_GREATER_THAN:
         case GREATER_THAN:
-            return valueToMatch > Double.valueOf(this.value);
+            return valueToMatch > Double.parseDouble(this.value);
         case AVG_LESS_THAN:
         case LESS_THAN:
-            return valueToMatch < Double.valueOf(this.value);
+            return valueToMatch < Double.parseDouble(this.value);
         case CONTAINS:
         default:
             return false;
@@ -76,11 +76,11 @@ public class Condition extends BaseDocument {
     }
 
     public boolean needAccumulatedAvgValue() {
-        return comparationType.isAvgComparation();
+        return comparationType != null && comparationType.isAvgComparation();
     }
 
     public boolean needDoubleValueComparation() {
-        return comparationType.isDoubleComparation();
+        return comparationType != null && comparationType.isDoubleComparation();
     }
 
     public void setComparationType(ComparationType comparationType) {

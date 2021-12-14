@@ -83,8 +83,7 @@ public class JwtTokenUtil {
 
         Rol rol = Rol.valueOf(claims.get(ROL_CLAIM, String.class));
 
-        if (rol != null && rol.isUser()) {
-
+        if (rol.isUser()) {
             User user = new User();
             user.setEmail(claims.getSubject());
             user.setName(claims.get(NAME_CLAIM, String.class));
@@ -92,11 +91,13 @@ public class JwtTokenUtil {
 
             return user;
         }
-        if (rol != null && rol.isAgent()) {
+
+        if (rol.isAgent()) {
             Agent agent = new Agent();
             agent.setToken(claims.getSubject());
             return agent;
         }
+
         return null;
     }
 

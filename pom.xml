@@ -1,163 +1,292 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.5</version>
-		<relativePath/>
-	</parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.5</version>
+        <relativePath/>
+    </parent>
 
-	<groupId>edu.uoc.tfgmonitorsystem</groupId>
-	<artifactId>tfg-monitor-system</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>tfg-monitor-system</name>
+    <groupId>edu.uoc.tfgmonitorsystem</groupId>
+    <artifactId>tfg-monitor-system</artifactId>
+    <version>1.2</version>
+    <packaging>pom</packaging>
+    <name>tfg-monitor-system</name>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<maven.compiler.source>8</maven.compiler.source>
-		<maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
 
-		<!-- Plugins versions -->
-		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-		<maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
-		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
-		<maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
-		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-		<maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+        <!-- Plugins versions -->
+        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+        
+        <maven.spotbugs.plugin.version>4.2.3</maven.spotbugs.plugin.version>
+        <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
+        <checkstyle.version>8.45</checkstyle.version>
+        <jacoco.version>0.8.7</jacoco.version>
 
-		<mongodb-driver.version>3.12.10</mongodb-driver.version>
+        <mongodb-driver.version>3.12.10</mongodb-driver.version>
 
-		<plugin.frontend.version>1.12.0</plugin.frontend.version>
-		<docker-maven-plugin.version>0.37.0</docker-maven-plugin.version>
-		
-		<log4j.version>1.2.17</log4j.version>
-		<jjwt.version>0.9.1</jjwt.version>
-		<junit.version>4.12</junit.version>
-		
+        <plugin.frontend.version>1.12.0</plugin.frontend.version>
+        <docker-maven-plugin.version>0.37.0</docker-maven-plugin.version>
+        
+        <log4j.version>1.2.17</log4j.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        
+    </properties>
 
-	</properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver</artifactId>
+                <version>${mongodb-driver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>bson</artifactId>
+                <version>${mongodb-driver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver-core</artifactId>
+                <version>${mongodb-driver.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
 
-	<dependencyManagement>
-		<dependencies>
-
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>mongodb-driver</artifactId>
-				<version>${mongodb-driver.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>bson</artifactId>
-				<version>${mongodb-driver.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>mongodb-driver-core</artifactId>
-				<version>${mongodb-driver.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>io.jsonwebtoken</groupId>
-				<artifactId>jjwt</artifactId>
-				<version>${jjwt.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-			</dependency>
-			
-			
-			<dependency>
-			    <groupId>org.apache.commons</groupId>
-			    <artifactId>commons-lang3</artifactId>
-			    <version>${commons-lang3.version}</version>
-			</dependency>
-			
-			
-			
-		</dependencies>
-	</dependencyManagement>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            
+            
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.jacoco</groupId>
+                <artifactId>org.jacoco.agent</artifactId>
+                <version>${jacoco.version}</version>                
+            </dependency> 
+            
+        </dependencies>
+    </dependencyManagement>
 
 
-	<build>
-	
-		<pluginManagement>
-
-			<plugins>
-				<!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
-				<plugin>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>${maven-clean-plugin.version}</version>
-				</plugin>
-				<!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>${maven-resources-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${maven-compiler-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${maven-surefire-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>${maven-jar-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-install-plugin</artifactId>
-					<version>${maven-install-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<version>${maven-deploy-plugin.version}</version>
-				</plugin>
-				<!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>${maven-site-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>${maven-project-info-reports-plugin.version}</version>
-				</plugin>
-				
-				<plugin>
-					<groupId>com.github.eirslett</groupId>
-					<artifactId>frontend-maven-plugin</artifactId>
-					<version>${plugin.frontend.version}</version>
-				</plugin>
-				
-				<plugin>
-				    <groupId>io.fabric8</groupId>
-	                <artifactId>docker-maven-plugin</artifactId>
-	                <version>${docker-maven-plugin.version}</version>
+    <build>
+        
+        <pluginManagement>
+    
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
                 </plugin>
-			</plugins>
-		</pluginManagement>
-		
-		
-	</build>
-	
-	<profiles>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.version}</version>
+                </plugin>
+                
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <skipTests>false</skipTests>
+                        <forkCount>1</forkCount>
+                        <reuseForks>false</reuseForks>
+                        <useSystemClassLoader>false</useSystemClassLoader>
+                        <trimStackTrace>false</trimStackTrace>
+                        <systemPropertyVariables>
+                            <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+                        </systemPropertyVariables>
+                        <argLine>${jacocoArgLine}</argLine>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
+                </plugin>
+                
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site-plugin.version}</version>
+                </plugin>
+                
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven-project-info-reports-plugin.version}</version>
+                </plugin>
+    
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${plugin.frontend.version}</version>
+                </plugin>
+    
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker-maven-plugin.version}</version>
+                </plugin>
+                
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${maven.spotbugs.plugin.version}</version>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                        <excludeFilterFile>${project.basedir}/../src/main/config/spotbugs-exclude-filters.xml</excludeFilterFile>
+                        <spotbugsXmlOutputDirectory>target/spotbugsreports</spotbugsXmlOutputDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>quality-metric-spotbugs</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>                    
+                    <configuration>
+                        <configLocation>src/main/config/checkstyle-java-google-style.xml</configLocation>
+                        <suppressionsLocation>src/main/config/checkstyle-suppressions.xml</suppressionsLocation>
+                        <failOnViolation>true</failOnViolation>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <resourceIncludes>**/*.json, **/*.properties, **/*.xml, **/*.yaml, **/*.yml</resourceIncludes>
+                        <sourceDirectories>
+                            <sourceDirectory>src/main/java</sourceDirectory>
+                        </sourceDirectories>
+                        <testSourceDirectories>
+                            <testSourceDirectory>src/test/java</testSourceDirectory>
+                        </testSourceDirectories>                        
+                    </configuration>
+                    <executions>
+                         <execution>
+                             <id>quality-metric-checkstyle</id>
+                             <phase>prepare-package</phase>
+                             <goals>
+                                 <goal>check</goal>
+                             </goals>
+                         </execution>
+                     </executions>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-instrument</id>
+                            <goals>
+                                <goal>instrument</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-restore-instrumented-classes</id>
+                            <goals>
+                                <goal>restore-instrumented-classes</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-report</id>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>                        
+                    </executions>
+                    <configuration>
+                        <propertyName>jacocoArgLine</propertyName>
+                    </configuration>
+                </plugin>
+                
+            </plugins>
+        </pluginManagement>
+        
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>${jacocoArgLine}</argLine>
+                </configuration>
+             </plugin>
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-checkstyle-plugin</artifactId>
+             </plugin>
+             <plugin>
+                 <groupId>org.jacoco</groupId>
+                 <artifactId>jacoco-maven-plugin</artifactId>
+                 <inherited>true</inherited>
+             </plugin>
+             <plugin>
+                 <groupId>com.github.spotbugs</groupId>
+                 <artifactId>spotbugs-maven-plugin</artifactId>
+             </plugin>
+        </plugins>
+
+    </build>
+    
+    <profiles>
        <profile>
             <id>dev</id>
              <activation>
@@ -181,21 +310,21 @@
             <id>docker-local</id>
             <properties>
                 <mongodb.host>mongo</mongodb.host>
-                <server.host>localhost</server.host>
+                <server.host>192.168.1.35</server.host>
                 <debug.level>DEBUG</debug.level>
             </properties>
        </profile>
     </profiles>
-
-	<modules>
-		<module>common</module>
-		<module>auth-microservice</module>
-		<module>user-microservice</module>		
-	    <module>system-microservice</module>
-	    <module>agent-microservice</module>
-	    <module>log-microservice</module>
-	    <module>webapp</module>
-	    <module>log4j-appender</module>
-  </modules>
-
+    
+    <modules>
+        <module>common</module>
+        <module>auth-microservice</module>
+        <module>user-microservice</module>      
+        <module>system-microservice</module>
+        <module>agent-microservice</module>
+        <module>log-microservice</module>
+        <module>webapp</module>
+        <module>log4j-appender</module>
+    </modules>
+    
 </project>

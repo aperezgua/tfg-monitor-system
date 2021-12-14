@@ -3,18 +3,15 @@ package edu.uoc.tfgmonitorsystem.authmicroservice.controller;
 import edu.uoc.tfgmonitorsystem.authmicroservice.model.dto.JwtRequest;
 import edu.uoc.tfgmonitorsystem.authmicroservice.model.dto.JwtResponse;
 import edu.uoc.tfgmonitorsystem.common.controller.security.JwtTokenUtil;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuthenticationControllerTest {
 
@@ -36,9 +33,9 @@ public class AuthenticationControllerTest {
 
         ResponseEntity<String> response = testRestTemplate.postForEntity("/authenticate", request, String.class);
 
-        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        Assert.assertTrue(jwtTokenUtil.validateToken(response.getBody()));
+        Assertions.assertTrue(jwtTokenUtil.validateToken(response.getBody()));
     }
 
     /**
@@ -55,9 +52,9 @@ public class AuthenticationControllerTest {
         ResponseEntity<JwtResponse> response = testRestTemplate.postForEntity("/authenticate", request,
                 JwtResponse.class);
 
-        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        Assert.assertTrue(jwtTokenUtil.validateToken(response.getBody().getToken()));
+        Assertions.assertTrue(jwtTokenUtil.validateToken(response.getBody().getToken()));
     }
 
 }

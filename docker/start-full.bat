@@ -1,1 +1,0 @@
-docker-compose -f tfg-monitor-system.yml up

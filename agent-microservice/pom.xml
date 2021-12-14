@@ -8,48 +8,64 @@
     <parent>
         <groupId>edu.uoc.tfgmonitorsystem</groupId>
         <artifactId>tfg-monitor-system</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.2</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>agent-microservice</artifactId>
     <name>agent-microservice</name>
 
-    <dependencies>
+	<dependencies>
 
-        
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>edu.uoc.tfgmonitorsystem</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<!-- Exclude JUnit 4 from starter-test (and all other related test-starter, i.e those for security and project reactor -->
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- Provide JUnit 5 API -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<scope>test</scope>
+		</dependency>
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+              <groupId>org.jacoco</groupId>
+              <artifactId>org.jacoco.agent</artifactId>
+              <version>${jacoco.version}</version>
+              <classifier>runtime</classifier>
+              <scope>test</scope>
         </dependency>
-        
-        
-        
-        <dependency>
-            <groupId>edu.uoc.tfgmonitorsystem</groupId>
-            <artifactId>common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-            
-        
-    </dependencies>
+
+	</dependencies>
 
     <build>
         <resources>
@@ -116,26 +132,6 @@
                     </images>
                 </configuration>
 
-                <!-- Connect start/stop to pre- and post-integration-test phase, respectively 
-                    if you want to start your docker containers during integration tests 
-                <executions>
-                    <execution>
-                        <id>start</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                -->
             </plugin>
         </plugins>
 

@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,10 +42,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().authorizeRequests().antMatchers(JwtConstants.AUTHORIZATION_URL).permitAll()
-                .antMatchers("/health").permitAll().anyRequest().authenticated().and().exceptionHandling()
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests = httpSecurity
+                .csrf().disable().authorizeRequests();
+        authorizeRequests.antMatchers(JwtConstants.AUTHORIZATION_URL).permitAll();
+        authorizeRequests.antMatchers("/health").permitAll();
+        authorizeRequests.antMatchers("/shutdown").permitAll();
+        authorizeRequests.anyRequest().authenticated().and().exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         httpSecurity.cors();
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

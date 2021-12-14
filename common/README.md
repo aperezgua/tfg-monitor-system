@@ -3,19 +3,28 @@ Módulo que contiene el sistema de información del proyecto, en el son declarad
 por el aplicativo para acceder a MongoDb. También se incluye el sistema de autenticación JWT para que los microservicios
 lo usen como base para realizar la autenticación de las peticiones.
 
-## Package config
+## Api Rest:
+
+**/health**
+Servicio que devuelve el upTime en segundos para que docker pueda gestionar el sistema de healthy.
+
+**/shutdown**
+Servicio que si es llamado hace que el **/health** lance una excepción obligando a docker a reiniciar el contenedor.
+
+## Explicación de paquetes:
+** Package config**
 Configuración del sistema de MongoDb.
 
-## Package controller.security
+** Package controller.security**
 Se declaran los filtros, utilidades y demás clases necesarias para interceptar cada petición y verificar que los token son válidos.
 
-## Package model.document
+** Package model.document**
 Se declaran los documentos que van a ser usados por el sistema.
 
-## Package model.repository
+** Package model.repository **
 Se declaran los repositorios de MongoDb que será usados para gestionar los documentos y colecciones.
 
-## Package model.service
+** Package model.service **
 Se declaran los servicios principales encargados de realizar la lógica común.
 
 

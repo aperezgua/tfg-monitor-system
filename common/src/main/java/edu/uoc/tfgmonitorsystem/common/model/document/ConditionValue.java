@@ -91,7 +91,7 @@ public class ConditionValue extends BaseDocument {
      */
     private void clearOldValuesAndTimes(Date logDate, Integer timeInSeconds) {
 
-        long cutTime = logDate.getTime() - timeInSeconds * 1000;
+        long cutTime = logDate.getTime() - (long) timeInSeconds * 1000L;
 
         int index = 0;
         for (Long time : times) {

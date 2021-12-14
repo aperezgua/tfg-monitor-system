@@ -111,8 +111,9 @@ public class EventLog extends BaseDocument {
                 }
             } else {
                 fullFilled = true;
-                for (ConditionValue conditionValue : conditionsValues) {
-                    fullFilled &= conditionValue.isFullFilled();
+                for (int i = 0; i < conditionsValues.size() && fullFilled; i++) {
+                    ConditionValue conditionValue = conditionsValues.get(i);
+                    fullFilled = conditionValue.isFullFilled();
                 }
             }
         } else {

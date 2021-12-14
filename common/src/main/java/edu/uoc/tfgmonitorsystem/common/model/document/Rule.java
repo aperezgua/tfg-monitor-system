@@ -52,7 +52,10 @@ public class Rule extends BaseDocument {
     }
 
     public Condition findConditionByIndex(int index) {
-        return conditions.get(index);
+        if (conditions != null && conditions.size() < index) {
+            return conditions.get(index);
+        }
+        return null;
     }
 
     public Boolean getActive() {
