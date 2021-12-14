@@ -19,11 +19,7 @@ Puerto: 8092
 ** /rest/users/get/{id} **
 * Tipo de petición: GET
 * Roles permitidos: ADMINISTRATOR
-* Ejemplo de petición: 
 
-```
-/rest/users/get/10001
-```
 
 ** /rest/users/put **
 * Tipo de petición: POST
