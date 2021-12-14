@@ -43,3 +43,46 @@ Devuelve un listado de documentos LogEvent que pueden ser procesados por la vist
     ruleName : ""
 }
 ```
+
+**/rest/log/findByRegexp**
+
+Busca últimas líneas de log según regexp.
+
+* Tipo de petición: POST
+* Roles permitidos: ADMINISTRATOR
+* Ejemplo de petición:
+
+```json
+{
+    agentTokenId : "",
+    regexp : "",
+    limitResults : ""
+}
+```
+
+**/rest/log/put**
+
+Guarda una línea de log de agente.
+* Tipo de petición: POST
+* Roles permitidos: AGENT
+* Ejemplo de petición:
+
+```
+Linea de log
+```
+
+**/rest/updateAgentEvents**
+
+Actualiza los eventos de log de un agente determinado porque se han actualizado sus reglas.
+
+* Tipo de petición: POST
+* Roles permitidos: ADMINISTRATOR
+* Ejemplo de petición:
+
+```json
+{
+    agentTokenId : "",
+    regexp : "",
+    limitResults : ""
+}
+```
