@@ -8,8 +8,7 @@ Puerto 8095
 **/rest/eventLog/findEventSummary **
 
 Devuelve un resumen de eventos calculando sus diferentes incrementos respecto un tiempo  especificado por lastTimeInSeconds
-y un tipo de severidad..
-
+y un tipo de severidad.
 * Tipo de petición: POST
 * Roles permitidos: SUPPORT
 * Ejemplo de petición:
@@ -24,11 +23,12 @@ y un tipo de severidad..
     ruleName : ""
 }
 ```
+
+***
 
 **/rest/eventLog/findLastLogEvents**
 
 Devuelve un listado de documentos LogEvent que pueden ser procesados por la vista.
-
 * Tipo de petición: POST
 * Roles permitidos: SUPPORT
 * Ejemplo de petición:
@@ -44,10 +44,11 @@ Devuelve un listado de documentos LogEvent que pueden ser procesados por la vist
 }
 ```
 
+***
+
 **/rest/log/findByRegexp**
 
 Busca últimas líneas de log según regexp.
-
 * Tipo de petición: POST
 * Roles permitidos: ADMINISTRATOR
 * Ejemplo de petición:
@@ -60,6 +61,8 @@ Busca últimas líneas de log según regexp.
 }
 ```
 
+***
+
 **/rest/log/put**
 
 Guarda una línea de log de agente.
@@ -70,6 +73,8 @@ Guarda una línea de log de agente.
 ```
 Linea de log
 ```
+
+***
 
 **/rest/updateAgentEvents**
 

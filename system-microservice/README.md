@@ -8,7 +8,6 @@ Puerto 8093
 ** /rest/systems/find **
 
 Busca sistemas según un filtro.
-
 * Tipo de petición: POST
 * Roles permitidos: ADMINISTRATOR
 * Ejemplo de petición:
@@ -21,13 +20,15 @@ Busca sistemas según un filtro.
 }
 ```
 
+***
+
 ** /rest/systems/get/{id} **
 
 Obtiene un sistema en concreto según su id.
-
 * Tipo de petición: GET
 * Roles permitidos: ADMINISTRATOR
 
+***
 
 ** /rest/systems/put **
 

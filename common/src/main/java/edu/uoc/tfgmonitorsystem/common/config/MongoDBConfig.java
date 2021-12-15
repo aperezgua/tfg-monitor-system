@@ -3,13 +3,11 @@ package edu.uoc.tfgmonitorsystem.common.config;
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-import edu.uoc.tfgmonitorsystem.common.model.document.User;
 import edu.uoc.tfgmonitorsystem.common.model.repository.AgentRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.CountryRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.SystemsRepository;
 import edu.uoc.tfgmonitorsystem.common.model.repository.UserRepository;
 import java.util.Arrays;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +19,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFactoryBean;
-import org.springframework.util.CollectionUtils;
 
 @EnableMongoRepositories(basePackages = "edu.uoc.tfgmonitorsystem.common.model.repository")
 @Configuration
@@ -46,15 +43,12 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     }
 
     @Bean
-    public Jackson2RepositoryPopulatorFactoryBean getRepositoryPopulator(UserRepository userRepository) {
+    public Jackson2RepositoryPopulatorFactoryBean getRepositoryPopulator() {
         Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
 
-        List<User> allUsers = userRepository.findAll();
-        // Si no se han cargado usuarios, ejecuto el reset. si no no se realiza ninguna acción
-        if (CollectionUtils.isEmpty(allUsers)) {
-            factory.setResources(new Resource[] { new ClassPathResource("test-data-user.json"),
-                    new ClassPathResource("test-data-system.json"), new ClassPathResource("test-data-agent.json") });
-        }
+        factory.setResources(new Resource[] { new ClassPathResource("test-data-user.json"),
+                new ClassPathResource("test-data-system.json"), new ClassPathResource("test-data-agent.json") });
+
         return factory;
     }
 

@@ -59,7 +59,7 @@ arrancar la imagen de mongo usando docker-compose. Esta configuración funciona 
 - Arrancar agent-microservice
 - Arrancar log-microservice
 - Arrancar log4j-appender (opcional generador de log)
-- Arrancar webapp (ver webapp/README para configuración)
+- Arrancar webapp ([ver webapp/README para configuración](./webapp/README.md) )
 
 ## Despliegue en entorno de docker:
 Para el despliegue de entorno de preproducción en una máquina pública se debe realizar una compilación con el perfil docker 

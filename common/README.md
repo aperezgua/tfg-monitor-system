@@ -6,10 +6,16 @@ lo usen como base para realizar la autenticación de las peticiones.
 ## Api Rest:
 
 **/health**
+
 Servicio que devuelve el upTime en segundos para que docker pueda gestionar el sistema de healthy.
 
+***
+
 **/shutdown**
-Servicio que si es llamado hace que el **/health** lance una excepción obligando a docker a reiniciar el contenedor.
+
+Servicio que para el microservicio para la realización de pruebas.
+
+
 
 ## Explicación de paquetes:
 ** Package config**
