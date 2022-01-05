@@ -7,7 +7,7 @@ Puerto: 8091
 
 ## Api Rest:
 
-** /authenticate **
+**/authenticate**
 * Tipo de petición: POST
 * Ejemplo de post:
 

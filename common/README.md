@@ -18,19 +18,19 @@ Servicio que para el microservicio para la realización de pruebas.
 
 
 ## Explicación de paquetes:
-** Package config**
+**Package config**
 Configuración del sistema de MongoDb.
 
-** Package controller.security**
+**Package controller.security**
 Se declaran los filtros, utilidades y demás clases necesarias para interceptar cada petición y verificar que los token son válidos.
 
-** Package model.document**
+**Package model.document**
 Se declaran los documentos que van a ser usados por el sistema.
 
-** Package model.repository **
+**Package model.repository**
 Se declaran los repositorios de MongoDb que será usados para gestionar los documentos y colecciones.
 
-** Package model.service **
+**Package model.service**
 Se declaran los servicios principales encargados de realizar la lógica común.
 
 

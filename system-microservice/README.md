@@ -5,7 +5,7 @@ Puerto 8093
 
 ## Api REST:
 
-** /rest/systems/find **
+**/rest/systems/find**
 
 Busca sistemas según un filtro.
 * Tipo de petición: POST
@@ -22,7 +22,7 @@ Busca sistemas según un filtro.
 
 ***
 
-** /rest/systems/get/{id} **
+**/rest/systems/get/{id}**
 
 Obtiene un sistema en concreto según su id.
 * Tipo de petición: GET
@@ -30,7 +30,7 @@ Obtiene un sistema en concreto según su id.
 
 ***
 
-** /rest/systems/put **
+**/rest/systems/put**
 
 Guarda un sistema en la base de datos.
 

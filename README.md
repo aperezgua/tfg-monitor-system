@@ -3,7 +3,7 @@ Proyecto de monitorización de sistemas – Abel Pérez Guardado
 
 ## Descripción de los módulos
 
-** Docker **
+**Docker**
 Carpeta con lo necesario para levantar un sistema de dockers de desarrollo o preproducción:
 * mongo.yml: fichero de docker-compose para arrancar una mongodb compatible con la configuración del proyecto con perfil
 dev.
@@ -17,43 +17,43 @@ reinicializando la base de datos.
 
 ***
 
-** Módulo commmon: **
+**Módulo commmon:**
 Sistema de información del software en donde se definen los Document y los sistemas base de atutenticación para que los
 microservicios pueden usarlos.
 
 ***
 
-** Módulo auth-microservice: ** 
+**Módulo auth-microservice:** 
 Microservicio de autenticación.
 
 ***
 
-** Módulo user-microservice: **
+**Módulo user-microservice:**
 Microservicio con apirest para la gestión de usuarios.
 
 ***
 
-** Módulo system-microservice:**
+**Módulo system-microservice:**
 Microservicio con apirest para la gestión de sistemas.
 
 ***
 
-** Módulo agent-microservice:**
+**Módulo agent-microservice:**
 Microservicio con apirest para la gestión de agentes.
 
 ***
 
-** Módulo log-microservice:**
+**Módulo log-microservice:**
 Microservicio con apirest para la gestión de log.
 
 ***
 
-** Módulo webapp:**
+**Módulo webapp:**
 Servidor web de aplicativo react.
 
 ***
 
-** Módulo log4j-appender: **
+**Módulo log4j-appender:**
 Appender de log4j con aplicativo de ejemplo generador de log aleatorio.
 
 
