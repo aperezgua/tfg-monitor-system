@@ -3,7 +3,7 @@ Proyecto de monitorización de sistemas – Abel Pérez Guardado
 
 ## Descripción de los módulos
 
-** Docker **
+**Docker**
 Carpeta con lo necesario para levantar un sistema de dockers de desarrollo o preproducción:
 * mongo.yml: fichero de docker-compose para arrancar una mongodb compatible con la configuración del proyecto con perfil
 dev.
