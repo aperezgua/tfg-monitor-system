@@ -1,5 +1,5 @@
 # tfg-monitor-system
-Proyecto de monitorización de sistemas – Abel Pérez Guardado
+Monitorización de sistemas con microservicios contenerizados – Abel Pérez Guardado
 
 ## Descripción de los módulos
 
