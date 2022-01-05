@@ -5,7 +5,7 @@ Puerto: 8092
 
 ## Api REST:
 
-** /rest/users/find **
+**/rest/users/find**
 
 Busca usuarios según un filtro.
 * Tipo de petición: POST
@@ -22,7 +22,7 @@ Busca usuarios según un filtro.
 
 ***
 
-** /rest/users/get/{id} **
+**/rest/users/get/{id}**
 
 Obtiene un usuario según su id.
 * Tipo de petición: GET
@@ -30,7 +30,7 @@ Obtiene un usuario según su id.
 
 ***
 
-** /rest/users/put **
+**/rest/users/put**
 
 Guarda un usuario en la base de datos.
 * Tipo de petición: POST
