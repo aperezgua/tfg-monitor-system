@@ -1,0 +1,131 @@
+version: '3.3'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    networks:
+      - tfg_network    
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+      MONGO_INITDB_DATABASE : tfg-monitor-system-db
+    volumes:
+      - mongo-vol:/data
+      - mongo-vol:/data/configdb
+      - mongo-vol:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'db.runCommand(\"ping\").ok' | mongo localhost:27017/test --quiet"] 
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  auth-microservice:
+    image: aperezgua/auth-microservice:1.2
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8091:8091
+    depends_on:
+        - mongo
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost:8091/health || exit 1"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+  user-microservice:
+    image: aperezgua/user-microservice:1.2
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8092:8092
+    depends_on:
+       - mongo
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost:8092/health || exit 1"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+
+  system-microservice:
+    image: aperezgua/system-microservice:1.2
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8093:8093
+    depends_on:
+        - mongo
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost:8093/health || exit 1"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+
+  agent-microservice:
+    image: aperezgua/agent-microservice:1.2
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8094:8094
+    depends_on:
+        - mongo
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost:8094/health || exit 1"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+
+  log-microservice:
+    image: aperezgua/log-microservice:1.2
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8095:8095
+    depends_on:
+        - mongo
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost:8095/health || exit 1"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+
+  webapp:
+    image: aperezgua/webapp:1.2
+    restart: always
+    networks:
+      - tfg_network
+    ports:
+      - 8080:8080
+    healthcheck:
+        test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+
+  log4j-appender:
+    image: aperezgua/log4j-appender:1.2
+    restart: always
+    networks:
+      - tfg_network
+    depends_on:
+        - log-microservice
+
+networks:
+    tfg_network:
+        driver: bridge
+        
+volumes:
+    mongo-vol:
